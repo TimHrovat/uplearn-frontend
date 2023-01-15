@@ -1,0 +1,10 @@
+{
+  "overrides": [
+    {
+      "files": "src/**/App.tsx",
+      "options": {
+        "printWidth": 160
+      }
+    }
+  ]
+}

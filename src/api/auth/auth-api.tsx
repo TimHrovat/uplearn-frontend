@@ -2,7 +2,7 @@ const url = process.env.REACT_APP_API_URL + "/auth";
 
 export const AuthApi = {
   login: async function (userData: { username: string; password: string }) {
-    const response = await fetch(url + "/login", {
+    return await fetch(url + "/login", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -11,13 +11,24 @@ export const AuthApi = {
       },
       body: JSON.stringify(userData),
     });
-
-    return response.json();
   },
   logout: async function () {
     const response = await fetch(url + "/logout", {
       method: "GET",
       credentials: "include",
+    });
+
+    return response.json();
+  },
+  replaceFirstPassword: async function (newPassword: string) {
+    const response = await fetch(url + "/replace-first-password", {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password: newPassword }),
     });
 
     return response.json();
@@ -29,6 +40,16 @@ export const AuthApi = {
     const token = getJwtPayload("token");
 
     if (token !== undefined) authenticated = true;
+
+    return authenticated;
+  },
+  isAuthenticatedStrict: function () {
+    let authenticated = false;
+
+    const token = getJwtPayload("token");
+
+    if (token !== undefined && token.firstPasswordReplaced)
+      authenticated = true;
 
     return authenticated;
   },
