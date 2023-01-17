@@ -32,10 +32,8 @@ export default function LoginPage() {
 
         if (AuthApi.isAuthenticatedStrict()) {
           navigate("/dashboard");
-          return;
-        }
-
-        if (AuthApi.isAuthenticated()) navigate("/auth/replace-first-password");
+        } else if (AuthApi.isAuthenticated())
+          navigate("/auth/replace-first-password");
       });
   }
 
@@ -54,10 +52,8 @@ export default function LoginPage() {
   useEffect(() => {
     if (AuthApi.isAuthenticatedStrict()) {
       navigate("/dashboard");
-      return;
-    }
-
-    if (AuthApi.isAuthenticated()) navigate("/auth/replace-first-password");
+    } else if (AuthApi.isAuthenticated())
+      navigate("/auth/replace-first-password");
   });
 
   return (

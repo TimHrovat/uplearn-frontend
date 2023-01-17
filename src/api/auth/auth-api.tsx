@@ -35,23 +35,18 @@ export const AuthApi = {
   },
   getJwtPayload: getJwtPayload,
   isAuthenticated: function () {
-    let authenticated = false;
-
     const token = getJwtPayload("token");
 
-    if (token !== undefined) authenticated = true;
+    if (token !== undefined && !token.firstPasswordReplaced) return true;
 
-    return authenticated;
+    return false;
   },
   isAuthenticatedStrict: function () {
-    let authenticated = false;
-
     const token = getJwtPayload("token");
 
-    if (token !== undefined && token.firstPasswordReplaced)
-      authenticated = true;
+    if (token !== undefined && token.firstPasswordReplaced) return true;
 
-    return authenticated;
+    return false;
   },
 };
 

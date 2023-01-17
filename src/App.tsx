@@ -5,18 +5,15 @@ import NotFoundPage from "./pages/NotFoundPage";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoute, { ProtectedRouteProps } from "./components/ProtectedRoute";
-import { AuthApi } from "./api/auth/auth-api";
 import ProtectedRouteStrict, { ProtectedRouteStrictProps } from "./components/ProtectedRouteStrict";
 import ReplaceFirstPasswordPage from "./pages/ReplaceFirstPasswordPage";
 import HeroPage from "./pages/HeroPage";
 
 const defaultProtectedRouteProps: Omit<ProtectedRouteProps, "outlet"> = {
-  isAuthenticated: AuthApi.isAuthenticated(),
   authenticationPath: "/login",
 };
 
 const defaultProtectedRouteStrictProps: Omit<ProtectedRouteStrictProps, "outlet"> = {
-  isAuthenticated: AuthApi.isAuthenticatedStrict(),
   authenticationPath: "/login",
 };
 

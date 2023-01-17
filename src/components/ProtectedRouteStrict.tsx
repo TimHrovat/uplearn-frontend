@@ -1,17 +1,16 @@
 import { Navigate } from "react-router-dom";
+import { AuthApi } from "../api/auth/auth-api";
 
 export type ProtectedRouteStrictProps = {
-  isAuthenticated: boolean;
   authenticationPath: string;
   outlet: JSX.Element;
 };
 
 export default function ProtectedRouteStrict({
-  isAuthenticated,
   authenticationPath,
   outlet,
 }: ProtectedRouteStrictProps) {
-  if (isAuthenticated) {
+  if (AuthApi.isAuthenticatedStrict()) {
     return outlet;
   } else {
     return <Navigate to={{ pathname: authenticationPath }} />;
