@@ -38,9 +38,11 @@ export const UsersApi = {
       const response = await fetch(url + "/" + payload.id, {
         method: "GET",
         credentials: "include",
+      }).then((rsp) => {
+        return rsp.json();
       });
 
-      return response.json();
+      return response;
     } catch (e) {
       return null;
     }

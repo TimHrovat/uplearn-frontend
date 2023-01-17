@@ -8,30 +8,35 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function login(e: React.SyntheticEvent) {
     e.preventDefault();
 
     setError("");
+    setLoading(true);
 
-    const resp = await AuthApi.login({
+    await AuthApi.login({
       username: username,
       password: password,
-    }).then((rsp) => {
-      return rsp.json();
-    });
+    })
+      .then((rsp) => {
+        setLoading(false);
+        return rsp.json();
+      })
+      .then((data) => {
+        if (data.statusCode || data.cause) {
+          setError("Wrong username or password");
+          return;
+        }
 
-    if (resp.statusCode || resp.cause) {
-      setError("Wrong username or password");
-      return;
-    }
+        if (AuthApi.isAuthenticatedStrict()) {
+          navigate("/dashboard");
+          return;
+        }
 
-    if (AuthApi.isAuthenticatedStrict()) {
-      navigate("/dashboard");
-      return;
-    }
-
-    if (AuthApi.isAuthenticated()) navigate("/auth/replace-first-password");
+        if (AuthApi.isAuthenticated()) navigate("/auth/replace-first-password");
+      });
   }
 
   function handleUsernameChange(e: React.SyntheticEvent) {
@@ -46,11 +51,20 @@ export default function LoginPage() {
     setPassword(target.value);
   }
 
+  useEffect(() => {
+    if (AuthApi.isAuthenticatedStrict()) {
+      navigate("/dashboard");
+      return;
+    }
+
+    if (AuthApi.isAuthenticated()) navigate("/auth/replace-first-password");
+  });
+
   return (
     <>
       <div className="flex flex-row min-h-screen justify-center items-center">
         <div className="prose text-center mx-10  w-full max-w-md">
-          <h1 className="">UpLearn</h1>
+          <h1 className="text-5xl font-bold">UpLearn</h1>
           <div className="flex flex-col items-center p-7 bg-base-300 rounded-xl w-full">
             <input
               type="text"
@@ -71,7 +85,14 @@ export default function LoginPage() {
             {error !== "" ? (
               <p className="text-error mt-0 mb-5">{error}</p>
             ) : null}
-            <button className="btn btn-primary w-8/12" onClick={login}>
+            <button
+              className={
+                loading
+                  ? "btn btn-primary loading w-8/12"
+                  : "btn btn-primary w-8/12"
+              }
+              onClick={login}
+            >
               LogIn
             </button>
           </div>

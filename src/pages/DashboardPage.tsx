@@ -1,15 +1,15 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthApi } from "../api/auth/auth-api";
+import { UsersApi } from "../api/users/users-api";
+import Navbar from "../components/Navbar";
 
 export default function DashboardPage() {
-  const navigate = useNavigate();
+  const user = UsersApi.getAuthenticatedUser().then((user) => {
+    return user;
+  });
 
-  const logout = async (e: React.SyntheticEvent) => {
-    await AuthApi.logout();
+  console.log(user);
 
-    navigate("/");
-  };
-
-  return <button onClick={logout}>Logout</button>;
+  return <Navbar />;
 }
