@@ -6,6 +6,8 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const logout = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+
     await AuthApi.logout();
 
     navigate("/login");
@@ -56,14 +58,15 @@ export default function Navbar() {
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 bg-base-100 text-base-content">
-            <li>
+          <div className="menu p-4 w-80 bg-base-100 text-base-content flex flex-col">
+            <li className="grow">
               <a>Sidebar Item 1</a>
-            </li>
-            <li>
               <a>Sidebar Item 2</a>
             </li>
-          </ul>
+            <button className="btn btn-outline btn-error" onClick={logout}>
+              Logout
+            </button>
+          </div>
         </div>
       </div>
     </>

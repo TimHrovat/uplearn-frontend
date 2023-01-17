@@ -8,10 +8,9 @@ export const UsersApi = {
     surname: string;
     email: string;
     dateOfBirth: string;
-    firstPassword: string;
     role: string;
   }) {
-    const response = await fetch(url + "/create", {
+    return await fetch(url + "/create", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -20,39 +19,25 @@ export const UsersApi = {
       credentials: "include",
       body: JSON.stringify(userData),
     });
-
-    return response.json();
   },
   getAll: async function () {
-    const response = await fetch(url, {
+    return await fetch(url, {
       method: "GET",
       credentials: "include",
     });
-
-    return response.json();
   },
   getAuthenticatedUser: async function () {
-    try {
-      const payload = AuthApi.getJwtPayload("token");
+    const payload = AuthApi.getJwtPayload("token");
 
-      const response = await fetch(url + "/" + payload.id, {
-        method: "GET",
-        credentials: "include",
-      }).then((rsp) => {
-        return rsp.json();
-      });
-
-      return response;
-    } catch (e) {
-      return null;
-    }
+    return await fetch(url + "/" + payload.id, {
+      method: "GET",
+      credentials: "include",
+    });
   },
   delete: async function (id: string) {
-    const response = await fetch(url + "/" + id, {
+    return await fetch(url + "/" + id, {
       method: "DELETE",
       credentials: "include",
     });
-
-    return response.json();
   },
 };

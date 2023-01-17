@@ -13,12 +13,10 @@ export const AuthApi = {
     });
   },
   logout: async function () {
-    const response = await fetch(url + "/logout", {
+    await fetch(url + "/logout", {
       method: "GET",
       credentials: "include",
     });
-
-    return response.json();
   },
   replaceFirstPassword: async function (newPassword: string) {
     const response = await fetch(url + "/replace-first-password", {
