@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthApi } from "../api/auth/auth-api";
+import { UsersApi } from "../api/users/users-api";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const [initials, setInitials] = useState("");
 
   const logout = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -12,6 +14,24 @@ export default function Navbar() {
 
     navigate("/login");
   };
+
+  const getInitialsFromName = (name: string, surname: string) => {
+    return (name[0] + surname[0]).toUpperCase();
+  };
+
+  useLayoutEffect(() => {
+    const fetchData = async () => {
+      await UsersApi.getAuthenticatedUser()
+        .then((rsp) => {
+          return rsp.json();
+        })
+        .then((data) => {
+          setInitials(getInitialsFromName(data.name, data.surname));
+        });
+    };
+
+    fetchData();
+  });
 
   return (
     <>
@@ -50,7 +70,7 @@ export default function Navbar() {
             <div className="flex-none mr-4">
               <div className="avatar placeholder">
                 <div className="bg-neutral text-neutral-content rounded-full w-10 cursor-pointer">
-                  <span className="text-md">TH</span>
+                  <span className="text-md">{initials}</span>
                 </div>
               </div>
             </div>

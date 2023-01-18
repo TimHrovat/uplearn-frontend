@@ -5,11 +5,5 @@ import { UsersApi } from "../api/users/users-api";
 import Navbar from "../components/Navbar";
 
 export default function DashboardPage() {
-  const user = UsersApi.getAuthenticatedUser().then((user) => {
-    return user;
-  });
-
-  console.log(user);
-
   return <Navbar />;
 }
