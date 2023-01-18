@@ -3,7 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthApi } from "../api/auth/auth-api";
 import { UsersApi } from "../api/users/users-api";
 
-export default function Navbar() {
+export type NavbarProps = {
+  content: JSX.Element;
+};
+
+export default function Navbar({ content }: NavbarProps) {
   const navigate = useNavigate();
   const [initials, setInitials] = useState("");
 
@@ -32,6 +36,12 @@ export default function Navbar() {
 
     fetchData();
   });
+
+  const closeDrawer = () => {
+    const el = document.getElementById("my-drawer");
+
+    if (el !== null) el.click();
+  };
 
   return (
     <>
@@ -75,13 +85,14 @@ export default function Navbar() {
               </div>
             </div>
           </div>
+          <div className="p-10">{content}</div>
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
-          <div className="menu p-4 w-80 bg-base-100 text-base-content flex flex-col">
-            <li className="grow">
-              <a>Sidebar Item 1</a>
-              <a>Sidebar Item 2</a>
+          <div className="menu p-4 w-80 bg-base-200 text-base-content flex flex-col">
+            <li className="grow" onClick={closeDrawer}>
+              <Link to={"/dashboard"}>Dashboard 1</Link>
+              <Link to={"/dashboard2"}>Dashboard 2</Link>
             </li>
             <button className="btn btn-outline btn-error" onClick={logout}>
               Logout
