@@ -72,17 +72,19 @@ export default function Navbar({ content }: NavbarProps) {
             <div className="flex-1">
               <Link
                 className="btn btn-ghost normal-case text-xl"
-                to={"/dashboard"}
+                to={"/dashboard/1"}
               >
                 UpLearn
               </Link>
             </div>
             <div className="flex-none mr-4">
-              <div className="avatar placeholder">
-                <div className="bg-neutral text-neutral-content rounded-full w-10 cursor-pointer">
-                  <span className="text-md">{initials}</span>
+              <Link to="/dashboard/settings">
+                <div className="avatar placeholder">
+                  <div className="bg-neutral text-neutral-content rounded-full w-10 cursor-pointer">
+                    <span className="text-md">{initials}</span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
           <div className="p-10">{content}</div>
@@ -91,8 +93,8 @@ export default function Navbar({ content }: NavbarProps) {
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
           <div className="menu p-4 w-80 bg-base-200 text-base-content flex flex-col">
             <li className="grow" onClick={closeDrawer}>
-              <Link to={"/dashboard"}>Dashboard 1</Link>
-              <Link to={"/dashboard2"}>Dashboard 2</Link>
+              <Link to={"/dashboard/1"}>Dashboard 1</Link>
+              <Link to={"/dashboard/2"}>Dashboard 2</Link>
             </li>
             <button className="btn btn-outline btn-error" onClick={logout}>
               Logout

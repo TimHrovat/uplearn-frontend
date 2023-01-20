@@ -3,7 +3,7 @@ import React from "react";
 export default function Timetable() {
   return (
     <>
-      <div className="absolute">
+      <div >
         <div>Tasdfjafjsadfjdsdj</div>
         <div>Tasdfjafjsadfjdsdj</div>
         <div>Tasdfjafjsadfjdsdj</div>

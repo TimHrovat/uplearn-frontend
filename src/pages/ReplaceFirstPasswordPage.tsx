@@ -24,7 +24,7 @@ export default function ReplaceFirstPasswordPage() {
 
     if (resp.statusCode || resp === undefined) return;
 
-    navigate("/dashboard");
+    navigate("/dashboard/1");
   }
 
   function handleFirstPasswordChange(e: React.SyntheticEvent) {
@@ -57,7 +57,7 @@ export default function ReplaceFirstPasswordPage() {
 
   useEffect(() => {
     if (AuthApi.isAuthenticatedStrict()) {
-      navigate("/dashboard");
+      navigate("/dashboard/1");
       return;
     }
 
