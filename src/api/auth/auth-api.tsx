@@ -46,6 +46,34 @@ export const AuthApi = {
 
     return false;
   },
+  isAdmin: function () {
+    const token = getJwtPayload("token");
+
+    if (token !== undefined && token.role === "admin") return true;
+
+    return false;
+  },
+  isStudent: function () {
+    const token = getJwtPayload("token");
+
+    if (token !== undefined && token.role === "student") return true;
+
+    return false;
+  },
+  isEmployee: function () {
+    const token = getJwtPayload("token");
+
+    if (token !== undefined && token.role === "employee") return true;
+
+    return false;
+  },
+  getRole: function () {
+    const token = getJwtPayload("token");
+
+    if (token !== undefined && token.role) return token.role;
+
+    return null;
+  }
 };
 
 function getJwtPayload(name: string) {

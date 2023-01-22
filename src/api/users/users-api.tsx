@@ -34,6 +34,23 @@ export const UsersApi = {
       credentials: "include",
     });
   },
+  upateAuthenticatedUser: async function (updatedData: {
+    username?: string;
+    currentPassword?: string;
+    password?: string;
+    email?: string;
+    gsm?: string;
+  }) {
+    return await fetch(url + "/update-authenticated", {
+      method: "PATCH",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
+  },
   delete: async function (id: string) {
     return await fetch(url + "/" + id, {
       method: "DELETE",

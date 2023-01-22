@@ -1,7 +1,8 @@
 import React, { useLayoutEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthApi } from "../api/auth/auth-api";
-import { UsersApi } from "../api/users/users-api";
+import { AuthApi } from "../../api/auth/auth-api";
+import { UsersApi } from "../../api/users/users-api";
+import NavbarItems from "./NavbarItems";
 
 export type NavbarProps = {
   content: JSX.Element;
@@ -93,8 +94,7 @@ export default function Navbar({ content }: NavbarProps) {
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
           <div className="menu p-4 w-80 bg-base-200 text-base-content flex flex-col">
             <li className="grow" onClick={closeDrawer}>
-              <Link to={"/dashboard/1"}>Dashboard 1</Link>
-              <Link to={"/dashboard/2"}>Dashboard 2</Link>
+              <NavbarItems />
             </li>
             <button className="btn btn-outline btn-error" onClick={logout}>
               Logout
