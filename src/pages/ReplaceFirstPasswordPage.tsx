@@ -24,7 +24,7 @@ export default function ReplaceFirstPasswordPage() {
 
     if (resp.statusCode || resp === undefined) return;
 
-    navigate("/dashboard/1");
+    navigate("/dashboard");
   }
 
   function handleFirstPasswordChange(e: React.SyntheticEvent) {
@@ -57,7 +57,7 @@ export default function ReplaceFirstPasswordPage() {
 
   useEffect(() => {
     if (AuthApi.isAuthenticatedStrict()) {
-      navigate("/dashboard/1");
+      navigate("/dashboard");
       return;
     }
 
@@ -95,7 +95,7 @@ export default function ReplaceFirstPasswordPage() {
               }
               onClick={replaceFirstPassword}
             >
-              LogIn
+              Submit
             </button>
           </div>
         </div>

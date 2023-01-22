@@ -4,7 +4,7 @@ import { AuthApi } from "../../api/auth/auth-api";
 import { UsersApi } from "../../api/users/users-api";
 import Timetable from "./Timetable";
 
-export default function DashboardPage() {
+export default function Dashboard() {
   return (
     <>
       <Timetable />

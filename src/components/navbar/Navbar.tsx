@@ -73,7 +73,7 @@ export default function Navbar({ content }: NavbarProps) {
             <div className="flex-1">
               <Link
                 className="btn btn-ghost normal-case text-xl"
-                to={"/dashboard/1"}
+                to={"/dashboard"}
               >
                 UpLearn
               </Link>
