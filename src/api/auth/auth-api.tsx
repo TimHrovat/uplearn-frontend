@@ -73,7 +73,25 @@ export const AuthApi = {
     if (token !== undefined && token.role) return token.role;
 
     return null;
-  }
+  },
+  register: async function (userData: {
+    name: string;
+    surname: string;
+    email: string;
+    gsm: string;
+    dateOfBirth: string;
+    role: string;
+  }) {
+    return await fetch(url + "/register", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+  },
 };
 
 function getJwtPayload(name: string) {
