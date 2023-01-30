@@ -15,6 +15,11 @@ import ManageClasses from "./pages/dashboard/admin/ManageClasses";
 import ManageStudents from "./pages/dashboard/admin/ManageStudents";
 import ManageEmployees from "./pages/dashboard/admin/ManageEmployees";
 import ManageUsers from "./pages/dashboard/admin/ManageUsers";
+import ManageUsersCreate from "./pages/dashboard/admin/ManageUsersCreate";
+import ManageClassesCreate from "./pages/dashboard/admin/ManageClassesCreate";
+import ManageSubjects from "./pages/dashboard/admin/ManageSubjects";
+import ManageSubjectsCreate from "./pages/dashboard/admin/ManageSubjectsCreate";
+import ManageSubjectsCreateList from "./pages/dashboard/admin/ManageSubjectsCreateList";
 
 function App() {
   return (
@@ -30,9 +35,17 @@ function App() {
           <Route path="/dashboard/settings" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Settings />} />} />} />
 
           <Route path="/dashboard/manage-classes" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClasses />} />} authorizedRoles={["admin"]} />} />
+          <Route path="/dashboard/manage-classes/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassesCreate />} />} authorizedRoles={["admin"]} />} />
+
           <Route path="/dashboard/manage-students" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageStudents />} />} authorizedRoles={["admin"]} />} />
           <Route path="/dashboard/manage-employees" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageEmployees />} />} authorizedRoles={["admin"]} />} />
+
+          <Route path="/dashboard/manage-subjects" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjects />} />} authorizedRoles={["admin"]} />} />
+          <Route path="/dashboard/manage-subjects/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectsCreate />} />} authorizedRoles={["admin"]} />} />
+          <Route path="/dashboard/manage-subjects/create-list" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectsCreateList />} />} authorizedRoles={["admin"]} />} />
+
           <Route path="/dashboard/manage-users" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsers />} />} authorizedRoles={["admin"]} />} />
+          <Route path="/dashboard/manage-users/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsersCreate />} />} authorizedRoles={["admin"]} />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

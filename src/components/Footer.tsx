@@ -19,8 +19,7 @@ export default function Footer() {
               <FontAwesomeIcon icon={faInstagram} size="2x" />
             </a>
             <a
-              href="https://www.linkedin.com/in/tim-hrovat-4255b61a6/"
-              target="blank"
+              href="mailto:tim.hrovat16@gmail.com"
             >
               <FontAwesomeIcon icon={faEnvelope} size="2x" />
             </a>
