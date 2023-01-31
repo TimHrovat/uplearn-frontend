@@ -1,14 +1,25 @@
 import React from "react";
 
-export default function ErrorAlert(props: { msg: string }) {
+type ErrorAlertProps = {
+  msg: string;
+  onVisibilityChange?: (msg: string) => void;
+};
+
+export default function ErrorAlert({
+  msg,
+  onVisibilityChange,
+}: ErrorAlertProps) {
+  if (msg === "") return <></>;
+
   return (
     <>
-      <div
-        className={props.msg.length > 0 ? "toast" : "toast invisible"}
-        id="error"
-      >
+      <div className={msg.length > 0 ? "toast cursor-pointer" : "toast invisible cursor-pointer"} id="error">
         <div className="alert alert-error shadow-lg">
-          <div>
+          <div
+            onClick={(event) => {
+              onVisibilityChange?.("");
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="stroke-current flex-shrink-0 h-6 w-6"
@@ -22,7 +33,7 @@ export default function ErrorAlert(props: { msg: string }) {
                 d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>{props.msg}</span>
+            <span>{msg}</span>
           </div>
         </div>
       </div>

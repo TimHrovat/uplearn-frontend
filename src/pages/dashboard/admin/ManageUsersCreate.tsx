@@ -73,8 +73,11 @@ export default function ManageUsersCreate() {
 
   return (
     <>
-      <ErrorAlert msg={error} />
-      <SuccessAlert msg={success} />
+      <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
+      <SuccessAlert
+        msg={success}
+        onVisibilityChange={(msg) => setSuccess(msg)}
+      />
       <div className="flex flex-col justify-center items-center">
         <SubpageBtnList
           buttons={[

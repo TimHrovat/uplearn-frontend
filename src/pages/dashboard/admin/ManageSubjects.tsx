@@ -8,8 +8,14 @@ export default function ManageSubjects() {
         <SubpageBtnList
           buttons={[
             { title: "View subjects", link: "/dashboard/manage-subjects" },
-            { title: "Create subject", link: "/dashboard/manage-subjects/create" },
-            { title: "Create subject list", link: "/dashboard/manage-subjects/create-list" },
+            {
+              title: "Create subject",
+              link: "/dashboard/manage-subjects/create",
+            },
+            {
+              title: "Create subject list",
+              link: "/dashboard/manage-subjects/create-list",
+            },
           ]}
         />
       </div>

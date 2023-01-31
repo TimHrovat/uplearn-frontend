@@ -155,8 +155,8 @@ export default function Settings() {
 
   return (
     <>
-      <SuccessAlert msg={success} />
-      <ErrorAlert msg={error} />
+      <SuccessAlert msg={success} onVisibilityChange={(msg) => setSuccess(msg)}/>
+      <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)}/>
       <Loader active={loading} />
       <div className="flex flex-col justify-center items-center">
         <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
