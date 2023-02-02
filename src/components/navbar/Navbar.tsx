@@ -88,7 +88,7 @@ export default function Navbar({ content }: NavbarProps) {
               </Link>
             </div>
           </div>
-          <div className="p-10">{content}</div>
+          <div className="desktop:p-10 p-3 py-10">{content}</div>
         </div>
         <div className="drawer-side">
           <label htmlFor="my-drawer" className="drawer-overlay"></label>

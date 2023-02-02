@@ -9,4 +9,7 @@ export const StudentsApi = {
   getAllWithoutClass: async () => {
     return await axios.get(url + "/without-class");
   },
+  removeFromClass: async (id: string) => {
+    return await axios.patch(url + "/remove-from-class/" + id);
+  },
 };

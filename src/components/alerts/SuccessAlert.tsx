@@ -13,7 +13,7 @@ export default function SuccessAlert({
 
   return (
     <>
-      <div className={msg.length > 0 ? "toast cursor-pointer" : "toast invisible cursor-pointer"} id="error">
+      <div className={msg.length > 0 ? "toast cursor-pointer z-50" : "toast invisible cursor-pointer z-50"} id="error">
         <div className="alert alert-success shadow-lg">
           <div
             onClick={(event) => {

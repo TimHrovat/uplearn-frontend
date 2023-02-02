@@ -9,8 +9,6 @@ const b2 = cssRoot === null ? null : getComputedStyle(cssRoot).getPropertyValue(
 const twBgOpacity = cssInputBordered === null ? null : getComputedStyle(cssInputBordered).getPropertyValue("--tw-bg-opacity");
 const twBorderOpacity = cssInputBordered === null ? null : getComputedStyle(cssInputBordered).getPropertyValue("--tw-border-opacity");
 
-console.log(twBgOpacity);
-
 export const style: StylesConfig = {
   control: (styles) => ({
     ...styles,

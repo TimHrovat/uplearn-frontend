@@ -38,12 +38,16 @@ export default function ManageClassesCreate() {
     queryFn: SubjectListsApi.getAll,
   });
 
-  const { status: studentsStatus, data: students } = useQuery({
+  const { status: studentsStatus, data: students, refetch: refetchStudents } = useQuery({
     queryKey: ["students"],
     queryFn: StudentsApi.getAllWithoutClass,
   });
 
-  const { status: nonClassTeachersStatus, data: nonClassTeachers } = useQuery({
+  const {
+    status: nonClassTeachersStatus,
+    data: nonClassTeachers,
+    refetch: refetchClassTeachers,
+  } = useQuery({
     queryKey: ["nonClassTeachers"],
     queryFn: EmployeesApi.getNonClassTeachers,
   });
@@ -51,6 +55,7 @@ export default function ManageClassesCreate() {
   const {
     status: nonSubstituteClassTeachersStatus,
     data: nonSubstituteClassTeachers,
+    refetch: refetchSubstituteClassTeachers,
   } = useQuery({
     queryKey: ["nonSubstituteClassTeachers"],
     queryFn: EmployeesApi.getNonSubstituteClassTeachers,
@@ -208,8 +213,6 @@ export default function ManageClassesCreate() {
       substituteClassTeacherId: selectedNonSubstituteClassTeachers,
     };
 
-    console.log(data);
-
     setLoading(true);
 
     const newClass = await ClassesApi.create(data)
@@ -224,6 +227,10 @@ export default function ManageClassesCreate() {
       if (error === "") setError("Something went wrong please try again later");
       return;
     }
+
+    refetchClassTeachers();
+    refetchSubstituteClassTeachers();
+    refetchStudents();
 
     setSuccess("New class has been created");
   };
@@ -243,7 +250,7 @@ export default function ManageClassesCreate() {
           ]}
         />
         <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Create class</h1>
+          <h1 className="text-xl font-bold mb-5">Create Class</h1>
           <div className="form-control w-full mb-5">
             <label className="label">
               <span className="label-text">Name:</span>
@@ -274,7 +281,7 @@ export default function ManageClassesCreate() {
             </label>
             <Select
               options={subjectListOptions}
-              closeMenuOnSelect={false}
+              closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedSubjectListChange}
               styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
@@ -299,7 +306,7 @@ export default function ManageClassesCreate() {
             </label>
             <Select
               options={nonClassTeacherOptions}
-              closeMenuOnSelect={false}
+              closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedNonClassTeacherChange}
               styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
@@ -311,7 +318,7 @@ export default function ManageClassesCreate() {
             </label>
             <Select
               options={nonSubstituteClassTeacherOptions}
-              closeMenuOnSelect={false}
+              closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedNonSubstituteClassTeacherChange}
               styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
@@ -323,7 +330,7 @@ export default function ManageClassesCreate() {
             }
             onClick={createClass}
           >
-            Create Subject List
+            Create Class
           </button>
         </div>
       </div>
