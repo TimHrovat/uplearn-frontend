@@ -1,76 +1,58 @@
 import React, { useRef, useState } from "react";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 import makeAnimated from "react-select/animated";
-import ErrorAlert from "../../../components/alerts/ErrorAlert";
-import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import Select from "react-select";
-import { useQuery } from "@tanstack/react-query";
-import { SubjectsApi } from "../../../api/subjects/subjects-api";
-import Loader from "../../../components/Loader";
-import { SubjectListsApi } from "../../../api/subjects/subject-listst-api";
+import { ClassroomApi } from "../../../api/classroom/classroom-api";
+import SuccessAlert from "../../../components/alerts/SuccessAlert";
+import ErrorAlert from "../../../components/alerts/ErrorAlert";
 
-let options: { value: string; label: string }[] = [];
 const animatedComponents = makeAnimated();
 
-export default function ManageSubjectsCreateList() {
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
+let options: { value: string; label: string }[] = [
+  { value: "NORMAL", label: "normal" },
+  { value: "LAB", label: "lab" },
+  { value: "GYM", label: "gym" },
+  { value: "COMPUTER", label: "computer" },
+];
+
+export default function ManageClassroomsCreate() {
+  const name = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const name = useRef<HTMLInputElement>(null);
+  const [selectedType, setSelectedType] = useState("");
 
-  const handleSelectedSubjectChange = (selected: any) => {
-    setSelectedSubjects(selected);
+  const handleSelectedTypeChange = (selected: any) => {
+    setSelectedType(selected.value);
   };
 
-  const { status: subjectStatus, data: subjects } = useQuery({
-    queryKey: ["subjects"],
-    queryFn: SubjectsApi.getAll,
-  });
-
-  if (subjectStatus === "loading") return <Loader active={true} />;
-  if (subjectStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  options = [];
-
-  subjects?.data.forEach((subject: { abbreviation: string }) => {
-    options.push({
-      value: subject.abbreviation,
-      label: `${subject.abbreviation}`,
-    });
-  });
-
-  const createSubjectList = async () => {
+  const createClassroom = async () => {
     setError("");
     setSuccess("");
 
     if (name.current && name.current.value === "") {
-      setError("You need to povide a name for the subject list");
+      setError("You need to povide a name for the classroom");
       return;
     }
 
-    if (selectedSubjects.length === 0) {
-      setError("You need to select some subjects for the subject list");
+    if (selectedType === "") {
+      setError("You need to select a type for the classroom");
       return;
     }
 
     const data = {
       name: name.current === null ? "" : name.current.value,
-      subjects: selectedSubjects,
+      type: selectedType,
     };
 
     setLoading(true);
 
-    const subjectList = await SubjectListsApi.create(data)
+    const subjectList = await ClassroomApi.create(data)
       .catch((e) => {
-        setError(e.response.data.cause);
+        setError(
+          e.response.data.cause ?? "Something went wrong please try again later"
+        );
       })
       .finally(() => {
         setLoading(false);
@@ -81,7 +63,7 @@ export default function ManageSubjectsCreateList() {
       return;
     }
 
-    setSuccess("New subject list has been created");
+    setSuccess("New classroom has been created");
   };
 
   return (
@@ -94,19 +76,15 @@ export default function ManageSubjectsCreateList() {
       <div className="flex flex-col justify-center items-center">
         <SubpageBtnList
           buttons={[
-            { title: "View subjects", link: "/dashboard/manage-subjects" },
+            { title: "View classrooms", link: "/dashboard/manage-classrooms" },
             {
-              title: "Create subject",
-              link: "/dashboard/manage-subjects/create",
-            },
-            {
-              title: "Create subject list",
-              link: "/dashboard/manage-subjects/create-list",
+              title: "Create classroom",
+              link: "/dashboard/manage-classrooms/create",
             },
           ]}
         />
         <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Create Subject List</h1>
+          <h1 className="text-xl font-bold mb-5">Create Classroom</h1>
           <div className="form-control w-full mb-5">
             <label className="label">
               <span className="label-text">Name:</span>
@@ -123,21 +101,19 @@ export default function ManageSubjectsCreateList() {
             </label>
             <Select
               options={options}
-              isMulti
-              closeMenuOnSelect={false}
+              closeMenuOnSelect={true}
               components={animatedComponents}
-              onChange={handleSelectedSubjectChange}
+              onChange={handleSelectedTypeChange}
               styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
             />
           </div>
-
           <button
             className={
               loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
             }
-            onClick={createSubjectList}
+            onClick={createClassroom}
           >
-            Create Subject List
+            Create Classroom
           </button>
         </div>
       </div>

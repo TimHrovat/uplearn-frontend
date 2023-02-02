@@ -217,7 +217,7 @@ export default function ManageClassesCreate() {
 
     const newClass = await ClassesApi.create(data)
       .catch((e) => {
-        setError(e.response.data.cause);
+        setError(e.response.data.cause ?? "Something went wrong please try again later");
       })
       .finally(() => {
         setLoading(false);

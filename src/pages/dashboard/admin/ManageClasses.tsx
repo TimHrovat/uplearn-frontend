@@ -149,7 +149,6 @@ export default function ManageClasses() {
                     <td>
                       <button
                         className="btn btn-error"
-                        // onClick={() => deleteClass(c.name)}
                         onClick={
                           () => {
                             setConfirmDeletePopupActive(true);

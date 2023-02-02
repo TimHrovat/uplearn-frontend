@@ -12,6 +12,7 @@ export default function NavbarItems() {
         <Link to={"/dashboard/manage-employees"}>Employees</Link>
         <Link to={"/dashboard/manage-students"}>Students</Link>
         <Link to={"/dashboard/manage-users"}>Users</Link>
+        <Link to={"/dashboard/manage-classrooms"}>Classrooms</Link>
       </>
     );
   } else if (AuthApi.isStudent()) {

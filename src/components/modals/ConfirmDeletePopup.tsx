@@ -1,9 +1,5 @@
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import ErrorAlert from "../alerts/ErrorAlert";
-import Timetable from "../timetable/Timetable";
-import Modal from "./Modal";
 
 export type ConfirmDeletePopupProps = {
   active: boolean;
