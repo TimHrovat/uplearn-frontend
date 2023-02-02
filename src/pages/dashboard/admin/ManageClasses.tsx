@@ -1,4 +1,8 @@
-import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendar,
+  faPenToSquare,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -8,6 +12,8 @@ import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import Loader from "../../../components/Loader";
 import ClassEditModal from "../../../components/modals/ClassEditModal";
 import ClassStudentsModal from "../../../components/modals/ClassStudentsModal";
+import ClassTimetableModal from "../../../components/modals/ClassTimetableModal";
+import ConfirmDeletePopup from "../../../components/modals/ConfirmDeletePopup";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 
 export default function ManageClasses() {
@@ -16,6 +22,9 @@ export default function ManageClasses() {
 
   const [studentsModalActive, setStudentModalActive] = useState(false);
   const [classEditModalActive, setClassEditModalActive] = useState(false);
+  const [classTimetableModalActive, setClassTimetableModalActive] =
+    useState(false);
+  const [confirmDeletePopupActive, setConfirmDeletePopupActive] = useState(false);
   const [modalClassName, setModalClassName] = useState("");
 
   const {
@@ -54,6 +63,17 @@ export default function ManageClasses() {
         modalClassName={modalClassName}
         onActiveChange={(active) => setClassEditModalActive(active)}
       />
+      <ClassTimetableModal
+        active={classTimetableModalActive}
+        modalClassName={modalClassName}
+        onActiveChange={(active) => setClassTimetableModalActive(active)}
+      />
+      <ConfirmDeletePopup
+        active={confirmDeletePopupActive}
+        onActiveChange={(active) => setConfirmDeletePopupActive(active)}
+        deleteFunction={() => deleteClass(modalClassName)}
+        prompt={"Are you sure you want to delete class " + modalClassName + "?"}
+        />
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
       <SuccessAlert
         msg={success}
@@ -79,6 +99,7 @@ export default function ManageClasses() {
                   <th>substitute class teacher</th>
                   <th>class list name</th>
                   <th>students</th>
+                  <th>timetable</th>
                   <th>edit</th>
                   <th>Delete</th>
                 </tr>
@@ -105,6 +126,17 @@ export default function ManageClasses() {
                     </td>
                     <td>
                       <button
+                        className="btn btn-outline btn-info"
+                        onClick={() => {
+                          setClassTimetableModalActive(true);
+                          setModalClassName(c.name);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faCalendar} size="lg" />
+                      </button>
+                    </td>
+                    <td>
+                      <button
                         className="btn btn-warning btn-outline"
                         onClick={() => {
                           setClassEditModalActive(true);
@@ -117,7 +149,13 @@ export default function ManageClasses() {
                     <td>
                       <button
                         className="btn btn-error"
-                        onClick={() => deleteClass(c.name)}
+                        // onClick={() => deleteClass(c.name)}
+                        onClick={
+                          () => {
+                            setConfirmDeletePopupActive(true);
+                            setModalClassName(c.name);
+                          }
+                        }
                       >
                         <FontAwesomeIcon icon={faTrashCan} size="lg" />
                       </button>
@@ -137,8 +175,8 @@ interface ClassInterface {
   name: string;
   year: string;
   subjectList: {
-    name: string,
-  }
+    name: string;
+  };
   classTeacher: {
     user: {
       name: string;

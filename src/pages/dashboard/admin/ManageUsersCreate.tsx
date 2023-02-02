@@ -11,9 +11,9 @@ export default function ManageUsersCreate() {
   const [birthdate, setBirthdate] = useState(new Date());
   const name = useRef<HTMLInputElement>(null);
   const surname = useRef<HTMLInputElement>(null);
-  const email = useRef<HTMLInputElement>(null);
   const gsm = useRef<HTMLInputElement>(null);
   const role = useRef<HTMLSelectElement>(null);
+  const [email, setEmail] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -39,8 +39,13 @@ export default function ManageUsersCreate() {
       return;
     }
 
-    if (email.current && email.current.value === "") {
+    if (email === "") {
       setError("You need to povide an email for the user");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setError("Email is invalid");
       return;
     }
 
@@ -49,7 +54,7 @@ export default function ManageUsersCreate() {
     const UserData = {
       name: name.current === null ? "" : name.current.value,
       surname: surname.current === null ? "" : surname.current.value,
-      email: email.current === null ? "" : email.current.value,
+      email: email,
       gsm: gsm.current === null ? "" : gsm.current.value,
       dateOfBirth: birthdate.toISOString(),
       role: role.current === null ? "" : role.current.value,
@@ -69,6 +74,18 @@ export default function ManageUsersCreate() {
     }
 
     setSuccess("New user has been created");
+  };
+
+  function isValidEmail(email: string) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
+
+  const handleEmailBlur = () => {
+    if (!isValidEmail(email) && email !== "") {
+      setError("Email is invalid");
+    } else {
+      setError("");
+    }
   };
 
   return (
@@ -114,12 +131,14 @@ export default function ManageUsersCreate() {
             <input
               type="text"
               className="input input-bordered w-full "
-              ref={email}
+              value={email}
+              onChange={(e) => setEmail(e.currentTarget.value)}
+              onBlur={handleEmailBlur}
             />
           </div>
           <div className="form-control w-full mb-5">
             <label className="label">
-              <span className="label-text">Gsm:</span>
+              <span className="label-text">Gsm*:</span>
             </label>
             <input
               type="text"
