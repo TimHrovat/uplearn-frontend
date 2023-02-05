@@ -26,8 +26,9 @@ export default function ClassTimetableModal({
         active={active}
         title={"Timetable - " + modalClassName}
         onActiveChange={(isActive) => onActiveChange?.(isActive)}
+        fullWidth={true}
       >
-        <Timetable />
+        <Timetable classNameP={modalClassName}/>
       </Modal>
     </>
   );

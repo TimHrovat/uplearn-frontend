@@ -1,10 +1,10 @@
 import React from "react";
-import Timetable from "../../components/timetable/Timetable";
+import TimetablePage from "../../components/timetable/TimetablePage";
 
 export default function Dashboard() {
   return (
     <>
-      <Timetable />
+      <TimetablePage />
     </>
   );
 }

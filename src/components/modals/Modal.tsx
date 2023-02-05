@@ -6,6 +6,8 @@ export type ModalProps = {
   children: string | JSX.Element | JSX.Element[];
   active: boolean;
   title?: string;
+  fullWidth?: boolean;
+
   onActiveChange: (active: boolean) => void;
 };
 
@@ -14,12 +16,19 @@ export default function Modal({
   active,
   title,
   onActiveChange,
+  fullWidth,
 }: ModalProps) {
   if (!active) return <></>;
 
   return (
-    <div className="fixed w-full h-full inset-0  backdrop-brightness-50 z-20">
-      <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-base-200 p-4 rounded-xl desktop:w-1/2 w-full mx-3">
+    <div className="fixed w-full h-full inset-0 backdrop-brightness-50 z-20 overflow-auto">
+      <div
+        className={
+          fullWidth === false || fullWidth === undefined
+            ? "absolute left-1/2 -translate-x-1/2 bg-base-200 p-4 rounded-xl my-14 w-11/12 desktop:w-1/2"
+            : "absolute left-1/2 -translate-x-1/2 bg-base-200 p-4 rounded-xl my-14 w-11/12"
+        }
+      >
         <div className="w-full flex flex-row ">
           <h1 className="text-xl font-bold mb-5 flex-1 pt-2">{title}</h1>
           <div className="flex-1">
@@ -31,7 +40,7 @@ export default function Modal({
             </button>
           </div>
         </div>
-        <div className="mt-5">{children}</div>
+        <div className="mt-3">{children}</div>
       </div>
     </div>
   );

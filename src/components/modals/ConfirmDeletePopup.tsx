@@ -23,7 +23,7 @@ export default function ConfirmDeletePopup({
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
 
       <div className="fixed w-full h-full inset-0  backdrop-brightness-50 z-20">
-        <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-base-200 p-4 rounded-xl mx-3">
+        <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-base-200 p-4 rounded-xl mx-3 laptop:w-fit w-full">
           <div className="w-full">
             <h1 className="text-xl font-bold mb-5 flex-1 pt-2">{prompt}</h1>
           </div>

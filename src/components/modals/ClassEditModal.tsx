@@ -191,25 +191,6 @@ export default function ClassEditModal({
       return;
     }
 
-    // if (
-    //   currentClass.data.classTeacher.id === selectedNonClassTeachers &&
-    //   currentClass.data.substituteClassTeacher.id ===
-    //     selectedNonSubstituteClassTeachers
-    // ) {
-    //   window.location.reload();
-    // }
-
-    // console.log(
-    //   currentClass.data.classTeacher.id,
-    //   "===",
-    //   selectedNonClassTeachers
-    // );
-    // console.log(
-    //   currentClass.data.substituteClassTeacher.id,
-    //   "===",
-    //   selectedNonSubstituteClassTeachers
-    // );
-
     const data: UpdateClass = {
       name: name === "" ? modalClassName : name,
       year: year === 0 ? currentClass.data.year : year,
@@ -226,8 +207,6 @@ export default function ClassEditModal({
           ? currentClass.data.substituteClassTeacher.id
           : selectedNonSubstituteClassTeachers,
     };
-
-    console.log(data);
 
     setLoading(true);
 

@@ -76,7 +76,7 @@ export default function ManageClassrooms() {
               <tbody>
                 {classrooms?.data.map(
                   (c: ClassroomInterface, index: number) => (
-                    <tr key={c.name}>
+                    <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{c.name}</td>
                       <td>{c.type}</td>
