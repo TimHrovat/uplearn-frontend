@@ -128,8 +128,8 @@ export default function ManageClasses() {
                       <button
                         className="btn btn-outline btn-info"
                         onClick={() => {
-                          setClassTimetableModalActive(true);
                           setModalClassName(c.name);
+                          setClassTimetableModalActive(true);
                         }}
                       >
                         <FontAwesomeIcon icon={faCalendar} size="lg" />

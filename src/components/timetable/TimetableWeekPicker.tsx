@@ -52,6 +52,7 @@ export default function TimetableWeekPicker({
 
 export const initStartDate = () => {
   let date = new Date();
+//   date.setHours(0, 0, 0, 0);
 
   while (date.getDay() !== 1) {
     date = moment(date).subtract(1, "d").toDate();
