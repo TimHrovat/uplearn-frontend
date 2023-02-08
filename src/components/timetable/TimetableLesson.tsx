@@ -1,4 +1,4 @@
-import { faAdd, faDoorOpen } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faDoorOpen, faScroll } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import AddLessonModal from "../modals/AddLessonModal";
@@ -9,6 +9,9 @@ export interface TimetableLessonProps {
   classroom?: string;
   schoolHourId: string;
   date: string;
+  className: string;
+  type: string;
+  onClose: () => any;
 }
 
 export default function TimetableLesson({
@@ -17,6 +20,9 @@ export default function TimetableLesson({
   classroom,
   schoolHourId,
   date,
+  type,
+  className,
+  onClose,
 }: TimetableLessonProps) {
   const [addLessonModalActive, setAddLessonModalActive] = useState(false);
   const [showAddIcon, setShowAddIcon] = useState(false);
@@ -26,9 +32,13 @@ export default function TimetableLesson({
       {addLessonModalActive ? (
         <AddLessonModal
           active={addLessonModalActive}
-          onActiveChange={(active) => setAddLessonModalActive(active)}
+          onActiveChange={(active) => {
+            setAddLessonModalActive(active);
+            onClose();
+          }}
           schoolHourId={schoolHourId}
           date={date}
+          className={className}
         />
       ) : (
         <></>
@@ -50,7 +60,18 @@ export default function TimetableLesson({
           <></>
         ) : (
           <>
-            <span className="font-bold block">{subject}</span>
+            <div className="block w-full">
+              <span className="font-bold mr-8">
+                {type === "SUBSTITUTE" ? "Substitute" : subject}
+              </span>
+              {type === "GRADING" ? (
+                <span className="text-info float-right">
+                  <FontAwesomeIcon icon={faScroll} />
+                </span>
+              ) : (
+                <></>
+              )}
+            </div>
             <span className="mb-4 font-thin block">{teacher}</span>
             <div className="block">
               <FontAwesomeIcon icon={faDoorOpen} />

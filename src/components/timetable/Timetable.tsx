@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LessonsApi } from "../../api/lessons/lessons-api";
 import { SchoolHoursApi } from "../../api/school-hours/school-hours-api";
 import {
@@ -9,7 +9,6 @@ import {
 } from "../../pages/dashboard/admin/ManageSchoolHours";
 import ErrorAlert from "../alerts/ErrorAlert";
 import Loader from "../Loader";
-import AddLessonModal from "../modals/AddLessonModal";
 import TimetableClassSelection from "./TimetableClassSelection";
 import TimetableLesson, { TimetableLessonProps } from "./TimetableLesson";
 import TimetableWeekPicker from "./TimetableWeekPicker";
@@ -25,11 +24,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
 
-  const {
-    status: schoolHoursStatus,
-    data: schoolHours,
-    refetch,
-  } = useQuery({
+  const { status: schoolHoursStatus, data: schoolHours } = useQuery({
     queryKey: ["schoolHours"],
     queryFn: SchoolHoursApi.getAll,
   });
@@ -37,7 +32,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
   const {
     status: lessonsStatus,
     data: lessons,
-    refetch: lessonsRefetch,
+    refetch: refetchLessons,
   } = useQuery(
     [className, startDate, endDate],
     () =>
@@ -77,12 +72,17 @@ export default function Timetable({ classNameP }: TimetableProps) {
     setEndDate(enDate);
   };
 
+  console.log(lessons);
+
   const getTimetableLessonProps = (schoolHourId: string, dayOfWeek: number) => {
-    let props: Omit<TimetableLessonProps, "schoolHourId" | "date"> = {
-      subject: "",
-      teacher: "",
-      classroom: "",
-    };
+    let props: Omit<TimetableLessonProps, "schoolHourId" | "date" | "onClose"> =
+      {
+        subject: "",
+        teacher: "",
+        classroom: "",
+        type: "",
+        className,
+      };
 
     var result = lessons?.data.find(
       (item: { schoolHourId: string; date: string }) =>
@@ -96,11 +96,19 @@ export default function Timetable({ classNameP }: TimetableProps) {
     );
 
     if (result) {
-      const teacher = result.employee_Subject.employee.user;
+      if (result.type === "SUBSTITUTE") {
+        const teacher = result.substituteEmployee.user;
+
+        props.teacher = teacher.name + " " + teacher.surname;
+      } else {
+        const teacher = result.employee_Subject.employee.user;
+
+        props.teacher = teacher.name + " " + teacher.surname;
+      }
 
       props.subject = result.subjectAbbreviation;
       props.classroom = result.classroomName;
-      props.teacher = teacher.name + " " + teacher.surname;
+      props.type = result.type;
     }
 
     return props;
@@ -120,15 +128,45 @@ export default function Timetable({ classNameP }: TimetableProps) {
         onSelection={(startDate, endDate) => setNewWeek(startDate, endDate)}
       />
       <div className="overflow-x-auto">
-        <table className="table table-zebra w-full table-auto">
+        <table className="table table-zebra w-full">
           <thead>
             <tr>
-              <td></td>
-              <th>Monday</th>
-              <th>Tuesday</th>
-              <th>Wednesday</th>
-              <th>Thursday</th>
-              <th>Friday</th>
+              <td><div className="w-1/6"></div></td>
+              <th>
+                <TimetableHeader
+                  dayNum={0}
+                  dayName={"Monday"}
+                  startDate={startDate}
+                />
+              </th>
+              <th>
+                <TimetableHeader
+                  dayNum={1}
+                  dayName={"Tuesday"}
+                  startDate={startDate}
+                />
+              </th>
+              <th>
+                <TimetableHeader
+                  dayNum={2}
+                  dayName={"Wednesday"}
+                  startDate={startDate}
+                />
+              </th>
+              <th>
+                <TimetableHeader
+                  dayNum={3}
+                  dayName={"Thursday"}
+                  startDate={startDate}
+                />
+              </th>
+              <th>
+                <TimetableHeader
+                  dayNum={4}
+                  dayName={"Friday"}
+                  startDate={startDate}
+                />
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -153,6 +191,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                         .add(0, "d")
                         .toDate()
                         .toISOString()}
+                      onClose={() => refetchLessons()}
                     />
                   </td>
                   <td className="p-0 pr-2">
@@ -163,6 +202,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                         .add(1, "d")
                         .toDate()
                         .toISOString()}
+                      onClose={() => refetchLessons()}
                     />
                   </td>
                   <td className="p-0 pr-2">
@@ -173,6 +213,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                         .add(2, "d")
                         .toDate()
                         .toISOString()}
+                      onClose={() => refetchLessons()}
                     />
                   </td>
                   <td className="p-0 pr-2">
@@ -183,6 +224,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                         .add(3, "d")
                         .toDate()
                         .toISOString()}
+                      onClose={() => refetchLessons()}
                     />
                   </td>
                   <td className="p-0">
@@ -193,6 +235,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                         .add(4, "d")
                         .toDate()
                         .toISOString()}
+                      onClose={() => refetchLessons()}
                     />
                   </td>
                 </tr>
@@ -200,6 +243,33 @@ export default function Timetable({ classNameP }: TimetableProps) {
             )}
           </tbody>
         </table>
+      </div>
+    </>
+  );
+}
+
+interface TimetableHeaderProps {
+  dayNum: number;
+  dayName: string;
+  startDate: Date | undefined;
+}
+
+function TimetableHeader({ dayName, startDate, dayNum }: TimetableHeaderProps) {
+  const [date, setDate] = useState(moment(startDate).add(dayNum, "d").toDate());
+
+  useEffect(() => {
+    setDate(moment(startDate).add(dayNum, "d").toDate());
+  }, [dayNum, startDate]);
+
+  if (startDate === undefined) return <span>{dayName}</span>;
+
+  return (
+    <>
+      <div className="flex flex-col w-1/6">
+        <span>{`${dayName} `}</span>
+        <span>{`${date?.getDate()}. ${
+          date?.getMonth() !== undefined ? date?.getMonth() + 1 : ""
+        }`}</span>
       </div>
     </>
   );

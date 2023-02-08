@@ -15,6 +15,12 @@ export const ClassesApi = {
   update: async (name: string, data: UpdateClass) => {
     return await axios.patch(url + "/" + name, data);
   },
+  connectToEmployeeSubject: async (
+    name: string,
+    data: ConnectToEmployeeSubject
+  ) => {
+    return await axios.post(url + "/connect-to-employee-subject/" + name, data);
+  },
   delete: async (name: string) => {
     return await axios.delete(url + "/" + name);
   },
@@ -36,4 +42,9 @@ export interface UpdateClass {
   subjectListId?: string;
   classTeacherId?: string;
   substituteClassTeacherId?: string;
+}
+
+export interface ConnectToEmployeeSubject {
+  employeeId: string;
+  subjectAbbreviation: string;
 }

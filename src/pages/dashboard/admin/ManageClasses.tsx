@@ -1,6 +1,8 @@
 import {
   faCalendar,
   faPenToSquare,
+  faPeopleGroup,
+  faPersonChalkboard,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +12,7 @@ import { ClassesApi } from "../../../api/classes/classes-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import Loader from "../../../components/Loader";
+import ClassAssignTeacherToSubjectModal from "../../../components/modals/ClassAssignTeacherToSubjectModal";
 import ClassEditModal from "../../../components/modals/ClassEditModal";
 import ClassStudentsModal from "../../../components/modals/ClassStudentsModal";
 import ClassTimetableModal from "../../../components/modals/ClassTimetableModal";
@@ -24,7 +27,12 @@ export default function ManageClasses() {
   const [classEditModalActive, setClassEditModalActive] = useState(false);
   const [classTimetableModalActive, setClassTimetableModalActive] =
     useState(false);
-  const [confirmDeletePopupActive, setConfirmDeletePopupActive] = useState(false);
+  const [confirmDeletePopupActive, setConfirmDeletePopupActive] =
+    useState(false);
+  const [
+    assignTeacherToSubjectModalActive,
+    setAssignTeacherToSubjectModalActive,
+  ] = useState(false);
   const [modalClassName, setModalClassName] = useState("");
 
   const {
@@ -58,6 +66,14 @@ export default function ManageClasses() {
         modalClassName={modalClassName}
         onActiveChange={(active) => setStudentModalActive(active)}
       />
+      <ClassAssignTeacherToSubjectModal
+        active={assignTeacherToSubjectModalActive}
+        modalClassName={modalClassName}
+        onActiveChange={(active) =>
+          setAssignTeacherToSubjectModalActive(active)
+        }
+      />
+
       <ClassEditModal
         active={classEditModalActive}
         modalClassName={modalClassName}
@@ -73,7 +89,7 @@ export default function ManageClasses() {
         onActiveChange={(active) => setConfirmDeletePopupActive(active)}
         deleteFunction={() => deleteClass(modalClassName)}
         prompt={"Are you sure you want to delete class " + modalClassName + "?"}
-        />
+      />
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
       <SuccessAlert
         msg={success}
@@ -97,7 +113,8 @@ export default function ManageClasses() {
                   <th>Year</th>
                   <th>class teacher</th>
                   <th>substitute class teacher</th>
-                  <th>class list name</th>
+                  <th>subject list name</th>
+                  <th>assign teachers</th>
                   <th>students</th>
                   <th>timetable</th>
                   <th>edit</th>
@@ -117,11 +134,22 @@ export default function ManageClasses() {
                       <button
                         className="btn btn-outline btn-info"
                         onClick={() => {
+                          setAssignTeacherToSubjectModalActive(true);
+                          setModalClassName(c.name);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faPersonChalkboard} size="lg" />
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-outline btn-info"
+                        onClick={() => {
                           setStudentModalActive(true);
                           setModalClassName(c.name);
                         }}
                       >
-                        View students
+                        <FontAwesomeIcon icon={faPeopleGroup} size="lg" />
                       </button>
                     </td>
                     <td>
@@ -149,12 +177,10 @@ export default function ManageClasses() {
                     <td>
                       <button
                         className="btn btn-error"
-                        onClick={
-                          () => {
-                            setConfirmDeletePopupActive(true);
-                            setModalClassName(c.name);
-                          }
-                        }
+                        onClick={() => {
+                          setConfirmDeletePopupActive(true);
+                          setModalClassName(c.name);
+                        }}
                       >
                         <FontAwesomeIcon icon={faTrashCan} size="lg" />
                       </button>
@@ -170,11 +196,24 @@ export default function ManageClasses() {
   );
 }
 
-interface ClassInterface {
+export interface ClassInterface {
   name: string;
   year: string;
   subjectList: {
     name: string;
+    Subject_SubjectList: {
+      subject: {
+        abbreviation: string;
+        Employee_Subject: {
+          employee: {
+            user: {
+              name: string;
+              id: string;
+            }
+          }
+        }
+      }
+    }
   };
   classTeacher: {
     user: {

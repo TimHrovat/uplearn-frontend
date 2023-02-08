@@ -20,12 +20,13 @@ export const LessonsApi = {
   },
 };
 
-interface CreateLessonInterface {
+export interface CreateLessonInterface {
   description?: string;
   date: string;
   type: string;
-  employeeId: string;
-  subjectAbbreviation: string;
+  employeeId?: string | null;
+  subjectAbbreviation?: string | null;
+  substituteEmployeeId?: string | null;
   className: string;
   classroomName: string;
   schoolHourId: string;
