@@ -72,14 +72,13 @@ export default function Timetable({ classNameP }: TimetableProps) {
     setEndDate(enDate);
   };
 
-  console.log(lessons);
-
   const getTimetableLessonProps = (schoolHourId: string, dayOfWeek: number) => {
     let props: Omit<TimetableLessonProps, "schoolHourId" | "date" | "onClose"> =
       {
         subject: "",
         teacher: "",
         classroom: "",
+        lessonId: "",
         type: "",
         className,
       };
@@ -109,6 +108,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
       props.subject = result.subjectAbbreviation;
       props.classroom = result.classroomName;
       props.type = result.type;
+      props.lessonId = result.id;
     }
 
     return props;

@@ -2,6 +2,7 @@ import { faAdd, faDoorOpen, faScroll } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import AddLessonModal from "../modals/AddLessonModal";
+import LessonInfoModal from "../modals/LessonInfoModal";
 
 export interface TimetableLessonProps {
   subject?: string;
@@ -11,6 +12,7 @@ export interface TimetableLessonProps {
   date: string;
   className: string;
   type: string;
+  lessonId: string;
   onClose: () => any;
 }
 
@@ -22,9 +24,11 @@ export default function TimetableLesson({
   date,
   type,
   className,
+  lessonId,
   onClose,
 }: TimetableLessonProps) {
   const [addLessonModalActive, setAddLessonModalActive] = useState(false);
+  const [lessonInfoModalActive, setLessonInfoModalActive] = useState(false);
   const [showAddIcon, setShowAddIcon] = useState(false);
 
   return (
@@ -43,18 +47,35 @@ export default function TimetableLesson({
       ) : (
         <></>
       )}
+      {lessonInfoModalActive ? (
+        <LessonInfoModal
+          active={lessonInfoModalActive}
+          onActiveChange={(active) => {
+            setLessonInfoModalActive(active);
+            onClose();
+          }}
+          lessonId={lessonId}
+        />
+      ) : (
+        <></>
+      )}
       <div
-        className="min-w-fit min-h-[4rem] hover:bg-primary rounded-md cursor-pointer p-4"
-        onClick={() => setAddLessonModalActive(true)}
+        className="min-w-[10rem] hover:bg-primary rounded-md cursor-pointer p-4"
+        onClick={() => {
+          if (subject === undefined || subject === "")
+            setAddLessonModalActive(true);
+          else setLessonInfoModalActive(true);
+        }}
         onMouseEnter={() => setShowAddIcon(classroom === "" ? true : false)}
         onMouseLeave={() => setShowAddIcon(false)}
       >
         {!showAddIcon ? (
           <></>
         ) : (
-          <div className="flex flex-row justify-center items-center">
-            <FontAwesomeIcon icon={faAdd} />
-          </div>
+          <FontAwesomeIcon
+            icon={faAdd}
+            className="relative top-1/2 left-1/2 -translate-x-1/2"
+          />
         )}
         {classroom === "" ? (
           <></>

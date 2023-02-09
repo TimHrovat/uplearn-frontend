@@ -18,6 +18,9 @@ export const LessonsApi = {
   getAll: async () => {
     return await axios.get(url);
   },
+  getUnique: async (id: string) => {
+    return await axios.get(url + "/" + id);
+  },
 };
 
 export interface CreateLessonInterface {

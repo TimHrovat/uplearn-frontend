@@ -182,7 +182,6 @@ export default function AddLessonModal({
         setSuccess("Lesson has been created successfully");
       })
       .catch((e) => {
-        console.log(e);
         setError(e.response.data.message ?? e.message);
       })
       .finally(() => {
@@ -200,10 +199,7 @@ export default function AddLessonModal({
         active={active}
         title={"Add lesson"}
         onActiveChange={(isActive) => onActiveChange?.(isActive)}
-        fullWidth={true}
       >
-        <div>{schoolHourId}</div>
-        <div>{date}</div>
         <div className="form-control w-full mb-5">
           <label className="label">
             <span className="label-text">Description:</span>
