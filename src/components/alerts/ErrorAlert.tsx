@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 type ErrorAlertProps = {
   msg: string;
@@ -9,11 +9,28 @@ export default function ErrorAlert({
   msg,
   onVisibilityChange,
 }: ErrorAlertProps) {
+  function timeout(delay: number) {
+    return new Promise((res) => setTimeout(res, delay));
+  }
+
+  useEffect(() => {
+    timeout(10000).then(() => {
+      onVisibilityChange?.("");
+    });
+  }, [msg, onVisibilityChange]);
+
   if (msg === "") return <></>;
 
   return (
     <>
-      <div className={msg.length > 0 ? "toast cursor-pointer z-50" : "toast invisible cursor-pointer z-50"} id="error">
+      <div
+        className={
+          msg.length > 0
+            ? "toast cursor-pointer z-50"
+            : "toast invisible cursor-pointer z-50"
+        }
+        id="error"
+      >
         <div className="alert alert-error shadow-lg">
           <div
             onClick={(event) => {

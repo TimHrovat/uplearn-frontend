@@ -1,4 +1,8 @@
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLock,
+  faPenToSquare,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -7,13 +11,25 @@ import { UsersApi } from "../../../api/users/users-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import Loader from "../../../components/Loader";
 import ConfirmDeletePopup from "../../../components/modals/ConfirmDeletePopup";
+import ConfirmWarningPopup from "../../../components/modals/ConfirmWarningPoup";
+import UserEditModal from "../../../components/modals/UserEditModal";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 
 export default function ManageUsers() {
   const [confirmDeletePopupActive, setConfirmDeletePopupActive] =
     useState(false);
+  const [userSendInfoModalActive, setUserSendInfoModalActive] = useState(false);
+  const [userEditModalActive, setUserEditModalActive] = useState(false);
   const [modalUser, setModalUser] = useState({ id: "", username: "" });
   const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const target = e.target as HTMLInputElement;
+
+    setSearch(target.value);
+  };
 
   const {
     status: statusUsers,
@@ -23,6 +39,18 @@ export default function ManageUsers() {
     queryKey: ["users"],
     queryFn: () => UsersApi.getAll(AuthApi.getJwtPayload("token").id),
   });
+
+  const data = {
+    nodes: users?.data.filter(
+      (user: UserInterface) =>
+        user.name.includes(search) ||
+        user.surname.includes(search) ||
+        user.username.includes(search) ||
+        user.email.includes(search) ||
+        user.gsm.includes(search) ||
+        user.role.includes(search)
+    ),
+  };
 
   if (statusUsers === "loading") return <Loader active={true} />;
   if (statusUsers === "error")
@@ -39,6 +67,18 @@ export default function ManageUsers() {
     });
   };
 
+  const sendLoginInfo = async (id: string) => {};
+
+  const toDateString = (isodate: string) => {
+    const date = new Date(isodate);
+
+    const dateStr: string = `${date.getDate()}. ${
+      date.getMonth() + 1
+    }. ${date.getFullYear()}`;
+
+    return dateStr;
+  };
+
   return (
     <>
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
@@ -48,7 +88,17 @@ export default function ManageUsers() {
         deleteFunction={() => deleteUser(modalUser.id)}
         prompt={`Are you sure you want to delete user ${modalUser.username}?`}
       />
-
+      <ConfirmWarningPopup
+        active={userSendInfoModalActive}
+        onActiveChange={(active) => setUserSendInfoModalActive(active)}
+        warningFn={() => sendLoginInfo(modalUser.id)}
+        prompt={`Are you sure you want to send ${modalUser.username} his/her login credentials again?`}
+      />
+      <UserEditModal
+        active={userEditModalActive}
+        modalUser={modalUser}
+        onActiveChange={(active) => setUserEditModalActive(active)}
+      />
       <div className="flex flex-col justify-center items-center">
         <SubpageBtnList
           buttons={[
@@ -59,6 +109,15 @@ export default function ManageUsers() {
 
         <div className="bg-base-200 p-4 rounded-xl desktop:min-w-fit w-full mb-5">
           <h1 className="text-xl font-bold mb-5">View Users</h1>
+          <div className="form-control desktop:w-1/3 w-full mb-5">
+            <label className="label">Search users:</label>
+            <input
+              type="text"
+              className="input input-bordered input-primary w-full "
+              onChange={handleSearch}
+              value={search}
+            />
+          </div>
           <div className="overflow-x-auto">
             <table className="table table-zebra w-full">
               <thead>
@@ -69,12 +128,15 @@ export default function ManageUsers() {
                   <th>Username</th>
                   <th>Email</th>
                   <th>Gsm</th>
+                  <th>Birthdate</th>
                   <th>Role</th>
+                  <th>Edit</th>
+                  <th>Resend login info</th>
                   <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
-                {users?.data.map((user: UserInterface, index: number) => (
+                {data.nodes.map((user: UserInterface, index: number) => (
                   <tr key={user.id}>
                     <td>{index + 1}</td>
                     <td>{user.name}</td>
@@ -82,7 +144,36 @@ export default function ManageUsers() {
                     <td>{user.username}</td>
                     <td>{user.email}</td>
                     <td>{user.gsm ? user.gsm : "/"}</td>
+                    <td>{toDateString(user.dateOfBirth)}</td>
                     <td>{user.role}</td>
+                    <td>
+                      <button
+                        className="btn btn-warning btn-outline"
+                        onClick={() => {
+                          setUserEditModalActive(true);
+                          setModalUser({
+                            id: user.id,
+                            username: user.username,
+                          });
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faPenToSquare} size="lg" />
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-warning btn-outline"
+                        onClick={() => {
+                          setUserSendInfoModalActive(true);
+                          setModalUser({
+                            id: user.id,
+                            username: user.username,
+                          });
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faLock} size="lg" />
+                      </button>
+                    </td>
                     <td>
                       <button
                         className="btn btn-error"
@@ -116,4 +207,5 @@ interface UserInterface {
   email: string;
   gsm: string;
   role: string;
+  dateOfBirth: string;
 }

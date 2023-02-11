@@ -7,7 +7,6 @@ import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import Modal from "./Modal";
 import { EmployeesApi } from "../../api/employees/employees-api";
-import { StudentsApi } from "../../api/students/students-api";
 import { SubjectListsApi } from "../../api/subjects/subject-listst-api";
 
 export type ClassEditModalProps = {

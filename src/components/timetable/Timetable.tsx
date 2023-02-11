@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { AuthApi } from "../../api/auth/auth-api";
 import { LessonsApi } from "../../api/lessons/lessons-api";
 import { SchoolHoursApi } from "../../api/school-hours/school-hours-api";
 import {
@@ -116,7 +117,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
 
   return (
     <>
-      {classNameP === "" || classNameP === undefined || className === null ? (
+      {!classNameP && !AuthApi.isStudent() ? (
         <TimetableClassSelection
           active={true}
           onSelection={(cName) => setClassName(cName)}

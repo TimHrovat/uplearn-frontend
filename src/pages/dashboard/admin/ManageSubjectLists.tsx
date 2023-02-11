@@ -74,7 +74,7 @@ export default function ManageSubjectLists() {
           ]}
         />
         <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">View Subjects</h1>
+          <h1 className="text-xl font-bold mb-5">View Subject Lists</h1>
           <div className="overflow-x-auto">
             <table className="table table-zebra w-full">
               <thead>

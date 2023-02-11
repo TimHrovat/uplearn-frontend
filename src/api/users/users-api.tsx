@@ -12,6 +12,9 @@ export const UsersApi = {
 
     return await axios.get(url + "/" + payload.id);
   },
+  getUnique: async function (id: string) {
+    return await axios.get(url + "/" + id);
+  },
   upateAuthenticatedUser: async function (updatedData: {
     username?: string;
     currentPassword?: string;
@@ -24,4 +27,14 @@ export const UsersApi = {
   delete: async function (id: string) {
     return await axios.delete(url + "/" + id);
   },
+  update: async function (id: string, data: UpdateUserInterface) {
+    return await axios.patch(url + "/update/" + id, data);
+  },
 };
+
+interface UpdateUserInterface {
+  gsm?: string;
+  name?: string;
+  surname?: string;
+  email?: string;
+}

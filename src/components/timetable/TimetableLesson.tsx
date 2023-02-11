@@ -1,6 +1,7 @@
 import { faAdd, faDoorOpen, faScroll } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
+import { AuthApi } from "../../api/auth/auth-api";
 import AddLessonModal from "../modals/AddLessonModal";
 import LessonInfoModal from "../modals/LessonInfoModal";
 
@@ -33,7 +34,7 @@ export default function TimetableLesson({
 
   return (
     <>
-      {addLessonModalActive ? (
+      {addLessonModalActive && !AuthApi.isStudent() ? (
         <AddLessonModal
           active={addLessonModalActive}
           onActiveChange={(active) => {
@@ -60,7 +61,11 @@ export default function TimetableLesson({
         <></>
       )}
       <div
-        className="min-w-[10rem] hover:bg-primary rounded-md cursor-pointer p-4"
+        className={
+          AuthApi.isStudent()
+            ? "min-w-[10rem] rounded-md cursor-pointer p-4"
+            : "min-w-[10rem] hover:bg-primary rounded-md cursor-pointer p-4"
+        }
         onClick={() => {
           if (subject === undefined || subject === "")
             setAddLessonModalActive(true);
@@ -69,7 +74,7 @@ export default function TimetableLesson({
         onMouseEnter={() => setShowAddIcon(classroom === "" ? true : false)}
         onMouseLeave={() => setShowAddIcon(false)}
       >
-        {!showAddIcon ? (
+        {!showAddIcon || AuthApi.isStudent() ? (
           <></>
         ) : (
           <FontAwesomeIcon
