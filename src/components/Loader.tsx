@@ -8,7 +8,7 @@ export default function Loader({ active }: LoaderProps) {
   return (
     <>
       <div className={active ? "" : "invisible"}>
-        <div className="fixed fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+        <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
           <div aria-label="Loading..." role="status">
             <svg className="h-12 w-12 animate-spin" viewBox="3 3 18 18">
               <path

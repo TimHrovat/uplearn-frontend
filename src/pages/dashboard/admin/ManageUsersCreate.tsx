@@ -60,7 +60,7 @@ export default function ManageUsersCreate() {
 
     setLoading(true);
 
-    const updated = await AuthApi.register(UserData)
+    await AuthApi.register(UserData)
       .catch((e) => {
         setError(e.response.data.message ?? "Something went wrong please try again later");
       })

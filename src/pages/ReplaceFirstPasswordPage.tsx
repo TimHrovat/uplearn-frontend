@@ -19,7 +19,7 @@ export default function ReplaceFirstPasswordPage() {
 
     setLoading(true);
 
-    const resp = await AuthApi.replaceFirstPassword(firstPassword)
+    await AuthApi.replaceFirstPassword(firstPassword)
       .catch((e) => {
         setError(e.response.data.message ?? e.message);
       })

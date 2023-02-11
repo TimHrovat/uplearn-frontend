@@ -13,7 +13,7 @@ export default function Settings() {
   const [gsm, setGsm] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState({ basic: false, contact: false });
 
   const handleCurrentPasswordChange = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -55,7 +55,7 @@ export default function Settings() {
 
     setError("");
     setSuccess("");
-    setLoading(true);
+    setLoading({ contact: false, basic: true });
 
     let payload = {
       username,
@@ -67,7 +67,7 @@ export default function Settings() {
       if (payload[k] === "") delete payload[k];
     }
 
-    const update = await UsersApi.upateAuthenticatedUser({
+    await UsersApi.upateAuthenticatedUser({
       ...payload,
       currentPassword,
     })
@@ -78,7 +78,7 @@ export default function Settings() {
         setSuccess("Update successful");
       })
       .finally(() => {
-        setLoading(false);
+        setLoading({ contact: false, basic: false });
       });
   };
 
@@ -87,7 +87,7 @@ export default function Settings() {
 
     setError("");
     setSuccess("");
-    setLoading(true);
+    setLoading({ contact: true, basic: false });
 
     let payload = {
       email,
@@ -99,7 +99,7 @@ export default function Settings() {
       if (payload[k] === "") delete payload[k];
     }
 
-    const update = await UsersApi.upateAuthenticatedUser({
+    await UsersApi.upateAuthenticatedUser({
       ...payload,
     })
       .catch((e) => {
@@ -109,11 +109,11 @@ export default function Settings() {
         setSuccess("Update successful");
       })
       .finally(() => {
-        setLoading(false);
+        setLoading({ contact: false, basic: false });
       });
   };
 
-  const { data: authenticatedUser } = useQuery({
+  const { status, data: authenticatedUser } = useQuery({
     queryKey: ["authenticatedUser"],
     queryFn: () => UsersApi.getAuthenticatedUser(),
   });
@@ -126,6 +126,15 @@ export default function Settings() {
     }
   }, [authenticatedUser]);
 
+  if (status === "loading") return <Loader active={true} />;
+  if (status === "error")
+    return (
+      <ErrorAlert
+        msg={"Page couldn't load"}
+        onVisibilityChange={(msg) => setError(msg)}
+      />
+    );
+
   return (
     <>
       <SuccessAlert
@@ -133,7 +142,6 @@ export default function Settings() {
         onVisibilityChange={(msg) => setSuccess(msg)}
       />
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
-      <Loader active={loading} />
       <div className="flex flex-col justify-center items-center">
         <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
           <h1 className="text-xl font-bold mb-5">Basic info</h1>
@@ -170,7 +178,12 @@ export default function Settings() {
               value={newPassword}
             />
           </div>
-          <button className="btn btn-primary" onClick={updateUserBasicInfo}>
+          <button
+            className={
+              loading.basic ? "loading btn btn-primary" : "btn btn-primary"
+            }
+            onClick={updateUserBasicInfo}
+          >
             Save
           </button>
         </div>
@@ -198,7 +211,12 @@ export default function Settings() {
               value={gsm === null ? "" : gsm}
             />
           </div>
-          <button className="btn btn-primary" onClick={updateUserContactInfo}>
+          <button
+            className={
+              loading.contact ? "loading btn btn-primary" : "btn btn-primary"
+            }
+            onClick={updateUserContactInfo}
+          >
             Save
           </button>
         </div>

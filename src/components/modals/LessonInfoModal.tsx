@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { LessonsApi } from "../../api/lessons/lessons-api";
 import ErrorAlert from "../alerts/ErrorAlert";
+import Loader from "../Loader";
 import Modal from "./Modal";
 
 export type LessonInfoModalProps = {
@@ -16,12 +17,20 @@ export default function LessonInfoModal({
   lessonId,
 }: LessonInfoModalProps) {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  const { data: lesson } = useQuery({
+  const { status, data: lesson } = useQuery({
     queryKey: ["lesson"],
     queryFn: () => LessonsApi.getUnique(lessonId),
   });
+
+  if (status === "loading") return <Loader active={true} />;
+  if (status === "error")
+    return (
+      <ErrorAlert
+        msg={"Page couldn't load"}
+        onVisibilityChange={(msg) => setError(msg)}
+      />
+    );
 
   if (!active) return <></>;
 
@@ -35,7 +44,7 @@ export default function LessonInfoModal({
     await LessonsApi.deleteMany(lesson?.data.lessonGroup);
 
     onActiveChange(false);
-  }
+  };
 
   return (
     <>
