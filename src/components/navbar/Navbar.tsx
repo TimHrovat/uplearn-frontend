@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useLayoutEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthApi } from "../../api/auth/auth-api";
@@ -10,7 +11,6 @@ export type NavbarProps = {
 
 export default function Navbar({ content }: NavbarProps) {
   const navigate = useNavigate();
-  const [initials, setInitials] = useState("");
 
   const logout = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -20,22 +20,9 @@ export default function Navbar({ content }: NavbarProps) {
     navigate("/login");
   };
 
-  const getInitialsFromName = (name: string, surname: string) => {
-    return (name[0] + surname[0]).toUpperCase();
-  };
-
-  useLayoutEffect(() => {
-    const fetchData = async () => {
-      await UsersApi.getAuthenticatedUser()
-        .then((rsp) => {
-          return rsp.json();
-        })
-        .then((data) => {
-          setInitials(getInitialsFromName(data.name, data.surname));
-        });
-    };
-
-    fetchData();
+  const { data: authenticatedUser } = useQuery({
+    queryKey: ["authenticatedUser"],
+    queryFn: () => UsersApi.getAuthenticatedUser(),
   });
 
   const closeDrawer = () => {
@@ -82,7 +69,12 @@ export default function Navbar({ content }: NavbarProps) {
               <Link to="/dashboard/settings">
                 <div className="avatar placeholder">
                   <div className="bg-neutral text-neutral-content rounded-full w-10 cursor-pointer">
-                    <span className="text-md">{initials}</span>
+                    <span className="text-md">
+                      {authenticatedUser
+                        ? authenticatedUser?.data?.name[0] +
+                          authenticatedUser?.data?.surname[0]
+                        : ""}
+                    </span>
                   </div>
                 </div>
               </Link>

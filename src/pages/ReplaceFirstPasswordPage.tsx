@@ -11,20 +11,22 @@ export default function ReplaceFirstPasswordPage() {
   const [loading, setLoading] = useState(false);
 
   async function replaceFirstPassword() {
-    setLoading(true);
     if (firstPassword === "" || secondPassword === "") return;
 
     if (firstPassword !== secondPassword) return;
 
     if (firstPassword.length < 8) return;
 
-    const resp = await AuthApi.replaceFirstPassword(firstPassword);
+    setLoading(true);
 
-    setLoading(false);
-
-    if (resp.statusCode || resp === undefined) return;
-
-    navigate("/dashboard");
+    const resp = await AuthApi.replaceFirstPassword(firstPassword)
+      .catch((e) => {
+        setError(e.response.data.message ?? e.message);
+      })
+      .then(() => {
+        navigate("/dashboard");
+      })
+      .finally(() => setLoading(false));
   }
 
   function handleFirstPasswordChange(e: React.SyntheticEvent) {

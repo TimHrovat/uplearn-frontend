@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { UsersApi } from "../../api/users/users-api";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
@@ -70,26 +71,15 @@ export default function Settings() {
       ...payload,
       currentPassword,
     })
-      .then((rsp) => {
-        return rsp;
+      .catch((e) => {
+        setError(e.response.data.message ?? e.message);
       })
-      .then((rsp) => {
-        return rsp.json();
-      }).finally(()=>{
+      .then(() => {
+        setSuccess("Update successful");
+      })
+      .finally(() => {
         setLoading(false);
       });
-
-    if (update.cause) {
-      setError(update.cause);
-      return;
-    }
-
-    if (!update || update.statusCode) {
-      setError("Something went wrong, please try again later");
-      return;
-    }
-
-    setSuccess("Update successful");
   };
 
   const updateUserContactInfo = async (e: React.SyntheticEvent) => {
@@ -112,51 +102,37 @@ export default function Settings() {
     const update = await UsersApi.upateAuthenticatedUser({
       ...payload,
     })
-      .then((rsp) => {
-        return rsp;
+      .catch((e) => {
+        setError(e.response.data.message ?? e.message);
       })
-      .then((rsp) => {
-        return rsp.json();
-      }).finally(()=>{
+      .then(() => {
+        setSuccess("Update successful");
+      })
+      .finally(() => {
         setLoading(false);
       });
-
-
-    if (update.cause) {
-      setError(update.cause);
-      return;
-    }
-
-    if (!update || update.statusCode) {
-      setError("Something went wrong, please try again later");
-      return;
-    }
-
-    setSuccess("Update successful");
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      return await UsersApi.getAuthenticatedUser()
-        .then((rsp) => {
-          return rsp;
-        })
-        .then((rsp) => {
-          return rsp.json();
-        });
-    };
+  const { data: authenticatedUser } = useQuery({
+    queryKey: ["authenticatedUser"],
+    queryFn: () => UsersApi.getAuthenticatedUser(),
+  });
 
-    fetchData().then((rsp) => {
-      setUsername(rsp.username);
-      setEmail(rsp.email);
-      setGsm(rsp.gsm);
-    });
-  }, [success]);
+  useEffect(() => {
+    if (authenticatedUser) {
+      setUsername(authenticatedUser?.data.username);
+      setEmail(authenticatedUser?.data.email);
+      setGsm(authenticatedUser?.data.gsm);
+    }
+  }, [authenticatedUser]);
 
   return (
     <>
-      <SuccessAlert msg={success} onVisibilityChange={(msg) => setSuccess(msg)}/>
-      <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)}/>
+      <SuccessAlert
+        msg={success}
+        onVisibilityChange={(msg) => setSuccess(msg)}
+      />
+      <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
       <Loader active={loading} />
       <div className="flex flex-col justify-center items-center">
         <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">

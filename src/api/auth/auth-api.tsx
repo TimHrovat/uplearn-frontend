@@ -1,36 +1,18 @@
 import axios from "axios";
 
-const url = process.env.REACT_APP_API_URL + "/auth";
-
-const url2 = "/auth"
+const url = "/auth";
 
 export const AuthApi = {
   login: async function (userData: { username: string; password: string }) {
-    return await fetch(url + "/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
+    return await axios.post(url + "/login", userData);
   },
   logout: async function () {
-    return await axios.get(url2 + "/logout");
+    return await axios.get(url + "/logout");
   },
   replaceFirstPassword: async function (newPassword: string) {
-    const response = await fetch(url + "/replace-first-password", {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ password: newPassword }),
+    return await axios.patch(url + "/replace-first-password", {
+      password: newPassword,
     });
-
-    return response.json();
   },
   getJwtPayload: getJwtPayload,
   isAuthenticated: function () {
@@ -83,15 +65,7 @@ export const AuthApi = {
     dateOfBirth: string;
     role: string;
   }) {
-    return await fetch(url + "/register", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
+    return await axios.post(url + "/register", userData);
   },
 };
 

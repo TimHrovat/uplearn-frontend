@@ -20,21 +20,16 @@ export default function LoginPage() {
       username: username,
       password: password,
     })
-      .then((rsp) => {
-        setLoading(false);
-        return rsp.json();
+      .catch((e) => {
+        setError(e.response.data.message ?? e.message);
       })
-      .then((data) => {
-        if (data.statusCode || data.cause) {
-          setError("Wrong username or password");
-          return;
-        }
-
+      .then(() => {
         if (AuthApi.isAuthenticatedStrict()) {
           navigate("/dashboard");
         } else if (AuthApi.isAuthenticated())
           navigate("/auth/replace-first-password");
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   function handleUsernameChange(e: React.SyntheticEvent) {

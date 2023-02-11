@@ -3,34 +3,16 @@ import { AuthApi } from "../auth/auth-api";
 
 const url = process.env.REACT_APP_API_URL + "/users";
 
+const url2 = "/users";
+
 export const UsersApi = {
-  create: async function (userData: {
-    name: string;
-    surname: string;
-    email: string;
-    dateOfBirth: string;
-    role: string;
-  }) {
-    return await fetch(url + "/create", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(userData),
-    });
-  },
   getAll: async function (adminId: string) {
-    return await axios.get("/users/get-all/" + adminId);
+    return await axios.get(url2 + "/get-all/" + adminId);
   },
   getAuthenticatedUser: async function () {
     const payload = AuthApi.getJwtPayload("token");
 
-    return await fetch(url + "/" + payload.id, {
-      method: "GET",
-      credentials: "include",
-    });
+    return await axios.get(url2 + "/" + payload.id);
   },
   upateAuthenticatedUser: async function (updatedData: {
     username?: string;
@@ -39,17 +21,9 @@ export const UsersApi = {
     email?: string;
     gsm?: string;
   }) {
-    return await fetch(url + "/update-authenticated", {
-      method: "PATCH",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    });
+    return await axios.patch(url2 + "/update-authenticated", updatedData);
   },
   delete: async function (id: string) {
-    return await axios.delete("/users/" + id);
+    return await axios.delete(url2 + "/" + id);
   },
 };

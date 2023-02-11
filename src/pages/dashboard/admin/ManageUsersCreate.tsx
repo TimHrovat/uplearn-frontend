@@ -49,8 +49,6 @@ export default function ManageUsersCreate() {
       return;
     }
 
-    setLoading(true);
-
     const UserData = {
       name: name.current === null ? "" : name.current.value.trim(),
       surname: surname.current === null ? "" : surname.current.value.trim(),
@@ -60,20 +58,18 @@ export default function ManageUsersCreate() {
       role: role.current === null ? "" : role.current.value,
     };
 
+    setLoading(true);
+
     const updated = await AuthApi.register(UserData)
-      .then((rsp) => {
-        return rsp.json();
+      .catch((e) => {
+        setError(e.response.data.message ?? "Something went wrong please try again later");
+      })
+      .then(() => {
+        setSuccess("New user has been created");
       })
       .finally(() => {
         setLoading(false);
       });
-
-    if (!updated || updated.statusCode || updated.cause) {
-      setError("Something went wrong please try again later");
-      return;
-    }
-
-    setSuccess("New user has been created");
   };
 
   function isValidEmail(email: string) {
