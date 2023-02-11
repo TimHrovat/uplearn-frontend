@@ -29,7 +29,7 @@ export default function TimetableClassSelection({
   useEffect(() => {
     if (onSelection)
       onSelection(
-        selectedClassName === "" ? classes?.data[0].name : selectedClassName
+        selectedClassName === "" ? classes?.data[0]?.name ?? "" : selectedClassName
       );
   });
 
@@ -68,8 +68,8 @@ export default function TimetableClassSelection({
           components={animatedComponents}
           onChange={handleSelectionChange}
           defaultValue={{
-            value: classes?.data[0].name,
-            label: `${classes?.data[0].name}`,
+            value: classes?.data[0]?.name ?? "",
+            label: classes?.data[0]?.name ?? "No options" ,
           }}
           styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
         />

@@ -24,6 +24,7 @@ import ManageClassrooms from "./pages/dashboard/admin/ManageClassrooms";
 import ManageClassroomsCreate from "./pages/dashboard/admin/ManageClassroomsCreate";
 import ManageSchoolHours from "./pages/dashboard/admin/ManageSchoolHours";
 import ManageSchoolHoursCreate from "./pages/dashboard/admin/ManageSchoolHoursCreate";
+import ManageSubjectLists from "./pages/dashboard/admin/ManageSubjectLists";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
 
           <Route path="/dashboard/manage-subjects" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjects />} />} authorizedRoles={["admin"]} />} />
           <Route path="/dashboard/manage-subjects/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectsCreate />} />} authorizedRoles={["admin"]} />} />
+          <Route path="/dashboard/manage-subjects/lists" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectLists />} />} authorizedRoles={["admin"]} />} />
           <Route path="/dashboard/manage-subjects/create-list" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectsCreateList />} />} authorizedRoles={["admin"]} />} />
 
           <Route path="/dashboard/manage-users" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsers />} />} authorizedRoles={["admin"]} />} />

@@ -8,6 +8,9 @@ export const SubjectListsApi = {
     },
     getAll: async () => {
         return await axios.get(url);
+    },
+    delete: async (id: string) => {
+        return await axios.delete(url + "/" + id)
     }
 };
 

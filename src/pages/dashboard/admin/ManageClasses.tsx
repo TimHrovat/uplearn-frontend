@@ -73,7 +73,6 @@ export default function ManageClasses() {
           setAssignTeacherToSubjectModalActive(active)
         }
       />
-
       <ClassEditModal
         active={classEditModalActive}
         modalClassName={modalClassName}

@@ -25,6 +25,18 @@ export default function LessonInfoModal({
 
   if (!active) return <></>;
 
+  const deleteLesson = async () => {
+    await LessonsApi.delete(lessonId);
+
+    onActiveChange(false);
+  };
+
+  const deleteMany = async () => {
+    await LessonsApi.deleteMany(lesson?.data.lessonGroup);
+
+    onActiveChange(false);
+  }
+
   return (
     <>
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
@@ -78,6 +90,22 @@ export default function LessonInfoModal({
             </tbody>
           </table>
         </div>
+        <button
+          className="btn btn-outline btn-error mt-5 mr-5"
+          onClick={deleteLesson}
+        >
+          Delete Lesson
+        </button>
+        {lesson?.data.lessonGroup === null ? (
+          <></>
+        ) : (
+          <button
+            className="btn btn-outline btn-error mt-5"
+            onClick={deleteMany}
+          >
+            Delete All Occurences
+          </button>
+        )}
       </Modal>
     </>
   );

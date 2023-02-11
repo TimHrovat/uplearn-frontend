@@ -1,3 +1,4 @@
+import axios from "axios";
 import { AuthApi } from "../auth/auth-api";
 
 const url = process.env.REACT_APP_API_URL + "/users";
@@ -20,11 +21,8 @@ export const UsersApi = {
       body: JSON.stringify(userData),
     });
   },
-  getAll: async function () {
-    return await fetch(url, {
-      method: "GET",
-      credentials: "include",
-    });
+  getAll: async function (adminId: string) {
+    return await axios.get("/users/get-all/" + adminId);
   },
   getAuthenticatedUser: async function () {
     const payload = AuthApi.getJwtPayload("token");
@@ -52,9 +50,6 @@ export const UsersApi = {
     });
   },
   delete: async function (id: string) {
-    return await fetch(url + "/" + id, {
-      method: "DELETE",
-      credentials: "include",
-    });
+    return await axios.delete("/users/" + id);
   },
 };

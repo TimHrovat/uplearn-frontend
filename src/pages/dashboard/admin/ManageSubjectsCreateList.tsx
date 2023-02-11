@@ -100,6 +100,10 @@ export default function ManageSubjectsCreateList() {
               link: "/dashboard/manage-subjects/create",
             },
             {
+              title: "View subject lists",
+              link: "/dashboard/manage-subjects/lists",
+            },
+            {
               title: "Create subject list",
               link: "/dashboard/manage-subjects/create-list",
             },

@@ -73,10 +73,7 @@ export default function ClassStudentsModal({
 
   studentOptions = [];
   students?.data.forEach(
-    (student: {
-      id: string;
-      user: { id: string; name: string; surname: string };
-    }) => {
+    (student: StudentInterface) => {
       studentOptions.push({
         value: student.id,
         label: `${student.user.name} ${student.user.surname}`,

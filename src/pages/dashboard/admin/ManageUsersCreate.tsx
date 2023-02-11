@@ -52,10 +52,10 @@ export default function ManageUsersCreate() {
     setLoading(true);
 
     const UserData = {
-      name: name.current === null ? "" : name.current.value,
-      surname: surname.current === null ? "" : surname.current.value,
-      email: email,
-      gsm: gsm.current === null ? "" : gsm.current.value,
+      name: name.current === null ? "" : name.current.value.trim(),
+      surname: surname.current === null ? "" : surname.current.value.trim(),
+      email: email.trim(),
+      gsm: gsm.current === null ? "" : gsm.current.value.trim(),
       dateOfBirth: birthdate.toISOString(),
       role: role.current === null ? "" : role.current.value,
     };

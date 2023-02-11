@@ -43,12 +43,13 @@ export default function AddLessonModal({
   className,
 }: AddLessonModalProps) {
   const [selectedClassroomName, setSelectedClassroomName] = useState("");
-  const [selectedType, setSelectedType] = useState("");
+  const [selectedType, setSelectedType] = useState("NORMAL");
   const [selectedSubject, setSelectedSubject] = useState({
     employeeId: "",
     subjectAbbreviation: "",
   });
   const [substituteEmployeeId, setSubstituteEmployeeId] = useState("");
+  const [createMany, setCreateMany] = useState(false);
   const description = useRef<HTMLTextAreaElement>(null);
 
   const [loading, setLoading] = useState(false);
@@ -177,6 +178,21 @@ export default function AddLessonModal({
       schoolHourId: schoolHourId,
     };
 
+    if (createMany) {
+      await LessonsApi.createMany(data)
+        .then(() => {
+          setSuccess("Lessons have been created successfully");
+        })
+        .catch((e) => {
+          setError(e.response.data.message ?? e.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+
+      return;
+    }
+
     await LessonsApi.create(data)
       .then(() => {
         setSuccess("Lesson has been created successfully");
@@ -194,21 +210,15 @@ export default function AddLessonModal({
   return (
     <>
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
-      <SuccessAlert msg={success} onVisibilityChange={(msg) => setSuccess(msg)} />
+      <SuccessAlert
+        msg={success}
+        onVisibilityChange={(msg) => setSuccess(msg)}
+      />
       <Modal
         active={active}
         title={"Add lesson"}
         onActiveChange={(isActive) => onActiveChange?.(isActive)}
       >
-        <div className="form-control w-full mb-5">
-          <label className="label">
-            <span className="label-text">Description:</span>
-          </label>
-          <textarea
-            className="textarea textarea-bordered h-24 w-full"
-            ref={description}
-          ></textarea>
-        </div>
         <div className="form-control w-full mb-5">
           <label className="label">
             <span className="label-text">Classroom:</span>
@@ -261,14 +271,35 @@ export default function AddLessonModal({
             />
           </div>
         )}
-
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Description:</span>
+          </label>
+          <textarea
+            className="textarea textarea-bordered h-24 w-full"
+            ref={description}
+          ></textarea>
+        </div>
+        <div className="form-control">
+          <label className="cursor-pointer label tablet:w-1/3 w-full">
+            <span className="label-text mr-10">
+              Create lessons until the end of school year?
+            </span>
+            <input
+              type="checkbox"
+              className="checkbox checkbox-primary"
+              checked={createMany}
+              onChange={() => setCreateMany(!createMany)}
+            />
+          </label>
+        </div>
         <button
           className={
             loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
           }
           onClick={createLesson}
         >
-          Create Lesson
+          Create
         </button>
       </Modal>
     </>

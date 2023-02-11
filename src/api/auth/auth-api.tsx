@@ -1,4 +1,8 @@
+import axios from "axios";
+
 const url = process.env.REACT_APP_API_URL + "/auth";
+
+const url2 = "/auth"
 
 export const AuthApi = {
   login: async function (userData: { username: string; password: string }) {
@@ -13,10 +17,7 @@ export const AuthApi = {
     });
   },
   logout: async function () {
-    await fetch(url + "/logout", {
-      method: "GET",
-      credentials: "include",
-    });
+    return await axios.get(url2 + "/logout");
   },
   replaceFirstPassword: async function (newPassword: string) {
     const response = await fetch(url + "/replace-first-password", {
