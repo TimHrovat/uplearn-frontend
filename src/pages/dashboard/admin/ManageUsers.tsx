@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { AuthApi } from "../../../api/auth/auth-api";
 import { UsersApi } from "../../../api/users/users-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
+import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import Loader from "../../../components/Loader";
 import ConfirmDeletePopup from "../../../components/modals/ConfirmDeletePopup";
 import ConfirmWarningPopup from "../../../components/modals/ConfirmWarningPoup";
@@ -22,7 +23,9 @@ export default function ManageUsers() {
   const [userEditModalActive, setUserEditModalActive] = useState(false);
   const [modalUser, setModalUser] = useState({ id: "", username: "" });
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -67,7 +70,19 @@ export default function ManageUsers() {
     });
   };
 
-  const sendLoginInfo = async (id: string) => {};
+  const resendCredentials = async (id: string) => {
+    setLoading(true);
+    await AuthApi.resendCredentials(id)
+      .catch((e) => {
+        setError(e.response.data.message ?? e.message);
+      })
+      .then((res) => {
+        if (res) setSuccess("Credentials sent successfully");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   const toDateString = (isodate: string) => {
     const date = new Date(isodate);
@@ -82,22 +97,32 @@ export default function ManageUsers() {
   return (
     <>
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
+      <SuccessAlert
+        msg={success}
+        onVisibilityChange={(msg) => setSuccess(msg)}
+      />
       <ConfirmDeletePopup
         active={confirmDeletePopupActive}
         onActiveChange={(active) => setConfirmDeletePopupActive(active)}
-        deleteFunction={() => deleteUser(modalUser.id)}
+        deleteFunction={() => {
+          deleteUser(modalUser.id);
+          refetchUsers();
+        }}
         prompt={`Are you sure you want to delete user ${modalUser.username}?`}
       />
       <ConfirmWarningPopup
         active={userSendInfoModalActive}
         onActiveChange={(active) => setUserSendInfoModalActive(active)}
-        warningFn={() => sendLoginInfo(modalUser.id)}
+        warningFn={() => resendCredentials(modalUser.id)}
         prompt={`Are you sure you want to send ${modalUser.username} his/her login credentials again?`}
       />
       <UserEditModal
         active={userEditModalActive}
         modalUser={modalUser}
-        onActiveChange={(active) => setUserEditModalActive(active)}
+        onActiveChange={(active) => {
+          setUserEditModalActive(active);
+          refetchUsers();
+        }}
       />
       <div className="flex flex-col justify-center items-center">
         <SubpageBtnList
@@ -131,7 +156,7 @@ export default function ManageUsers() {
                   <th>Birthdate</th>
                   <th>Role</th>
                   <th>Edit</th>
-                  <th>Resend login info</th>
+                  <th>Resend credentials</th>
                   <th>Delete</th>
                 </tr>
               </thead>
@@ -195,6 +220,7 @@ export default function ManageUsers() {
           </div>
         </div>
       </div>
+      <Loader active={loading} />
     </>
   );
 }

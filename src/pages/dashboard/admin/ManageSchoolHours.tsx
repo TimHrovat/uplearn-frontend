@@ -18,7 +18,8 @@ export default function ManageSchoolHours() {
   const [confirmDeletePopupActive, setConfirmDeletePopupActive] =
     useState(false);
   const [modalSchoolHourId, setModalSchoolHourId] = useState("");
-  const [schoolHourEditModalActive, setSchoolHourEditModalActive] = useState(false);
+  const [schoolHourEditModalActive, setSchoolHourEditModalActive] =
+    useState(false);
 
   const {
     status: schoolHoursStatus,
@@ -54,10 +55,13 @@ export default function ManageSchoolHours() {
           "Are you sure you want to delete this school hour? All lessons tied to this school hour will be deleted as well."
         }
       />
-            <SchoolHourEditModal
+      <SchoolHourEditModal
         active={schoolHourEditModalActive}
         modalSchoolHourId={modalSchoolHourId}
-        onActiveChange={(active) => setSchoolHourEditModalActive(active)}
+        onActiveChange={(active) => {
+          setSchoolHourEditModalActive(active);
+          refetch();
+        }}
       />
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
       <SuccessAlert
@@ -98,16 +102,16 @@ export default function ManageSchoolHours() {
                       <td>{toFormattedDate(c.startTime)}</td>
                       <td>{toFormattedDate(c.endTime)}</td>
                       <td>
-                      <button
-                        className="btn btn-warning btn-outline"
-                        onClick={() => {
-                          setSchoolHourEditModalActive(true);
-                          setModalSchoolHourId(c.id);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faPenToSquare} size="lg" />
-                      </button>
-                    </td>
+                        <button
+                          className="btn btn-warning btn-outline"
+                          onClick={() => {
+                            setSchoolHourEditModalActive(true);
+                            setModalSchoolHourId(c.id);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faPenToSquare} size="lg" />
+                        </button>
+                      </td>
                       <td>
                         <button
                           className="btn btn-error"
@@ -131,14 +135,14 @@ export default function ManageSchoolHours() {
   );
 }
 
-export function toFormattedDate(isoDate :string) {
+export function toFormattedDate(isoDate: string) {
   const date = new Date(isoDate);
 
-  let minutes = Number(date.getMinutes() );
+  let minutes = Number(date.getMinutes());
   let hours = Number(date.getHours());
 
-  const formattedHours = hours < 10 ? '0' + hours : hours;
-  const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+  const formattedHours = hours < 10 ? "0" + hours : hours;
+  const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
 
   return formattedHours + ":" + formattedMinutes;
 }

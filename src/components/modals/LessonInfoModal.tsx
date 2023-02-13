@@ -1,8 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import { AuthApi } from "../../api/auth/auth-api";
 import { LessonsApi } from "../../api/lessons/lessons-api";
 import ErrorAlert from "../alerts/ErrorAlert";
 import Loader from "../Loader";
+import ConfirmDeletePopup from "./ConfirmDeletePopup";
 import Modal from "./Modal";
 
 export type LessonInfoModalProps = {
@@ -17,6 +19,10 @@ export default function LessonInfoModal({
   lessonId,
 }: LessonInfoModalProps) {
   const [error, setError] = useState("");
+  const [confirmDeletePopupActive, setConfirmDeletePopupActive] =
+    useState(false);
+  const [confirmDeleteManyPopupActive, setConfirmDeleteManyPopupActive] =
+    useState(false);
 
   const { status, data: lesson } = useQuery({
     queryKey: ["lesson"],
@@ -48,6 +54,20 @@ export default function LessonInfoModal({
 
   return (
     <>
+      <ConfirmDeletePopup
+        active={confirmDeletePopupActive}
+        onActiveChange={(active) => setConfirmDeletePopupActive(active)}
+        deleteFunction={() => deleteLesson()}
+        prompt={"Are you sure you want to delete this lesson?"}
+      />
+      <ConfirmDeletePopup
+        active={confirmDeleteManyPopupActive}
+        onActiveChange={(active) => setConfirmDeleteManyPopupActive(active)}
+        deleteFunction={() => deleteMany()}
+        prompt={
+          "Are you sure you want to delete this lesson and it's other occurences?"
+        }
+      />
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
       <Modal
         active={active}
@@ -99,18 +119,22 @@ export default function LessonInfoModal({
             </tbody>
           </table>
         </div>
-        <button
-          className="btn btn-outline btn-error mt-5 mr-5"
-          onClick={deleteLesson}
-        >
-          Delete Lesson
-        </button>
-        {lesson?.data.lessonGroup === null ? (
+        {AuthApi.isStudent() ? (
+          <></>
+        ) : (
+          <button
+            className="btn btn-outline btn-error mt-5 mr-5"
+            onClick={() => setConfirmDeletePopupActive(true)}
+          >
+            Delete Lesson
+          </button>
+        )}
+        {lesson?.data.lessonGroup === null || AuthApi.isStudent() ? (
           <></>
         ) : (
           <button
             className="btn btn-outline btn-error mt-5"
-            onClick={deleteMany}
+            onClick={() => setConfirmDeleteManyPopupActive(true)}
           >
             Delete All Occurences
           </button>

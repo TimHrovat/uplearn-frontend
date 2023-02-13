@@ -13,11 +13,14 @@ export default function ErrorAlert({
     return new Promise((res) => setTimeout(res, delay));
   }
 
-  useEffect(() => {
-    timeout(10000).then(() => {
-      onVisibilityChange?.("");
-    });
-  }, [msg, onVisibilityChange]);
+  const wait = async (delay: number) => {
+    await timeout(delay);
+    onVisibilityChange?.("");
+  };
+
+  if (msg !== "") {
+    wait(8000);
+  }
 
   if (msg === "") return <></>;
 

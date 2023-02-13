@@ -27,7 +27,7 @@ export default function ManageClassesCreate() {
   ] = useState("");
 
   const name = useRef<HTMLInputElement>(null);
-  const [year, setYear] = useState(1);
+  const [year, setYear] = useState("1");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -38,7 +38,11 @@ export default function ManageClassesCreate() {
     queryFn: SubjectListsApi.getAll,
   });
 
-  const { status: studentsStatus, data: students, refetch: refetchStudents } = useQuery({
+  const {
+    status: studentsStatus,
+    data: students,
+    refetch: refetchStudents,
+  } = useQuery({
     queryKey: ["students"],
     queryFn: StudentsApi.getAllWithoutClass,
   });
@@ -161,13 +165,25 @@ export default function ManageClassesCreate() {
     setSelectedNonSubstituteClassTeachers(selected.value);
   };
 
+  const isValidYear = (year: string) => {
+    return /^[1-9]?$/.test(year);
+  };
+
   const handleYearChange = (el: React.FormEvent<HTMLInputElement>) => {
     let newValue = el.currentTarget.value;
-    if (newValue.length > 1) {
-      newValue = newValue.slice(0, 1);
-    }
 
-    setYear(Number(newValue));
+    if (isValidYear(newValue)) {
+      if (newValue.length > 1) {
+        newValue = newValue[0];
+      }
+
+      if (newValue.length === 0) {
+        setYear("");
+        return;
+      }
+
+      setYear(newValue);
+    }
   };
 
   const createClass = async () => {
@@ -175,12 +191,12 @@ export default function ManageClassesCreate() {
     setSuccess("");
 
     if (name.current && name.current.value === "") {
-      setError("You need to povide a name for the subject list");
+      setError("You need to povide a name for the class");
       return;
     }
 
-    if (year === 0) {
-      setError("Year cannot be 0");
+    if (year === "") {
+      setError("Year cannot be empty");
       return;
     }
 
@@ -206,7 +222,7 @@ export default function ManageClassesCreate() {
 
     const data: CreateClass = {
       name: name.current === null ? "" : name.current.value,
-      year,
+      year: Number(year),
       subjectListId: selectedSubjectList,
       students: selectedStudents,
       classTeacherId: selectedNonClassTeachers,
@@ -217,7 +233,9 @@ export default function ManageClassesCreate() {
 
     const newClass = await ClassesApi.create(data)
       .catch((e) => {
-        setError(e.response.data.cause ?? "Something went wrong please try again later");
+        setError(
+          e.response.data.cause ?? "Something went wrong please try again later"
+        );
       })
       .finally(() => {
         setLoading(false);
@@ -266,13 +284,10 @@ export default function ManageClassesCreate() {
               <span className="label-text">Year:</span>
             </label>
             <input
-              type="number"
+              type="text"
               className="input input-bordered w-full"
               value={year}
               onChange={handleYearChange}
-              pattern="[1-9]"
-              min="1"
-              max="9"
             />
           </div>
           <div className="form-control w-full mb-5">

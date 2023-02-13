@@ -36,7 +36,7 @@ export default function ClassEditModal({
     setSelectedNonSubstituteClassTeachers,
   ] = useState("");
 
-  const [year, setYear] = useState(0);
+  const [year, setYear] = useState("1");
   const [name, setName] = useState("");
 
   const {
@@ -160,13 +160,25 @@ export default function ClassEditModal({
     setSelectedNonSubstituteClassTeachers(selected.value);
   };
 
+  const isValidYear = (year: string) => {
+    return /^[1-9]?$/.test(year);
+  };
+
   const handleYearChange = (el: React.FormEvent<HTMLInputElement>) => {
     let newValue = el.currentTarget.value;
-    if (newValue.length > 1) {
-      newValue = newValue.slice(0, 1);
-    }
 
-    setYear(Number(newValue));
+    if (isValidYear(newValue)) {
+      if (newValue.length > 1) {
+        newValue = newValue[0];
+      }
+
+      if (newValue.length === 0) {
+        setYear("");
+        return;
+      }
+
+      setYear(newValue);
+    }
   };
 
   const updateClass = async () => {
@@ -192,7 +204,7 @@ export default function ClassEditModal({
 
     const data: UpdateClass = {
       name: name === "" ? modalClassName : name,
-      year: year === 0 ? currentClass.data.year : year,
+      year: Number(year) === 0 ? Number(currentClass.data.year) : Number(year),
       subjectListId:
         selectedSubjectList === ""
           ? currentClass.data.subjectList.id
@@ -224,8 +236,7 @@ export default function ClassEditModal({
 
     refetchClassTeachers();
     refetchSubstituteClassTeachers();
-
-    window.location.reload();
+    refetch();
   };
 
   if (currentClass.data.classTeacher === undefined) return <></>;
@@ -258,11 +269,8 @@ export default function ClassEditModal({
           <input
             type="number"
             className="input input-bordered w-full"
-            value={year === 0 ? currentClass.data.year : year}
+            value={year === "1" ? currentClass.data.year : year}
             onChange={handleYearChange}
-            pattern="[1-9]"
-            min="1"
-            max="9"
           />
         </div>
         <div className="form-control w-full mb-5">

@@ -51,8 +51,6 @@ export default function SchoolHourEditModal({
       if (error === "") setError("Something went wrong please try again later");
       return;
     }
-
-    window.location.reload();
   };
 
   if (!active) return <></>;

@@ -67,6 +67,9 @@ export const AuthApi = {
   }) {
     return await axios.post(url + "/register", userData);
   },
+  resendCredentials: async function (id: string) {
+    return await axios.get(url + "/resend-credentials/" + id);
+  },
 };
 
 function getJwtPayload(name: string) {

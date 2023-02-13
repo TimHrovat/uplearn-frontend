@@ -76,7 +76,10 @@ export default function ManageClasses() {
       <ClassEditModal
         active={classEditModalActive}
         modalClassName={modalClassName}
-        onActiveChange={(active) => setClassEditModalActive(active)}
+        onActiveChange={(active) => {
+          setClassEditModalActive(active);
+          refetch();
+        }}
       />
       <ClassTimetableModal
         active={classTimetableModalActive}
@@ -86,7 +89,10 @@ export default function ManageClasses() {
       <ConfirmDeletePopup
         active={confirmDeletePopupActive}
         onActiveChange={(active) => setConfirmDeletePopupActive(active)}
-        deleteFunction={() => deleteClass(modalClassName)}
+        deleteFunction={() => {
+          deleteClass(modalClassName);
+          refetch();
+        }}
         prompt={"Are you sure you want to delete class " + modalClassName + "?"}
       />
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
@@ -208,11 +214,11 @@ export interface ClassInterface {
             user: {
               name: string;
               id: string;
-            }
-          }
-        }
-      }
-    }
+            };
+          };
+        };
+      };
+    };
   };
   classTeacher: {
     user: {

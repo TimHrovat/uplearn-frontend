@@ -62,7 +62,7 @@ export default function TimetableLesson({
       )}
       <div
         className={
-          AuthApi.isStudent()
+          AuthApi.isStudent() && !teacher
             ? "min-w-[10rem] rounded-md cursor-pointer p-4"
             : "min-w-[10rem] hover:bg-primary rounded-md cursor-pointer p-4"
         }
