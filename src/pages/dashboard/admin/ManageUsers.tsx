@@ -43,7 +43,7 @@ export default function ManageUsers() {
     queryFn: () => UsersApi.getAll(AuthApi.getJwtPayload("token").id),
   });
 
-  const data = {
+  let data = {
     nodes: users?.data.filter(
       (user: UserInterface) =>
         user.name.includes(search) ||
@@ -122,6 +122,7 @@ export default function ManageUsers() {
         onActiveChange={(active) => {
           setUserEditModalActive(active);
           refetchUsers();
+          window.location.reload();
         }}
       />
       <div className="flex flex-col justify-center items-center">

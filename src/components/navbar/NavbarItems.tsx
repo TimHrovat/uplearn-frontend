@@ -25,6 +25,7 @@ export default function NavbarItems() {
   } else if (AuthApi.isEmployee()) {
     return (
       <>
+        <Link to={"/dashboard/my-timetable"}>My Timetable</Link>
         <Link to={"/dashboard"}>Timetable EMPLOYEE</Link>
       </>
     );

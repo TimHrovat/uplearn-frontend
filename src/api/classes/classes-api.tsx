@@ -24,6 +24,9 @@ export const ClassesApi = {
   delete: async (name: string) => {
     return await axios.delete(url + "/" + name);
   },
+  getByEmployee: async (employeeId: string) => {
+    return await axios.get(url + "/by-employee/" + employeeId);
+  }
 };
 
 export interface CreateClass {

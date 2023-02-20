@@ -25,7 +25,7 @@ export default function LoginPage() {
       })
       .then(() => {
         if (AuthApi.isAuthenticatedStrict()) {
-          navigate("/dashboard");
+          navigate(AuthApi.isEmployee() ? "/dashboard/my-timetable" : "/dashboard");
         } else if (AuthApi.isAuthenticated())
           navigate("/auth/replace-first-password");
       })

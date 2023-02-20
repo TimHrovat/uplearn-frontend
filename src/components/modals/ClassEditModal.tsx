@@ -77,36 +77,19 @@ export default function ClassEditModal({
 
   if (!active) return <></>;
 
-  if (classesStatus === "loading") return <Loader active={true} />;
-  if (classesStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  if (subjectListStatus === "loading") return <Loader active={true} />;
-  if (subjectListStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  if (nonClassTeachersStatus === "loading") return <Loader active={true} />;
-  if (nonClassTeachersStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  if (nonSubstituteClassTeachersStatus === "loading")
+  if (
+    classesStatus === "loading" ||
+    subjectListStatus === "loading" ||
+    nonClassTeachersStatus === "loading" ||
+    nonSubstituteClassTeachersStatus === "loading"
+  )
     return <Loader active={true} />;
-  if (nonSubstituteClassTeachersStatus === "error")
+  if (
+    classesStatus === "error" ||
+    subjectListStatus === "error" ||
+    nonClassTeachersStatus === "error" ||
+    nonSubstituteClassTeachersStatus === "error"
+  )
     return (
       <ErrorAlert
         msg={"Page couldn't load"}

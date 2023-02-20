@@ -25,6 +25,7 @@ import ManageClassroomsCreate from "./pages/dashboard/admin/ManageClassroomsCrea
 import ManageSchoolHours from "./pages/dashboard/admin/ManageSchoolHours";
 import ManageSchoolHoursCreate from "./pages/dashboard/admin/ManageSchoolHoursCreate";
 import ManageSubjectLists from "./pages/dashboard/admin/ManageSubjectLists";
+import EmployeeTimetablePage from "./components/timetable/EmployeeTimetablePage";
 
 function App() {
   return (
@@ -38,6 +39,8 @@ function App() {
 
           <Route path="/dashboard" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Dashboard />} />} />} />
           <Route path="/dashboard/settings" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Settings />} />} />} />
+
+          <Route path="/dashboard/my-timetable" element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeeTimetablePage />} />} authorizedRoles={["employee"]} />} />
 
           <Route path="/dashboard/manage-classrooms" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassrooms />} />} authorizedRoles={["admin"]} />} />
           <Route path="/dashboard/manage-classrooms/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassroomsCreate />} />} authorizedRoles={["admin"]} />} />

@@ -24,7 +24,7 @@ export default function ReplaceFirstPasswordPage() {
         setError(e.response.data.message ?? e.message);
       })
       .then(() => {
-        navigate("/dashboard");
+        navigate(AuthApi.isEmployee() ? "/dashboard/my-timetable" : "/dashboard");
       })
       .finally(() => setLoading(false));
   }

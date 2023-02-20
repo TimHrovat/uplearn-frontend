@@ -18,6 +18,15 @@ export const LessonsApi = {
       `${url}/lessons-by-class-and-date-range/${className}/${startDate}/${endDate}`
     );
   },
+  getLessonsByEmployeeAndDateRange: async (
+    employeeId: string,
+    startDate: string,
+    endDate: string
+  ) => {
+    return await axios.get(
+      `${url}/lessons-by-employee-and-date-range/${employeeId}/${startDate}/${endDate}`
+    );
+  },
   getAll: async () => {
     return await axios.get(url);
   },

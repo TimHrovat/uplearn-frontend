@@ -2,40 +2,40 @@ import { faAdd, faDoorOpen, faScroll } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { AuthApi } from "../../api/auth/auth-api";
-import AddLessonModal from "../modals/AddLessonModal";
+import AddEmployeeLessonModal from "../modals/AddEmployeeLessonModal";
 import LessonInfoModal from "../modals/LessonInfoModal";
 
-export interface TimetableLessonProps {
+export interface EmployeeTimetableLessonProps {
   subject?: string;
   teacher?: string;
   classroom?: string;
   schoolHourId: string;
   date: string;
-  className: string;
+  employeeId: string;
   type: string;
   lessonId: string;
   onClose: () => any;
 }
 
-export default function TimetableLesson({
+export default function EmployeeTimetableLesson({
   subject,
   teacher,
   classroom,
   schoolHourId,
   date,
   type,
-  className,
+  employeeId,
   lessonId,
   onClose,
-}: TimetableLessonProps) {
+}: EmployeeTimetableLessonProps) {
   const [addLessonModalActive, setAddLessonModalActive] = useState(false);
   const [lessonInfoModalActive, setLessonInfoModalActive] = useState(false);
   const [showAddIcon, setShowAddIcon] = useState(false);
 
   return (
     <>
-      {addLessonModalActive && !AuthApi.isStudent() && !AuthApi.isEmployee() ? (
-        <AddLessonModal
+      {addLessonModalActive && !AuthApi.isStudent() ? (
+        <AddEmployeeLessonModal
           active={addLessonModalActive}
           onActiveChange={(active) => {
             setAddLessonModalActive(active);
@@ -43,7 +43,7 @@ export default function TimetableLesson({
           }}
           schoolHourId={schoolHourId}
           date={date}
-          className={className}
+          employeeId={employeeId}
         />
       ) : (
         <></>
@@ -62,7 +62,7 @@ export default function TimetableLesson({
       )}
       <div
         className={
-          (AuthApi.isStudent() || AuthApi.isEmployee()) && !teacher
+          AuthApi.isStudent() && !teacher
             ? "min-w-[10rem] rounded-md cursor-pointer p-4"
             : "min-w-[10rem] hover:bg-primary rounded-md cursor-pointer p-4"
         }
@@ -74,7 +74,7 @@ export default function TimetableLesson({
         onMouseEnter={() => setShowAddIcon(classroom === "" ? true : false)}
         onMouseLeave={() => setShowAddIcon(false)}
       >
-        {!showAddIcon || AuthApi.isStudent() || AuthApi.isEmployee() ? (
+        {!showAddIcon || AuthApi.isStudent() ? (
           <></>
         ) : (
           <FontAwesomeIcon
