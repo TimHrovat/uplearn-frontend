@@ -60,7 +60,11 @@ export default function Navbar({ content }: NavbarProps) {
             <div className="flex-1">
               <Link
                 className="btn btn-ghost normal-case text-xl"
-                to={AuthApi.isEmployee() ? "/dashboard/my-timetable" : "/dashboard"}
+                to={
+                  AuthApi.isEmployee()
+                    ? "/dashboard/my-timetable"
+                    : "/dashboard"
+                }
               >
                 UpLearn
               </Link>

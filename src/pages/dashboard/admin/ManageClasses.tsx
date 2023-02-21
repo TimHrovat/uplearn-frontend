@@ -12,11 +12,11 @@ import { ClassesApi } from "../../../api/classes/classes-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import Loader from "../../../components/Loader";
-import ClassAssignTeacherToSubjectModal from "../../../components/modals/ClassAssignTeacherToSubjectModal";
-import ClassEditModal from "../../../components/modals/ClassEditModal";
-import ClassStudentsModal from "../../../components/modals/ClassStudentsModal";
-import ClassTimetableModal from "../../../components/modals/ClassTimetableModal";
-import ConfirmDeletePopup from "../../../components/modals/ConfirmDeletePopup";
+import ClassAssignTeacherToSubjectModal from "../../../components/modals/classes/ClassAssignTeacherToSubjectModal";
+import ClassEditModal from "../../../components/modals/classes/ClassEditModal";
+import ClassStudentsModal from "../../../components/modals/classes/ClassStudentsModal";
+import ClassTimetableModal from "../../../components/modals/classes/ClassTimetableModal";
+import ConfirmDeletePopup from "../../../components/modals/popups/ConfirmDeletePopup";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 
 export default function ManageClasses() {

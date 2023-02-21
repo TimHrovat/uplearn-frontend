@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { AuthApi } from "../../api/auth/auth-api";
-import { LessonsApi } from "../../api/lessons/lessons-api";
-import { UsersApi } from "../../api/users/users-api";
-import ErrorAlert from "../alerts/ErrorAlert";
-import Loader from "../Loader";
-import ConfirmDeletePopup from "./ConfirmDeletePopup";
-import Modal from "./Modal";
+import { AuthApi } from "../../../api/auth/auth-api";
+import { LessonsApi } from "../../../api/lessons/lessons-api";
+import { UsersApi } from "../../../api/users/users-api";
+import ErrorAlert from "../../alerts/ErrorAlert";
+import Loader from "../../Loader";
+import ConfirmDeletePopup from "../popups/ConfirmDeletePopup";
+import Modal from "../Modal";
 
 export type LessonInfoModalProps = {
   active: boolean;
@@ -25,19 +25,20 @@ export default function LessonInfoModal({
   const [confirmDeleteManyPopupActive, setConfirmDeleteManyPopupActive] =
     useState(false);
 
-  const {status: authUserStatus, data: authUser} = useQuery({
+  const { status: authUserStatus, data: authUser } = useQuery({
     queryKey: ["authenticatedUser"],
     queryFn: UsersApi.getAuthenticatedUser,
     enabled: active,
-  })
+  });
 
   const { status, data: lesson } = useQuery({
     queryKey: ["lesson"],
     queryFn: () => LessonsApi.getUnique(lessonId),
-    enabled: active
+    enabled: active,
   });
 
-  if (status === "loading" || authUserStatus === "loading") return <Loader active={true} />;
+  if (status === "loading" || authUserStatus === "loading")
+    return <Loader active={true} />;
   if (status === "error" || authUserStatus === "error")
     return (
       <ErrorAlert
@@ -127,7 +128,9 @@ export default function LessonInfoModal({
             </tbody>
           </table>
         </div>
-        {AuthApi.isStudent() || authUser?.data.Employee.id !== lesson?.data.employeeId ? (
+        {AuthApi.isStudent() ||
+        (AuthApi.isEmployee() &&
+          authUser?.data.Employee?.id !== lesson?.data.employeeId) ? (
           <></>
         ) : (
           <button
@@ -137,7 +140,10 @@ export default function LessonInfoModal({
             Delete Lesson
           </button>
         )}
-        {lesson?.data.lessonGroup === null || AuthApi.isStudent() || authUser?.data.Employee.id !== lesson?.data.employeeId ? (
+        {lesson?.data.lessonGroup === null ||
+        AuthApi.isStudent() ||
+        (AuthApi.isEmployee() &&
+          authUser?.data.Employee?.id !== lesson?.data.employeeId) ? (
           <></>
         ) : (
           <button

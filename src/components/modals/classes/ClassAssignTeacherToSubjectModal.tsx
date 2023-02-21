@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import {
   ClassesApi,
   ConnectToEmployeeSubject,
-} from "../../api/classes/classes-api";
-import ErrorAlert from "../alerts/ErrorAlert";
-import Modal from "./Modal";
+} from "../../../api/classes/classes-api";
+import ErrorAlert from "../../alerts/ErrorAlert";
+import Modal from "../Modal";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
-import Loader from "../Loader";
+import Loader from "../../Loader";
 
 export type ClassAssignTeacherToSubjectModalProps = {
   active: boolean;

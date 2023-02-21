@@ -12,4 +12,7 @@ export const StudentsApi = {
   removeFromClass: async (id: string) => {
     return await axios.patch(url + "/remove-from-class/" + id);
   },
+  getByClassAndSubject: async (className: string, subject: string) => {
+    return await axios.get(url + "/class-subject/" + className + "/" + subject);
+  }
 };

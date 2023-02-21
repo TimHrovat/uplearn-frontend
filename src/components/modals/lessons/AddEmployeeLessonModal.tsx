@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
-import { ClassroomApi } from "../../api/classroom/classroom-api";
-import Modal from "./Modal";
+import { ClassroomApi } from "../../../api/classroom/classroom-api";
+import Modal from "../Modal";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
-import ErrorAlert from "../alerts/ErrorAlert";
-import SuccessAlert from "../alerts/SuccessAlert";
-import { ClassesApi } from "../../api/classes/classes-api";
-import Loader from "../Loader";
+import ErrorAlert from "../../alerts/ErrorAlert";
+import SuccessAlert from "../../alerts/SuccessAlert";
+import { ClassesApi } from "../../../api/classes/classes-api";
+import Loader from "../../Loader";
 import {
   CreateLessonInterface,
   LessonsApi,
-} from "../../api/lessons/lessons-api";
+} from "../../../api/lessons/lessons-api";
 
 export type AddEmployeeLessonModalProps = {
   active: boolean;
@@ -86,8 +86,6 @@ export default function AddEmployeeLessonModal({
       label: classOption.name,
     });
   });
-
-  console.log(classes?.data);
 
   if (selectedClass !== "") {
     subjectOptions = [];

@@ -9,9 +9,8 @@ export default function NavbarItems() {
         <Link to={"/dashboard"}>Timetable ADMIN</Link>
         <Link to={"/dashboard/manage-classes"}>Classes</Link>
         <Link to={"/dashboard/manage-subjects"}>Subjects</Link>
-        <Link to={"/dashboard/manage-employees"}>Employees</Link>
-        <Link to={"/dashboard/manage-students"}>Students</Link>
         <Link to={"/dashboard/manage-users"}>Users</Link>
+        <Link to={"/dashboard/manage-grades"}>Gradebook</Link>
         <Link to={"/dashboard/manage-classrooms"}>Classrooms</Link>
         <Link to={"/dashboard/manage-school-hours"}>School Hours</Link>
       </>
@@ -26,7 +25,8 @@ export default function NavbarItems() {
     return (
       <>
         <Link to={"/dashboard/my-timetable"}>My Timetable</Link>
-        <Link to={"/dashboard"}>Timetable EMPLOYEE</Link>
+        <Link to={"/dashboard"}>All Timetables</Link>
+        <Link to={"/dashboard/manage-grades"}>Gradebook</Link>
       </>
     );
   }

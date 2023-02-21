@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
-import { ClassroomApi } from "../../api/classroom/classroom-api";
-import Modal from "./Modal";
+import { ClassroomApi } from "../../../api/classroom/classroom-api";
+import Modal from "../Modal";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
-import { ClassesApi } from "../../api/classes/classes-api";
-import { SubjectInterface } from "./ClassAssignTeacherToSubjectModal";
+import { ClassesApi } from "../../../api/classes/classes-api";
+import { SubjectInterface } from "../classes/ClassAssignTeacherToSubjectModal";
 import {
   CreateLessonInterface,
   LessonsApi,
-} from "../../api/lessons/lessons-api";
-import ErrorAlert from "../alerts/ErrorAlert";
-import { EmployeesApi } from "../../api/employees/employees-api";
-import SuccessAlert from "../alerts/SuccessAlert";
+} from "../../../api/lessons/lessons-api";
+import ErrorAlert from "../../alerts/ErrorAlert";
+import { EmployeesApi } from "../../../api/employees/employees-api";
+import SuccessAlert from "../../alerts/SuccessAlert";
 
 export type AddLessonModalProps = {
   active: boolean;

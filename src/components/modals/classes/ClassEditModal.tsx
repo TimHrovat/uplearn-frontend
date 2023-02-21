@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ClassesApi, UpdateClass } from "../../api/classes/classes-api";
-import ErrorAlert from "../alerts/ErrorAlert";
-import Loader from "../Loader";
+import { ClassesApi, UpdateClass } from "../../../api/classes/classes-api";
+import ErrorAlert from "../../alerts/ErrorAlert";
+import Loader from "../../Loader";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
-import Modal from "./Modal";
-import { EmployeesApi } from "../../api/employees/employees-api";
-import { SubjectListsApi } from "../../api/subjects/subject-listst-api";
+import Modal from "../Modal";
+import { EmployeesApi } from "../../../api/employees/employees-api";
+import { SubjectListsApi } from "../../../api/subjects/subject-listst-api";
 
 export type ClassEditModalProps = {
   active: boolean;

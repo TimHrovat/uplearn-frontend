@@ -11,8 +11,8 @@ import { UsersApi } from "../../../api/users/users-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import Loader from "../../../components/Loader";
-import ConfirmDeletePopup from "../../../components/modals/ConfirmDeletePopup";
-import ConfirmWarningPopup from "../../../components/modals/ConfirmWarningPoup";
+import ConfirmDeletePopup from "../../../components/modals/popups/ConfirmDeletePopup";
+import ConfirmWarningPopup from "../../../components/modals/popups/ConfirmWarningPoup";
 import UserEditModal from "../../../components/modals/UserEditModal";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 

@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import ErrorAlert from "../alerts/ErrorAlert";
+import ErrorAlert from "../../alerts/ErrorAlert";
 
-export type ConfirmWarningPopupProps = {
+export type ConfirmDeletePopupProps = {
   active: boolean;
   onActiveChange: (active: boolean) => void;
-  warningFn: () => any;
+  deleteFunction: () => any;
   prompt: string;
 };
 
-export default function ConfirmWarningPopup({
+export default function ConfirmDeletePopup({
   active,
   onActiveChange,
-  warningFn,
+  deleteFunction,
   prompt,
-}: ConfirmWarningPopupProps) {
+}: ConfirmDeletePopupProps) {
   const [error, setError] = useState("");
 
   if (!active) return <></>;
@@ -22,7 +22,7 @@ export default function ConfirmWarningPopup({
     <>
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
 
-      <div className="fixed w-full h-full inset-0  backdrop-brightness-50 z-20">
+      <div className="fixed w-full h-full inset-0  backdrop-brightness-50 z-50">
         <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-base-200 p-4 rounded-xl mx-3 laptop:w-fit w-full">
           <div className="w-full">
             <h1 className="text-xl font-bold mb-5 flex-1 pt-2">{prompt}</h1>
@@ -38,13 +38,13 @@ export default function ConfirmWarningPopup({
                 Cancel
               </button>
               <button
-                className="btn btn-warning "
+                className="btn btn-error "
                 onClick={() => {
-                  warningFn();
+                  deleteFunction();
                   onActiveChange?.(false);
                 }}
               >
-                Confirm
+                Confirm Delete
               </button>
             </div>
           </div>

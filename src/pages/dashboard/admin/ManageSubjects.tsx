@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { SubjectsApi } from "../../../api/subjects/subjects-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import Loader from "../../../components/Loader";
-import ConfirmDeletePopup from "../../../components/modals/ConfirmDeletePopup";
+import ConfirmDeletePopup from "../../../components/modals/popups/ConfirmDeletePopup";
 import SubjectEditModal from "../../../components/modals/SubjectEditModal";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 

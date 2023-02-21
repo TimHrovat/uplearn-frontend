@@ -2,11 +2,11 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { ClassesApi } from "../../api/classes/classes-api";
-import { StudentsApi } from "../../api/students/students-api";
-import ErrorAlert from "../alerts/ErrorAlert";
-import Loader from "../Loader";
-import Modal from "./Modal";
+import { ClassesApi } from "../../../api/classes/classes-api";
+import { StudentsApi } from "../../../api/students/students-api";
+import ErrorAlert from "../../alerts/ErrorAlert";
+import Loader from "../../Loader";
+import Modal from "../Modal";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
 

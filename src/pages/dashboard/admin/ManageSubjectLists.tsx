@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { SubjectListsApi } from "../../../api/subjects/subject-listst-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import Loader from "../../../components/Loader";
-import ConfirmDeletePopup from "../../../components/modals/ConfirmDeletePopup";
+import ConfirmDeletePopup from "../../../components/modals/popups/ConfirmDeletePopup";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 
 export default function ManageSubjectLists() {

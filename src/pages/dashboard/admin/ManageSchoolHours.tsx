@@ -6,14 +6,13 @@ import { SchoolHoursApi } from "../../../api/school-hours/school-hours-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import Loader from "../../../components/Loader";
-import ConfirmDeletePopup from "../../../components/modals/ConfirmDeletePopup";
+import ConfirmDeletePopup from "../../../components/modals/popups/ConfirmDeletePopup";
 import SchoolHourEditModal from "../../../components/modals/SchoolHourEditModal";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 
 export default function ManageSchoolHours() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const [confirmDeletePopupActive, setConfirmDeletePopupActive] =
     useState(false);

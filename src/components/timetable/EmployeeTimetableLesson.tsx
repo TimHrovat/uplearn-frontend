@@ -2,8 +2,8 @@ import { faAdd, faDoorOpen, faScroll } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { AuthApi } from "../../api/auth/auth-api";
-import AddEmployeeLessonModal from "../modals/AddEmployeeLessonModal";
-import LessonInfoModal from "../modals/LessonInfoModal";
+import AddEmployeeLessonModal from "../modals/lessons/AddEmployeeLessonModal";
+import LessonInfoModal from "../modals/lessons/LessonInfoModal";
 
 export interface EmployeeTimetableLessonProps {
   subject?: string;
