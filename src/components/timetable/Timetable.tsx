@@ -132,7 +132,9 @@ export default function Timetable({ classNameP }: TimetableProps) {
         <table className="table table-zebra w-full">
           <thead>
             <tr>
-              <td><div className="w-1/6"></div></td>
+              <td>
+                <div className="w-1/6"></div>
+              </td>
               <th>
                 <TimetableHeader
                   dayNum={0}
@@ -266,11 +268,20 @@ function TimetableHeader({ dayName, startDate, dayNum }: TimetableHeaderProps) {
 
   return (
     <>
-      <div className="flex flex-col w-1/6">
-        <span>{`${dayName} `}</span>
-        <span>{`${date?.getDate()}. ${
-          date?.getMonth() !== undefined ? date?.getMonth() + 1 : ""
-        }`}</span>
+      <div
+        className={
+          moment(new Date()).format("YYYY-MM-DD") ===
+          moment(date).format("YYYY-MM-DD")
+            ? "text-info"
+            : ""
+        }
+      >
+        <div className="flex flex-col w-1/6">
+          <span>{`${dayName} `}</span>
+          <span>{`${date?.getDate()}. ${
+            date?.getMonth() !== undefined ? date?.getMonth() + 1 : ""
+          }`}</span>
+        </div>
       </div>
     </>
   );

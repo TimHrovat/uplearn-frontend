@@ -27,6 +27,7 @@ import ManageSchoolHoursCreate from "./pages/dashboard/admin/ManageSchoolHoursCr
 import ManageSubjectLists from "./pages/dashboard/admin/ManageSubjectLists";
 import EmployeeTimetablePage from "./components/timetable/EmployeeTimetablePage";
 import ManageGrades from "./pages/dashboard/employee/ManageGrades";
+import GradesPage from "./pages/dashboard/student/GradesPage";
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
 
           <Route path="/dashboard" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Dashboard />} />} />} />
           <Route path="/dashboard/settings" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Settings />} />} />} />
+
+          <Route path="/dashboard/my-grades" element={<ProtectedRouteRole outlet={<DashboardRoute element={<GradesPage />} />} authorizedRoles={["student"]} />} />
 
           <Route path="/dashboard/my-timetable" element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeeTimetablePage />} />} authorizedRoles={["employee"]} />} />
           <Route path="/dashboard/manage-grades" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageGrades />} />} authorizedRoles={["employee", "admin"]} />} />

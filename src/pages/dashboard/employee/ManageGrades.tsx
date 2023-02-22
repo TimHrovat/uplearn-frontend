@@ -12,6 +12,7 @@ import { StudentsApi } from "../../../api/students/students-api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEye, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import AddGradeModal from "../../../components/modals/grades/AddGradeModal";
+import ViewGradesModal from "../../../components/modals/grades/ViewGradesModal";
 
 const animatedComponents = makeAnimated();
 let classOptions: { value: string; label: string }[] = [];
@@ -24,6 +25,7 @@ export default function ManageGrades() {
   const [selectedSubjectAbbr, setSelectedSubjectAbbr] = useState("");
 
   const [addGradeModalActive, setAddGradeModalActive] = useState(false);
+  const [viewGradeModalActive, setViewGradeModalActive] = useState(false);
   const [currentStudent, setCurrentStudent] = useState({
     id: "",
     fullName: "",
@@ -120,7 +122,7 @@ export default function ManageGrades() {
 
     if (len === 0) return "/";
 
-    return grades.reduce((sum, grade) => sum + grade.value, 0) / len;
+    return (grades.reduce((sum, grade) => sum + grade.value, 0) / len).toFixed(2);
   };
 
   return (
@@ -137,6 +139,16 @@ export default function ManageGrades() {
         subject={selectedSubjectAbbr}
         onActiveChange={(active) => {
           setAddGradeModalActive(active);
+          refetchStudents();
+        }}
+      />
+      <ViewGradesModal
+        active={viewGradeModalActive}
+        studentId={currentStudent.id}
+        fullName={currentStudent.fullName}
+        subject={selectedSubjectAbbr}
+        onActiveChange={(active) => {
+          setViewGradeModalActive(active);
           refetchStudents();
         }}
       />
@@ -188,7 +200,7 @@ export default function ManageGrades() {
               <tbody>
                 {selectedSubjectAbbr === "" ? (
                   <tr>
-                    <td colSpan={7} className="text-center">
+                    <td colSpan={8} className="text-center">
                       Select a class and a subject to view grades
                     </td>
                   </tr>
@@ -213,7 +225,16 @@ export default function ManageGrades() {
                         </td>
                         <td>{calcAvgGrade(student.Grade)}</td>
                         <td>
-                          <button className="btn btn-outline btn-info">
+                          <button
+                            className="btn btn-outline btn-info"
+                            onClick={() => {
+                              setCurrentStudent({
+                                id: student.id,
+                                fullName: `${student.user.name} ${student.user.surname}`,
+                              });
+                              setViewGradeModalActive(true);
+                            }}
+                          >
                             <FontAwesomeIcon icon={faEye} size="lg" />
                           </button>
                         </td>
@@ -255,8 +276,10 @@ interface StudentInterface {
   Grade: [GradeInterface];
 }
 
-interface GradeInterface {
+export interface GradeInterface {
   value: number;
   type: "ORAL" | "WRITTEN" | "OTHER";
   description: string;
+  createdAt: string;
+  id: string;
 }

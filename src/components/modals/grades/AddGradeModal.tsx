@@ -92,7 +92,7 @@ export default function AddGradeModal({
       />
       <Modal
         active={active}
-        title={"Grade student " + fullName}
+        title={"Grade student - " + fullName}
         onActiveChange={(isActive) => onActiveChange?.(isActive)}
       >
         <div className="form-control mb-10 w-[10rem]">

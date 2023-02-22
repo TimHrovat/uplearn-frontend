@@ -6,7 +6,7 @@ export default function NavbarItems() {
   if (AuthApi.isAdmin()) {
     return (
       <>
-        <Link to={"/dashboard"}>Timetable ADMIN</Link>
+        <Link to={"/dashboard"}>Timetable</Link>
         <Link to={"/dashboard/manage-classes"}>Classes</Link>
         <Link to={"/dashboard/manage-subjects"}>Subjects</Link>
         <Link to={"/dashboard/manage-users"}>Users</Link>
@@ -18,7 +18,8 @@ export default function NavbarItems() {
   } else if (AuthApi.isStudent()) {
     return (
       <>
-        <Link to={"/dashboard"}>Timetable STUDENT</Link>
+        <Link to={"/dashboard"}>Timetable</Link>
+        <Link to={"/dashboard/my-grades"}>Grades</Link>
       </>
     );
   } else if (AuthApi.isEmployee()) {

@@ -14,5 +14,8 @@ export const StudentsApi = {
   },
   getByClassAndSubject: async (className: string, subject: string) => {
     return await axios.get(url + "/class-subject/" + className + "/" + subject);
-  }
+  },
+  getSubjectsWithGrades: async (id: string) => {
+    return await axios.get(url + "/subjects-and-grades/" + id);
+  },
 };

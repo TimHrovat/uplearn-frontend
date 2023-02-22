@@ -37,7 +37,6 @@ export default function ClassAssignTeacherToSubjectModal({
 
   useEffect(() => {
     if (active) refetch();
-    console.log("refetch");
   }, [active, refetch]);
 
   if (classStatus === "loading") return <Loader active={true} />;
