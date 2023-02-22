@@ -111,8 +111,8 @@ export default function ViewGradesModal({
                   <td>{index + 1}</td>
                   <td>{grade.value === 0 ? "NPS" : grade.value}</td>
                   <td>{grade.type}</td>
-                  <td>
-                    <div>{grade.description}</div>
+                  <td className="max-w-[25rem] whitespace-normal break-words">
+                    {grade.description}
                   </td>
                   <td>{toDateString(grade.createdAt)}</td>
                   <td>

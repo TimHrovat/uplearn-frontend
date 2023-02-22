@@ -123,7 +123,7 @@ export default function LessonInfoModal({
               </tr>
               <tr>
                 <th className="w-1/3">Description: </th>
-                <td className="w-2/3">{lesson?.data.description}</td>
+                <td className="w-2/3 whitespace-normal break-words">{lesson?.data.description}</td>
               </tr>
             </tbody>
           </table>

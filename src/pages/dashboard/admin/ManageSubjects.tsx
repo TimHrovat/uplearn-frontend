@@ -97,7 +97,7 @@ export default function ManageSubjects() {
                     <td>{index + 1}</td>
                     <td>{s.abbreviation}</td>
                     <td>{s.name}</td>
-                    <td>{s.description ? s.description : "/"}</td>
+                    <td className="max-w-[25rem] whitespace-normal break-words">{s.description ? s.description : "/"}</td>
                     <td>
                       <button
                         className="btn btn-info btn-outline"
