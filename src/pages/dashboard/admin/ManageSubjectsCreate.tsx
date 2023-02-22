@@ -9,6 +9,7 @@ import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import makeAnimated from "react-select/animated";
 import { SubjectsApi } from "../../../api/subjects/subjects-api";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
+import { style } from "../../../components/ReactSelectStyle";
 
 let options: { value: string; label: string }[] = [];
 const animatedComponents = makeAnimated();
@@ -158,7 +159,7 @@ export default function ManageSubjectsCreate() {
               closeMenuOnSelect={false}
               components={animatedComponents}
               onChange={handleSelectedEmployeeChange}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
           <button

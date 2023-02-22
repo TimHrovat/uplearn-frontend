@@ -9,6 +9,7 @@ import Loader from "../../Loader";
 import Modal from "../Modal";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
+import { style } from "../../ReactSelectStyle";
 
 export type StudentsModalProps = {
   active: boolean;
@@ -173,7 +174,7 @@ export default function ClassStudentsModal({
                 value={selectedStudents}
                 components={animatedComponents}
                 onChange={handleSelectedStudentsChange}
-                styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+                styles={style}
               />
             </div>
             <button className="btn btn-accent" onClick={addStudents}>

@@ -13,6 +13,7 @@ import {
 import ErrorAlert from "../../alerts/ErrorAlert";
 import { EmployeesApi } from "../../../api/employees/employees-api";
 import SuccessAlert from "../../alerts/SuccessAlert";
+import { style } from "../../ReactSelectStyle";
 
 export type AddLessonModalProps = {
   active: boolean;
@@ -228,7 +229,7 @@ export default function AddLessonModal({
             closeMenuOnSelect={true}
             components={animatedComponents}
             onChange={handleSelectedClassroom}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <div className="form-control w-full mb-5">
@@ -241,7 +242,7 @@ export default function AddLessonModal({
             components={animatedComponents}
             onChange={handleSelectedType}
             defaultValue={{ value: "NORMAL", label: "normal" }}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         {substituteView ? (
@@ -254,7 +255,7 @@ export default function AddLessonModal({
               closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedSubstituteEmployee}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
         ) : (
@@ -267,7 +268,7 @@ export default function AddLessonModal({
               closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedSubject}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
         )}
@@ -287,7 +288,7 @@ export default function AddLessonModal({
             </span>
             <input
               type="checkbox"
-              className="checkbox checkbox-primary"
+              className="checkbox checkbox-info"
               checked={createMany}
               onChange={() => setCreateMany(!createMany)}
             />

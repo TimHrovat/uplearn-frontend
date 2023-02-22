@@ -12,6 +12,7 @@ import {
   CreateLessonInterface,
   LessonsApi,
 } from "../../../api/lessons/lessons-api";
+import { style } from "../../ReactSelectStyle";
 
 export type AddEmployeeLessonModalProps = {
   active: boolean;
@@ -207,7 +208,7 @@ export default function AddEmployeeLessonModal({
             closeMenuOnSelect={true}
             components={animatedComponents}
             onChange={handleSelectedClass}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <div className="form-control w-full mb-5">
@@ -220,7 +221,7 @@ export default function AddEmployeeLessonModal({
             isDisabled={selectedClass === ""}
             components={animatedComponents}
             onChange={handleSelectedSubject}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <div className="form-control w-full mb-5">
@@ -233,7 +234,7 @@ export default function AddEmployeeLessonModal({
             components={animatedComponents}
             onChange={handleSelectedType}
             defaultValue={{ value: "NORMAL", label: "normal" }}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <div className="form-control w-full mb-5">
@@ -245,7 +246,7 @@ export default function AddEmployeeLessonModal({
             closeMenuOnSelect={true}
             components={animatedComponents}
             onChange={handleSelectedClassroom}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <div className="form-control w-full mb-5">
@@ -264,7 +265,7 @@ export default function AddEmployeeLessonModal({
             </span>
             <input
               type="checkbox"
-              className="checkbox checkbox-primary"
+              className="checkbox checkbox-info"
               checked={createMany}
               onChange={() => setCreateMany(!createMany)}
             />

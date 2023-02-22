@@ -4,7 +4,8 @@ import { ClassesApi } from "../../api/classes/classes-api";
 import ErrorAlert from "../alerts/ErrorAlert";
 import Loader from "../Loader";
 import makeAnimated from "react-select/animated";
-import Select from "react-select";
+import Select, { StylesConfig } from "react-select";
+import { style } from "../ReactSelectStyle";
 
 export type TimetableClassSelectionProps = {
   active: boolean;
@@ -29,7 +30,9 @@ export default function TimetableClassSelection({
   useEffect(() => {
     if (onSelection)
       onSelection(
-        selectedClassName === "" ? classes?.data[0]?.name ?? "" : selectedClassName
+        selectedClassName === ""
+          ? classes?.data[0]?.name ?? ""
+          : selectedClassName
       );
   });
 
@@ -67,14 +70,14 @@ export default function TimetableClassSelection({
           closeMenuOnSelect={true}
           components={animatedComponents}
           onChange={handleSelectionChange}
+          styles={style}
           defaultValue={{
             value: classes?.data[0]?.name ?? "",
-            label: classes?.data[0]?.name ?? "No options" ,
+            label: classes?.data[0]?.name ?? "No options",
           }}
-          styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+          // styles={style}
         />
       </div>
     </>
   );
 }
-

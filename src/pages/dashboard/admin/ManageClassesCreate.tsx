@@ -10,6 +10,7 @@ import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import { StudentsApi } from "../../../api/students/students-api";
 import { EmployeesApi } from "../../../api/employees/employees-api";
 import { ClassesApi, CreateClass } from "../../../api/classes/classes-api";
+import { style } from "../../../components/ReactSelectStyle";
 
 let subjectListOptions: { value: string; label: string }[] = [];
 let studentOptions: { value: string; label: string }[] = [];
@@ -299,7 +300,7 @@ export default function ManageClassesCreate() {
               closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedSubjectListChange}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
           <div className="form-control w-full mb-5">
@@ -312,7 +313,7 @@ export default function ManageClassesCreate() {
               isMulti
               components={animatedComponents}
               onChange={handleSelectedStudentsChange}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
           <div className="form-control w-full mb-5">
@@ -324,7 +325,7 @@ export default function ManageClassesCreate() {
               closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedNonClassTeacherChange}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
           <div className="form-control w-full mb-5">
@@ -336,7 +337,7 @@ export default function ManageClassesCreate() {
               closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedNonSubstituteClassTeacherChange}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
           <button

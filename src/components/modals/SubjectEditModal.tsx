@@ -9,6 +9,7 @@ import ErrorAlert from "../alerts/ErrorAlert";
 import Loader from "../Loader";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { style } from "../ReactSelectStyle";
 
 export type SubjectEditModalProps = {
   active: boolean;
@@ -165,7 +166,7 @@ export default function SubjectEditModal({
                 value={selectedEmployees}
                 components={animatedComponents}
                 onChange={handleSelectedEmployeesChange}
-                styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+                styles={style}
               />
             </div>
             <button className="btn btn-accent" onClick={addEmployees}>

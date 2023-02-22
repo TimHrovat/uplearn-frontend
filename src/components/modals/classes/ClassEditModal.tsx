@@ -8,6 +8,7 @@ import Select from "react-select";
 import Modal from "../Modal";
 import { EmployeesApi } from "../../../api/employees/employees-api";
 import { SubjectListsApi } from "../../../api/subjects/subject-listst-api";
+import { style } from "../../ReactSelectStyle";
 
 export type ClassEditModalProps = {
   active: boolean;
@@ -269,7 +270,7 @@ export default function ClassEditModal({
               value: currentClass.data.subjectList.id,
               label: currentClass.data.subjectList.name,
             }}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <div className="form-control w-full mb-5">
@@ -291,7 +292,7 @@ export default function ClassEditModal({
               value: currentClass.data.classTeacher.id,
               label: `${currentClass.data.classTeacher.user.name} ${currentClass.data.classTeacher.user.surname}`,
             }}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <div className="form-control w-full mb-5">
@@ -313,7 +314,7 @@ export default function ClassEditModal({
               value: currentClass.data.substituteClassTeacher.id,
               label: `${currentClass.data.substituteClassTeacher.user.name} ${currentClass.data.substituteClassTeacher.user.surname}`,
             }}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <button

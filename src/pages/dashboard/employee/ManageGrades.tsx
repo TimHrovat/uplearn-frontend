@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faEye, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import AddGradeModal from "../../../components/modals/grades/AddGradeModal";
 import ViewGradesModal from "../../../components/modals/grades/ViewGradesModal";
+import { style } from "../../../components/ReactSelectStyle";
 
 const animatedComponents = makeAnimated();
 let classOptions: { value: string; label: string }[] = [];
@@ -165,7 +166,7 @@ export default function ManageGrades() {
                 closeMenuOnSelect={true}
                 components={animatedComponents}
                 onChange={handleSelectedClass}
-                styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+                styles={style}
               />
             </div>
             <div className="form-control mb-5 min-w-[10rem]">
@@ -179,7 +180,7 @@ export default function ManageGrades() {
                 components={animatedComponents}
                 onChange={handleSelectedSubject}
                 {...(selectedSubjectAbbr === "" ? { value: null } : {})}
-                styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+                styles={style}
               />
             </div>
           </div>

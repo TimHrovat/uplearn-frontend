@@ -5,6 +5,7 @@ import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import { CreateGradeInterface, GradesApi } from "../../../api/grades/grades-api";
 import SuccessAlert from "../../alerts/SuccessAlert";
+import { style } from "../../ReactSelectStyle";
 
 export type AddGradeModalProps = {
   active: boolean;
@@ -105,7 +106,7 @@ export default function AddGradeModal({
             components={animatedComponents}
             onChange={handleSelectedType}
             defaultValue={{ value: "WRITTEN", label: "written" }}
-            styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+            styles={style}
           />
         </div>
         <div className="flex flex-row mb-5">

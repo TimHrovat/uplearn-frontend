@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SubjectsApi } from "../../../api/subjects/subjects-api";
 import Loader from "../../../components/Loader";
 import { SubjectListsApi } from "../../../api/subjects/subject-listst-api";
+import { style } from "../../../components/ReactSelectStyle";
 
 let options: { value: string; label: string }[] = [];
 const animatedComponents = makeAnimated();
@@ -131,7 +132,7 @@ export default function ManageSubjectsCreateList() {
               closeMenuOnSelect={false}
               components={animatedComponents}
               onChange={handleSelectedSubjectChange}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
 

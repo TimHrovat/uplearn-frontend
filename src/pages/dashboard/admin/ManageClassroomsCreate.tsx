@@ -5,6 +5,7 @@ import Select from "react-select";
 import { ClassroomApi } from "../../../api/classroom/classroom-api";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
+import { style } from "../../../components/ReactSelectStyle";
 
 const animatedComponents = makeAnimated();
 
@@ -104,7 +105,7 @@ export default function ManageClassroomsCreate() {
               closeMenuOnSelect={true}
               components={animatedComponents}
               onChange={handleSelectedTypeChange}
-              styles={{ option: (styles) => ({ ...styles, color: "black" }) }}
+              styles={style}
             />
           </div>
           <button
