@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AuthApi } from "../api/auth/auth-api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -25,7 +25,9 @@ export default function LoginPage() {
       })
       .then(() => {
         if (AuthApi.isAuthenticatedStrict()) {
-          navigate(AuthApi.isEmployee() ? "/dashboard/my-timetable" : "/dashboard");
+          navigate(
+            AuthApi.isEmployee() ? "/dashboard/my-timetable" : "/dashboard"
+          );
         } else if (AuthApi.isAuthenticated())
           navigate("/auth/replace-first-password");
       })
@@ -56,7 +58,7 @@ export default function LoginPage() {
       <div className="flex flex-row min-h-screen justify-center items-center">
         <div className="prose text-center mx-10  w-full max-w-md">
           <h1 className="text-5xl font-bold">UpLearn</h1>
-          <div className="flex flex-col items-center p-7 bg-base-300 rounded-xl w-full">
+          <div className="flex flex-col p-7 bg-base-300 rounded-xl w-full">
             <input
               type="text"
               name="username"
@@ -73,19 +75,31 @@ export default function LoginPage() {
               onChange={handlePasswordChange}
               value={password}
             />
+
+            <div className="text-left hover:link mb-5">
+              <Link
+                to={"/reset-password-prompt"}
+                className="no-underline text-inherit"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
             {error !== "" ? (
               <p className="text-error mt-0 mb-5">{error}</p>
             ) : null}
-            <button
-              className={
-                loading
-                  ? "btn btn-primary loading w-8/12"
-                  : "btn btn-primary w-8/12"
-              }
-              onClick={login}
-            >
-              LogIn
-            </button>
+            <div className="text-center">
+              <button
+                className={
+                  loading
+                    ? "btn btn-primary loading w-8/12"
+                    : "btn btn-primary w-8/12"
+                }
+                onClick={login}
+              >
+                LogIn
+              </button>
+            </div>
           </div>
         </div>
       </div>

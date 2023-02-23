@@ -70,6 +70,12 @@ export const AuthApi = {
   resendCredentials: async function (id: string) {
     return await axios.get(url + "/resend-credentials/" + id);
   },
+  sendForgotPasswordEmail: async function (username: string) {
+    return await axios.get(url + "/send-reset-password-email/" + username);
+  },
+  resetPassword: async function (token: string, password: string) {
+    return await axios.post(url + "/reset-password/" + token, { password });
+  },
 };
 
 function getJwtPayload(name: string) {

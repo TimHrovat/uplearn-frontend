@@ -33,12 +33,15 @@ export const LessonsApi = {
   getUnique: async (id: string) => {
     return await axios.get(url + "/" + id);
   },
+  getUpcomingGradings: async (className: string) => {
+    return await axios.get(url + "/upcoming-gradings/" + className);
+  },
   delete: async (id: string) => {
     return await axios.delete(url + "/" + id);
   },
   deleteMany: async (lessonGroupId: string) => {
     return await axios.delete(url + "/delete-many/" + lessonGroupId);
-  }
+  },
 };
 
 export interface CreateLessonInterface {

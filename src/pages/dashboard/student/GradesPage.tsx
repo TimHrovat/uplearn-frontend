@@ -20,7 +20,7 @@ export default function GradesPage() {
         msg={"Page couldn't load"}
         onVisibilityChange={(msg) => setError(msg)}
       />
-    );
+  );
 
   return (
     <div className="flex flex-col justify-center items-center">

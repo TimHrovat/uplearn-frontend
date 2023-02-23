@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { GradesApi } from "../api/grades/grades-api";
+import { gradeColors, GradesApi } from "../api/grades/grades-api";
 import { StudentsApi } from "../api/students/students-api";
 import { GradeInterface } from "../pages/dashboard/employee/ManageGrades";
 import ErrorAlert from "./alerts/ErrorAlert";
@@ -47,7 +47,9 @@ export default function Grades({ studentId }: GradesProps) {
 
     if (len === 0) return "/";
 
-    return (grades.reduce((sum, grade) => sum + grade.value, 0) / len).toFixed(2);
+    return (grades.reduce((sum, grade) => sum + grade.value, 0) / len).toFixed(
+      2
+    );
   };
 
   return (
@@ -72,7 +74,10 @@ export default function Grades({ studentId }: GradesProps) {
                     <div className="flex flex-row">
                       {subject.grades.map(
                         (grade: GradeInterface, index: number) => (
-                          <span key={index} className="mr-2">
+                          <span
+                            key={index}
+                            className={`mr-2 ${gradeColors[grade.type]}`}
+                          >
                             {grade.value === 0 ? "NPS" : grade.value}
                           </span>
                         )

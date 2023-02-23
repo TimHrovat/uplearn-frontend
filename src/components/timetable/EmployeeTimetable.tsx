@@ -156,8 +156,8 @@ export default function EmployeeTimetable() {
           <tbody>
             {schoolHours?.data.map(
               (schoolHour: SchoolHourInterface, index: number) => (
-                <tr key={index}>
-                  <td>
+                <tr key={index} >
+                  <td className="border-r-[1px] border-zinc-700">
                     <div className="flex flex-col">
                       <span className="mb-2">{index + 1 + ". lesson"}</span>
                       <span>
@@ -167,7 +167,7 @@ export default function EmployeeTimetable() {
                       </span>
                     </div>
                   </td>
-                  <td className="p-0 pr-2">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <EmployeeTimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 0)}
                       schoolHourId={schoolHour.id}
@@ -179,7 +179,7 @@ export default function EmployeeTimetable() {
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
-                  <td className="p-0 pr-2">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <EmployeeTimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 1)}
                       schoolHourId={schoolHour.id}
@@ -191,7 +191,7 @@ export default function EmployeeTimetable() {
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
-                  <td className="p-0 pr-2">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <EmployeeTimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 2)}
                       schoolHourId={schoolHour.id}
@@ -203,7 +203,7 @@ export default function EmployeeTimetable() {
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
-                  <td className="p-0 pr-2">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <EmployeeTimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 3)}
                       schoolHourId={schoolHour.id}
@@ -215,7 +215,7 @@ export default function EmployeeTimetable() {
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
-                  <td className="p-0">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <EmployeeTimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 4)}
                       schoolHourId={schoolHour.id}

@@ -28,6 +28,9 @@ import ManageSubjectLists from "./pages/dashboard/admin/ManageSubjectLists";
 import EmployeeTimetablePage from "./components/timetable/EmployeeTimetablePage";
 import ManageGrades from "./pages/dashboard/employee/ManageGrades";
 import GradesPage from "./pages/dashboard/student/GradesPage";
+import UpcomingEvents from "./pages/dashboard/student/UpcomingEvents";
+import ResetPasswordPromptPage from "./pages/ResetPasswordPromptPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function App() {
   return (
@@ -37,12 +40,16 @@ function App() {
           <Route path="/" element={<HeroPage />} />
 
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/reset-password-prompt" element={<ResetPasswordPromptPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+
           <Route path="/auth/replace-first-password" element={<ProtectedRoute outlet={<ReplaceFirstPasswordPage />} />} />
 
           <Route path="/dashboard" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Dashboard />} />} />} />
           <Route path="/dashboard/settings" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Settings />} />} />} />
 
           <Route path="/dashboard/my-grades" element={<ProtectedRouteRole outlet={<DashboardRoute element={<GradesPage />} />} authorizedRoles={["student"]} />} />
+          <Route path="/dashboard/upcoming-events" element={<ProtectedRouteRole outlet={<DashboardRoute element={<UpcomingEvents />} />} authorizedRoles={["student"]} />} />
 
           <Route path="/dashboard/my-timetable" element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeeTimetablePage />} />} authorizedRoles={["employee"]} />} />
           <Route path="/dashboard/manage-grades" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageGrades />} />} authorizedRoles={["employee", "admin"]} />} />

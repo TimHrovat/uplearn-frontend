@@ -6,13 +6,24 @@ import { AuthApi } from "../../../api/auth/auth-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
+import Select from "react-select";
+import { style } from "../../../components/ReactSelectStyle";
+import makeAnimated from "react-select/animated";
+
+const animatedComponents = makeAnimated();
+
+const avalibleRoles = [
+  { value: "admin", label: "Admin" },
+  { value: "employee", label: "Employee" },
+  { value: "student", label: "Student" },
+];
 
 export default function ManageUsersCreate() {
   const [birthdate, setBirthdate] = useState(new Date());
   const name = useRef<HTMLInputElement>(null);
   const surname = useRef<HTMLInputElement>(null);
   const gsm = useRef<HTMLInputElement>(null);
-  const role = useRef<HTMLSelectElement>(null);
+  const [role, setRole] = useState("student");
   const [email, setEmail] = useState("");
 
   const [error, setError] = useState("");
@@ -21,6 +32,10 @@ export default function ManageUsersCreate() {
 
   const handleBirthdateChange = (date: Date) => {
     if (date !== null) setBirthdate(date);
+  };
+
+  const handleRoleChange = (selected: any) => {
+    setRole(selected.value);
   };
 
   const createUser = async (e: React.SyntheticEvent) => {
@@ -55,14 +70,17 @@ export default function ManageUsersCreate() {
       email: email.trim(),
       gsm: gsm.current === null ? "" : gsm.current.value.trim(),
       dateOfBirth: birthdate.toISOString(),
-      role: role.current === null ? "" : role.current.value,
+      role: role,
     };
 
     setLoading(true);
 
     await AuthApi.register(UserData)
       .catch((e) => {
-        setError(e.response.data.message ?? "Something went wrong please try again later");
+        setError(
+          e.response.data.message ??
+            "Something went wrong please try again later"
+        );
       })
       .then(() => {
         setSuccess("New user has been created");
@@ -158,15 +176,14 @@ export default function ManageUsersCreate() {
             <label className="label">
               <span className="label-text">Role:</span>
             </label>
-            <select
-              className="select select-bordered w-full"
-              defaultValue="student"
-              ref={role}
-            >
-              <option value="admin">Admin</option>
-              <option value="student">Student</option>
-              <option value="employee">Employee</option>
-            </select>
+            <Select
+              options={avalibleRoles}
+              closeMenuOnSelect={true}
+              components={animatedComponents}
+              onChange={handleRoleChange}
+              defaultValue={{ value: "student", label: "Student" }}
+              styles={style}
+            />
           </div>
           <button
             className={

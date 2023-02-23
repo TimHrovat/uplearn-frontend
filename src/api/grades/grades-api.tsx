@@ -2,6 +2,12 @@ import axios from "axios";
 
 const url = "/grades";
 
+export const gradeColors = {
+  ORAL: "text-blue-500",
+  WRITTEN: "text-red-600",
+  OTHER: "text-inherit",
+};
+
 export const GradesApi = {
   create: async (data: CreateGradeInterface) => {
     return await axios.post(url + "/create", data);

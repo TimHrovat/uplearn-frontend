@@ -20,6 +20,7 @@ export default function NavbarItems() {
       <>
         <Link to={"/dashboard"}>Timetable</Link>
         <Link to={"/dashboard/my-grades"}>Grades</Link>
+        <Link to={"/dashboard/upcoming-events"}>Upcoming Events</Link>
       </>
     );
   } else if (AuthApi.isEmployee()) {

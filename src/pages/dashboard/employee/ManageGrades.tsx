@@ -14,6 +14,7 @@ import { faAdd, faEye, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import AddGradeModal from "../../../components/modals/grades/AddGradeModal";
 import ViewGradesModal from "../../../components/modals/grades/ViewGradesModal";
 import { style } from "../../../components/ReactSelectStyle";
+import { gradeColors } from "../../../api/grades/grades-api";
 
 const animatedComponents = makeAnimated();
 let classOptions: { value: string; label: string }[] = [];
@@ -90,7 +91,7 @@ export default function ManageGrades() {
       (classOption: { name: string }) => classOption.name === selectedClass
     );
 
-    foundClass.Employee_Subject_Class.forEach(
+    foundClass.Employee_Subject_Class?.forEach(
       (item: { subjectAbbreviation: string }) => {
         subjectOptions.push({
           value: item.subjectAbbreviation,
@@ -117,13 +118,17 @@ export default function ManageGrades() {
   const calcAvgGrade = (grades: GradeInterface[]) => {
     let len = 0;
 
+    if (!grades) return "/";
+
     grades.forEach((grade) => {
       if (grade.value !== 0) len++;
     });
 
     if (len === 0) return "/";
 
-    return (grades.reduce((sum, grade) => sum + grade.value, 0) / len).toFixed(2);
+    return (grades.reduce((sum, grade) => sum + grade.value, 0) / len).toFixed(
+      2
+    );
   };
 
   return (
@@ -215,9 +220,12 @@ export default function ManageGrades() {
                         <td>{student.user.username}</td>
                         <td>
                           <div className="flex flex-row">
-                            {student.Grade.map(
+                            {student.Grade?.map(
                               (grade: GradeInterface, index: number) => (
-                                <span key={index} className="mr-2">
+                                <span
+                                  key={index}
+                                  className={`mr-2 ${gradeColors[grade.type]}`}
+                                >
                                   {grade.value === 0 ? "NPS" : grade.value}
                                 </span>
                               )

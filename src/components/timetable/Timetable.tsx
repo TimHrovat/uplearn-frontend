@@ -176,7 +176,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
             {schoolHours?.data.map(
               (schoolHour: SchoolHourInterface, index: number) => (
                 <tr key={index}>
-                  <td>
+                  <td className="border-r-[1px] border-zinc-700">
                     <div className="flex flex-col">
                       <span className="mb-2">{index + 1 + ". lesson"}</span>
                       <span>
@@ -186,7 +186,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                       </span>
                     </div>
                   </td>
-                  <td className="p-0 pr-2">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <TimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 0)}
                       schoolHourId={schoolHour.id}
@@ -197,7 +197,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                       onClose={() => refetchLessons()}
                     />
                   </td>
-                  <td className="p-0 pr-2">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <TimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 1)}
                       schoolHourId={schoolHour.id}
@@ -208,7 +208,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                       onClose={() => refetchLessons()}
                     />
                   </td>
-                  <td className="p-0 pr-2">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <TimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 2)}
                       schoolHourId={schoolHour.id}
@@ -219,7 +219,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                       onClose={() => refetchLessons()}
                     />
                   </td>
-                  <td className="p-0 pr-2">
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <TimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 3)}
                       schoolHourId={schoolHour.id}
@@ -230,7 +230,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                       onClose={() => refetchLessons()}
                     />
                   </td>
-                  <td className="p-0">
+                  <td className="p-0 border-r-[1px] border-zinc-700" >
                     <TimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 4)}
                       schoolHourId={schoolHour.id}
