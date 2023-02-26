@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 
 const queryClient = new QueryClient();
 
-axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 root.render(
