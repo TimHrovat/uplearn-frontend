@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthApi } from "../api/auth/auth-api";
+import Footer from "../components/Footer";
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -122,6 +123,7 @@ export default function ResetPasswordPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

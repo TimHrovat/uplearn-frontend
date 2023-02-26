@@ -32,7 +32,7 @@ export default function EmployeePerformance() {
     data: grades,
     refetch: refetchGrades,
   } = useQuery(
-    ["grades", selectedEmployee],
+    ["gradesPerformance", selectedEmployee],
     () => EmployeeGradesApi.getByEmployee(selectedEmployee),
     { enabled: selectedEmployee !== "" && employees?.data !== undefined}
   );
@@ -98,7 +98,7 @@ export default function EmployeePerformance() {
                 styles={style}
               />
             </div>
-            {grades?.data.grades.length === 0 ? (
+            {grades?.data.grades?.length === 0 ? (
               <span className="text-error">
                 This employee has no logged grades
               </span>
@@ -142,7 +142,7 @@ export default function EmployeePerformance() {
                 </tr>
               </thead>
               <tbody>
-                {grades?.data.grades.map(
+                {grades?.data.grades?.map(
                   (grade: EmployeeGradeInterface, index: number) => (
                     <tr key={index}>
                       <td>{index + 1}</td>

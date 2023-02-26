@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AuthApi } from "../api/auth/auth-api";
 import { Link, useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

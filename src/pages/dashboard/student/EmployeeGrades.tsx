@@ -36,7 +36,7 @@ export default function EmployeeGrades() {
   });
 
   const { data: grades, refetch: refetchGrades } = useQuery({
-    queryKey: ["grades"],
+    queryKey: ["gradesByStudent"],
     queryFn: () => EmployeeGradesApi.getByStudent(authUser?.data.Student?.id),
     enabled: authUser?.data.Student?.id !== undefined,
   });
@@ -55,6 +55,10 @@ export default function EmployeeGrades() {
   }
 
   function Stars({ employeeId }: StarsProps) {
+    if (grades?.data === undefined || grades?.data === null) return <></>;
+
+    console.log("Hello: ", grades?.data);
+
     const found = grades?.data.find(
       (grade: EmployeeGradeInterface) => grade.employeeId === employeeId
     );
@@ -98,6 +102,8 @@ export default function EmployeeGrades() {
   }
 
   function Comment({ employeeId }: CommentProps) {
+    if (grades?.data === undefined || grades?.data === null) return <></>;
+
     const found = grades?.data.find(
       (grade: EmployeeGradeInterface) => grade.employeeId === employeeId
     );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthApi } from "../api/auth/auth-api";
+import Footer from "../components/Footer";
 
 export default function ResetPasswordPromptPage() {
   const navigate = useNavigate();
@@ -62,8 +63,8 @@ export default function ResetPasswordPromptPage() {
               <button
                 className={
                   loading
-                    ? "btn btn-primary loading w-8/12"
-                    : "btn btn-primary w-8/12"
+                    ? "btn btn-primary loading w-1/2"
+                    : "btn btn-primary w-1/2"
                 }
                 onClick={sendResetPasswordEmail}
               >
@@ -73,6 +74,7 @@ export default function ResetPasswordPromptPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
