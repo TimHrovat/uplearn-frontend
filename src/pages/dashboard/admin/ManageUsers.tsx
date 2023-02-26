@@ -139,7 +139,7 @@ export default function ManageUsers() {
             <label className="label">Search users:</label>
             <input
               type="text"
-              className="input input-bordered input-primary w-full "
+              className="input input-bordered w-full "
               onChange={handleSearch}
               value={search}
             />

@@ -22,30 +22,32 @@ export default function ConfirmDeletePopup({
     <>
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
 
-      <div className="fixed w-full h-full inset-0  backdrop-brightness-50 z-50">
-        <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-base-200 p-4 rounded-xl mx-3 laptop:w-fit w-full">
-          <div className="w-full">
-            <h1 className="text-xl font-bold mb-5 flex-1 pt-2">{prompt}</h1>
-          </div>
-          <div className="mt-10">
-            <div className="flex w-full justify-end">
-              <button
-                className="btn btn-outline mr-5"
-                onClick={() => {
-                  onActiveChange?.(false);
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn btn-error "
-                onClick={() => {
-                  deleteFunction();
-                  onActiveChange?.(false);
-                }}
-              >
-                Confirm Delete
-              </button>
+      <div className="fixed w-full h-full inset-0 bg-[rgba(0,0,0,0.4)] z-50 flex content-center justify-center">
+        <div className="flex h-fit my-auto content-center justify-center">
+          <div className="bg-base-200 p-4 rounded-xl mx-3">
+            <div className="w-full whitespace-normal break-words">
+              <h1 className="text-xl font-bold mb-5 flex-1 pt-2">{prompt}</h1>
+            </div>
+            <div className="mt-10">
+              <div className="flex w-full justify-end">
+                <button
+                  className="btn btn-outline mr-5"
+                  onClick={() => {
+                    onActiveChange?.(false);
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-error "
+                  onClick={() => {
+                    deleteFunction();
+                    onActiveChange?.(false);
+                  }}
+                >
+                  Confirm Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>

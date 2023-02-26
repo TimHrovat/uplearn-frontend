@@ -29,4 +29,7 @@ export const EmployeesApi = {
 
     return await axios.patch(url + "/add-to-subject", data);
   },
+  getOngoingLesson: async (employeeId: string) => {
+    return await axios.get(url + "/ongoing-lesson/" + employeeId);
+  },
 };

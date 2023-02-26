@@ -20,8 +20,6 @@ export default function UpcomingEvents() {
     enabled: authUser?.data.Student?.class?.name !== undefined,
   });
 
-  console.log(upcoming?.data);
-
   if (status === "loading") return <Loader active={true} />;
   if (status === "error")
     return (

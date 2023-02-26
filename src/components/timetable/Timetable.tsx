@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { AuthApi } from "../../api/auth/auth-api";
+import { EventInterface, EventsApi } from "../../api/events/events-api";
 import { LessonsApi } from "../../api/lessons/lessons-api";
 import { SchoolHoursApi } from "../../api/school-hours/school-hours-api";
 import {
@@ -10,7 +11,9 @@ import {
 } from "../../pages/dashboard/admin/ManageSchoolHours";
 import ErrorAlert from "../alerts/ErrorAlert";
 import Loader from "../Loader";
+import AddEventModal from "../modals/events/AddEventModal";
 import TimetableClassSelection from "./TimetableClassSelection";
+import TimetableEvent from "./TimetableEvent";
 import TimetableLesson, { TimetableLessonProps } from "./TimetableLesson";
 import TimetableWeekPicker from "./TimetableWeekPicker";
 
@@ -24,6 +27,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
   const [className, setClassName] = useState<string>(classNameP ?? "");
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
+  const [addEventModalActive, setAddEventModalActive] = useState(false);
 
   const { status: schoolHoursStatus, data: schoolHours } = useQuery({
     queryKey: ["schoolHours"],
@@ -35,9 +39,30 @@ export default function Timetable({ classNameP }: TimetableProps) {
     data: lessons,
     refetch: refetchLessons,
   } = useQuery(
-    [className, startDate, endDate],
+    ["lessons", className, startDate, endDate],
     () =>
       LessonsApi.getLessonsByClassAndDateRange(
+        className ?? "",
+        moment(startDate).subtract(1, "d").toDate().toISOString() ?? "",
+        moment(endDate).add(1, "d").toDate().toISOString() ?? ""
+      ),
+    {
+      enabled: checkStatesInitialized(
+        classNameP ?? className,
+        startDate,
+        endDate
+      ),
+    }
+  );
+
+  const {
+    status: eventsStatus,
+    data: events,
+    refetch: refetchEvents,
+  } = useQuery(
+    ["events", className, startDate, endDate],
+    () =>
+      EventsApi.getEventsByClassAndDateRange(
         className ?? "",
         moment(startDate).subtract(1, "d").toDate().toISOString() ?? "",
         moment(endDate).add(1, "d").toDate().toISOString() ?? ""
@@ -60,7 +85,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
       />
     );
 
-  if (lessonsStatus === "error")
+  if (lessonsStatus === "error" || eventsStatus === "error")
     return (
       <ErrorAlert
         msg={"Page couldn't load"}
@@ -84,7 +109,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
         className,
       };
 
-    var result = lessons?.data.find(
+    let result = lessons?.data.find(
       (item: { schoolHourId: string; date: string }) =>
         item.schoolHourId === schoolHourId &&
         item.date.split("T")[0] ===
@@ -115,13 +140,67 @@ export default function Timetable({ classNameP }: TimetableProps) {
     return props;
   };
 
+  interface EventListInterface {
+    dayOfWeek: number;
+  }
+
+  function EventList({ dayOfWeek }: EventListInterface) {
+    let result = events?.data.filter(
+      (event: EventInterface) =>
+        event.date.split("T")[0] ===
+        moment(startDate)
+          .add(dayOfWeek, "d")
+          .toDate()
+          .toISOString()
+          .split("T")[0]
+    );
+
+    if (!result) return <></>;
+
+    return (
+      <>
+        <div className="flex flex-col">
+          {result.map((event: EventInterface, index: number) => (
+            <TimetableEvent key={index} event={event} onClose={refetchEvents}/>
+          ))}
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
+      <AddEventModal
+        active={addEventModalActive}
+        onActiveChange={(active) => {
+          setAddEventModalActive(active);
+          refetchEvents();
+        }}
+      />
       {!classNameP && !AuthApi.isStudent() ? (
-        <TimetableClassSelection
-          active={true}
-          onSelection={(cName) => setClassName(cName)}
-        />
+        !AuthApi.isAdmin() ? (
+          <TimetableClassSelection
+            active={true}
+            onSelection={(cName) => setClassName(cName)}
+          />
+        ) : (
+          <div className="flex items-center">
+            <div className="flex-1">
+              <TimetableClassSelection
+                active={true}
+                onSelection={(cName) => setClassName(cName)}
+              />
+            </div>
+            <div className="flex-1">
+              <button
+                className="btn btn-primary float-right"
+                onClick={() => setAddEventModalActive(true)}
+              >
+                Add Event
+              </button>
+            </div>
+          </div>
+        )
       ) : (
         <></>
       )}
@@ -173,6 +252,24 @@ export default function Timetable({ classNameP }: TimetableProps) {
             </tr>
           </thead>
           <tbody>
+            <tr className="p-0">
+              <td className="border-r-[1px] border-zinc-700">Events</td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={0} />
+              </td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={1} />
+              </td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={2} />
+              </td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={3} />
+              </td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={4} />
+              </td>
+            </tr>
             {schoolHours?.data.map(
               (schoolHour: SchoolHourInterface, index: number) => (
                 <tr key={index}>
@@ -230,7 +327,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                       onClose={() => refetchLessons()}
                     />
                   </td>
-                  <td className="p-0 border-r-[1px] border-zinc-700" >
+                  <td className="p-0 border-r-[1px] border-zinc-700">
                     <TimetableLesson
                       {...getTimetableLessonProps(schoolHour.id, 4)}
                       schoolHourId={schoolHour.id}

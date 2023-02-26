@@ -75,7 +75,6 @@ export default function TimetableClassSelection({
             value: classes?.data[0]?.name ?? "",
             label: classes?.data[0]?.name ?? "No options",
           }}
-          // styles={style}
         />
       </div>
     </>

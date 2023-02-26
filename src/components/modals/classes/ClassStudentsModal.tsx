@@ -205,7 +205,7 @@ export default function ClassStudentsModal({
   );
 }
 
-interface StudentInterface {
+export interface StudentInterface {
   id: string;
   user: {
     id: string;
@@ -215,4 +215,5 @@ interface StudentInterface {
     gsm: string;
     username: string;
   };
+  Absence?: any;
 }

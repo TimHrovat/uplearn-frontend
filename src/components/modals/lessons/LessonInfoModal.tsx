@@ -7,6 +7,8 @@ import ErrorAlert from "../../alerts/ErrorAlert";
 import Loader from "../../Loader";
 import ConfirmDeletePopup from "../popups/ConfirmDeletePopup";
 import Modal from "../Modal";
+import { StudentInterface } from "../classes/ClassStudentsModal";
+import { AbsencesApi } from "../../../api/absences/absences-api";
 
 export type LessonInfoModalProps = {
   active: boolean;
@@ -31,7 +33,11 @@ export default function LessonInfoModal({
     enabled: active,
   });
 
-  const { status, data: lesson } = useQuery({
+  const {
+    status,
+    data: lesson,
+    refetch,
+  } = useQuery({
     queryKey: ["lesson"],
     queryFn: () => LessonsApi.getUnique(lessonId),
     enabled: active,
@@ -61,6 +67,18 @@ export default function LessonInfoModal({
     onActiveChange(false);
   };
 
+  const createAbsence = async (studentId: string) => {
+    await AbsencesApi.create({ lessonId: lesson?.data.id, studentId });
+
+    refetch();
+  };
+
+  const deleteAbsence = async (absenceId: string) => {
+    await AbsencesApi.delete(absenceId);
+
+    refetch();
+  };
+
   return (
     <>
       <ConfirmDeletePopup
@@ -88,7 +106,7 @@ export default function LessonInfoModal({
         onActiveChange={(isActive) => onActiveChange?.(isActive)}
       >
         <div className="overflow-x-auto">
-          <table className="table w-full">
+          <table className="table w-full table-zebra">
             <tbody>
               <tr>
                 <th className="w-1/3">Subject Abbreviation: </th>
@@ -123,8 +141,60 @@ export default function LessonInfoModal({
               </tr>
               <tr>
                 <th className="w-1/3">Description: </th>
-                <td className="w-2/3 whitespace-normal break-words">{lesson?.data.description}</td>
+                <td className="w-2/3 whitespace-normal break-words">
+                  {lesson?.data.description}
+                </td>
               </tr>
+              {AuthApi.isStudent() ||
+              (AuthApi.isEmployee() &&
+                authUser?.data.Employee?.id !== lesson?.data.employeeId) ? (
+                <></>
+              ) : (
+                <>
+                  <tr>
+                    <th className="w-1/3">Present: </th>
+                    <td className="w-2/3">
+                      <div className="flex flex-row flex-wrap gap-4">
+                        {lesson?.data.class?.Student.map(
+                          (student: StudentInterface, index: number) =>
+                            student.Absence.length === 0 ? (
+                              <div
+                                key={index}
+                                className="px-4 py-2 bg-neutral rounded-lg hover:bg-error cursor-pointer hover:text-neutral"
+                                onClick={() => createAbsence(student.id)}
+                              >
+                                {`${student.user.name} ${student.user.surname}`}
+                              </div>
+                            ) : (
+                              <span key={index} className={"hidden"}></span>
+                            )
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="w-1/3">Absent: </th>
+                    <td className="w-2/3">
+                      <div className="flex flex-row flex-wrap gap-4">
+                        {lesson?.data.class?.Student.map(
+                          (student: StudentInterface, index: number) =>
+                            student.Absence.length !== 0 ? (
+                              <div
+                                key={index}
+                                className="px-4 py-2 bg-neutral rounded-lg hover:bg-accent cursor-pointer hover:text-neutral"
+                                onClick={() => deleteAbsence(student.Absence[0].id)}
+                              >
+                                {`${student.user.name} ${student.user.surname}`}
+                              </div>
+                            ) : (
+                              <span key={index} className={"hidden"}></span>
+                            )
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                </>
+              )}
             </tbody>
           </table>
         </div>

@@ -197,7 +197,7 @@ export default function SubjectEditModal({
   );
 }
 
-interface EmployeeInterface {
+export interface EmployeeInterface {
   id: string;
   user: {
     id: string;

@@ -82,8 +82,8 @@ export default function ManageUsersCreate() {
             "Something went wrong please try again later"
         );
       })
-      .then(() => {
-        setSuccess("New user has been created");
+      .then((rsp) => {
+        if (rsp) setSuccess("New user has been created");
       })
       .finally(() => {
         setLoading(false);
@@ -167,7 +167,7 @@ export default function ManageUsersCreate() {
             <DatePicker
               selected={birthdate}
               onChange={handleBirthdateChange}
-              dateFormat="yyyy-MM-dd"
+              dateFormat="dd. MM. yyyy"
               maxDate={new Date()}
               className="input input-bordered w-full"
             />

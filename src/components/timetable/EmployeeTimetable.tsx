@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { EmployeesApi } from "../../api/employees/employees-api";
+import { EventInterface, EventsApi } from "../../api/events/events-api";
 import { LessonsApi } from "../../api/lessons/lessons-api";
 import { SchoolHoursApi } from "../../api/school-hours/school-hours-api";
 import { UsersApi } from "../../api/users/users-api";
@@ -10,7 +12,11 @@ import {
 } from "../../pages/dashboard/admin/ManageSchoolHours";
 import ErrorAlert from "../alerts/ErrorAlert";
 import Loader from "../Loader";
-import EmployeeTimetableLesson, { EmployeeTimetableLessonProps } from "./EmployeeTimetableLesson";
+import LessonInfoModal from "../modals/lessons/LessonInfoModal";
+import EmployeeTimetableLesson, {
+  EmployeeTimetableLessonProps,
+} from "./EmployeeTimetableLesson";
+import TimetableEvent from "./TimetableEvent";
 import TimetableWeekPicker from "./TimetableWeekPicker";
 
 export default function EmployeeTimetable() {
@@ -18,6 +24,7 @@ export default function EmployeeTimetable() {
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
+  const [lessonInfoModalActive, setLessonInfoModalActive] = useState(false);
 
   const { status: schoolHoursStatus, data: schoolHours } = useQuery({
     queryKey: ["schoolHours"],
@@ -34,7 +41,7 @@ export default function EmployeeTimetable() {
     data: lessons,
     refetch: refetchLessons,
   } = useQuery(
-    [authUser?.data.Employee?.id, startDate, endDate],
+    ["lessons", authUser?.data.Employee?.id, startDate, endDate],
     () =>
       LessonsApi.getLessonsByEmployeeAndDateRange(
         authUser?.data.Employee.id,
@@ -48,8 +55,48 @@ export default function EmployeeTimetable() {
     }
   );
 
-  if (schoolHoursStatus === "loading" || authUserStatus === "loading") return <Loader active={true} />;
-  if (schoolHoursStatus === "error" || authUserStatus === "error" || lessonsStatus === "error")
+  const {
+    status: eventsStatus,
+    data: events,
+    refetch: refetchEvents,
+  } = useQuery(
+    ["events", authUser?.data.Employee?.id, startDate, endDate],
+    () =>
+      EventsApi.getEventsByEmployeeAndDateRange(
+        authUser?.data.Employee?.id,
+        moment(startDate).subtract(1, "d").toDate().toISOString() ?? "",
+        moment(endDate).add(1, "d").toDate().toISOString() ?? ""
+      ),
+    {
+      enabled:
+        checkStatesInitialized(startDate, endDate) &&
+        authUser?.data.Employee?.id !== undefined,
+    }
+  );
+
+  const {
+    status: ongoingLessonStatus,
+    data: ongoingLesson,
+    refetch: refetchOngoingLesson,
+  } = useQuery({
+    queryKey: ["ongoingLesson"],
+    queryFn: () => EmployeesApi.getOngoingLesson(authUser?.data.Employee?.id),
+    enabled: authUser?.data.Employee?.id !== undefined,
+  });
+
+  if (
+    schoolHoursStatus === "loading" ||
+    authUserStatus === "loading" ||
+    ongoingLessonStatus === "loading"
+  )
+    return <Loader active={true} />;
+  if (
+    schoolHoursStatus === "error" ||
+    authUserStatus === "error" ||
+    lessonsStatus === "error" ||
+    eventsStatus === "error" ||
+    ongoingLessonStatus === "error"
+  )
     return (
       <ErrorAlert
         msg={"Page couldn't load"}
@@ -63,15 +110,17 @@ export default function EmployeeTimetable() {
   };
 
   const getTimetableLessonProps = (schoolHourId: string, dayOfWeek: number) => {
-    let props: Omit<EmployeeTimetableLessonProps, "schoolHourId" | "date" | "onClose"> =
-      {
-        subject: "",
-        teacher: "",
-        classroom: "",
-        lessonId: "",
-        type: "",
-        employeeId: "",
-      };
+    let props: Omit<
+      EmployeeTimetableLessonProps,
+      "schoolHourId" | "date" | "onClose"
+    > = {
+      subject: "",
+      teacher: "",
+      classroom: "",
+      lessonId: "",
+      type: "",
+      employeeId: "",
+    };
 
     var result = lessons?.data.find(
       (item: { schoolHourId: string; date: string }) =>
@@ -104,11 +153,68 @@ export default function EmployeeTimetable() {
     return props;
   };
 
+  interface EventListInterface {
+    dayOfWeek: number;
+  }
+
+  function EventList({ dayOfWeek }: EventListInterface) {
+    let result = events?.data.filter(
+      (event: EventInterface) =>
+        event.date.split("T")[0] ===
+        moment(startDate)
+          .add(dayOfWeek, "d")
+          .toDate()
+          .toISOString()
+          .split("T")[0]
+    );
+
+    if (!result) return <></>;
+
+    return (
+      <>
+        <div className="flex flex-col">
+          {result.map((event: EventInterface, index: number) => (
+            <TimetableEvent key={index} event={event} onClose={refetchEvents} />
+          ))}
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
-      <TimetableWeekPicker
-        onSelection={(startDate, endDate) => setNewWeek(startDate, endDate)}
+      <LessonInfoModal
+        active={lessonInfoModalActive}
+        lessonId={ongoingLesson?.data.id}
+        onActiveChange={(active) => {
+          setLessonInfoModalActive(active);
+          refetchLessons();
+          refetchOngoingLesson();
+        }}
       />
+      {ongoingLesson?.data === "" ? (
+        <TimetableWeekPicker
+          onSelection={(startDate, endDate) => setNewWeek(startDate, endDate)}
+        />
+      ) : (
+        <div className="flex items-center">
+          <div className="flex-1">
+            <TimetableWeekPicker
+              onSelection={(startDate, endDate) =>
+                setNewWeek(startDate, endDate)
+              }
+            />
+          </div>
+          <div className="flex-1">
+            <button
+              className="btn btn-primary float-right"
+              onClick={() => setLessonInfoModalActive(true)}
+            >
+              Current Lesson
+            </button>
+          </div>
+        </div>
+      )}
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
           <thead>
@@ -154,9 +260,27 @@ export default function EmployeeTimetable() {
             </tr>
           </thead>
           <tbody>
+            <tr className="p-0">
+              <td className="border-r-[1px] border-zinc-700">Events</td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={0} />
+              </td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={1} />
+              </td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={2} />
+              </td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={3} />
+              </td>
+              <td className="p-0 border-r-[1px] border-zinc-700">
+                <EventList dayOfWeek={4} />
+              </td>
+            </tr>
             {schoolHours?.data.map(
               (schoolHour: SchoolHourInterface, index: number) => (
-                <tr key={index} >
+                <tr key={index}>
                   <td className="border-r-[1px] border-zinc-700">
                     <div className="flex flex-col">
                       <span className="mb-2">{index + 1 + ". lesson"}</span>
@@ -175,7 +299,10 @@ export default function EmployeeTimetable() {
                         .add(0, "d")
                         .toDate()
                         .toISOString()}
-                      onClose={() => refetchLessons()}
+                      onClose={() => {
+                        refetchLessons();
+                        refetchOngoingLesson();
+                      }}
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
@@ -187,7 +314,10 @@ export default function EmployeeTimetable() {
                         .add(1, "d")
                         .toDate()
                         .toISOString()}
-                      onClose={() => refetchLessons()}
+                      onClose={() => {
+                        refetchLessons();
+                        refetchOngoingLesson();
+                      }}
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
@@ -199,7 +329,10 @@ export default function EmployeeTimetable() {
                         .add(2, "d")
                         .toDate()
                         .toISOString()}
-                      onClose={() => refetchLessons()}
+                      onClose={() => {
+                        refetchLessons();
+                        refetchOngoingLesson();
+                      }}
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
@@ -211,7 +344,10 @@ export default function EmployeeTimetable() {
                         .add(3, "d")
                         .toDate()
                         .toISOString()}
-                      onClose={() => refetchLessons()}
+                      onClose={() => {
+                        refetchLessons();
+                        refetchOngoingLesson();
+                      }}
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
@@ -223,7 +359,10 @@ export default function EmployeeTimetable() {
                         .add(4, "d")
                         .toDate()
                         .toISOString()}
-                      onClose={() => refetchLessons()}
+                      onClose={() => {
+                        refetchLessons();
+                        refetchOngoingLesson();
+                      }}
                       employeeId={authUser?.data.Employee?.id}
                     />
                   </td>
