@@ -11,7 +11,16 @@ export default function HeroPage() {
             <h1 className="text-5xl font-bold">UpLearn</h1>
             <p className="py-6">
               UpLearn is a school organization software developed as a
-              graduation project at Vegova, Ljubljana.
+              graduation project at{" "}
+              <a
+                href="https://www.vegova.si/"
+                target={"_blank"}
+                rel="noreferrer"
+                className="link link-hover"
+              >
+                Vegova, Ljubljana
+              </a>
+              .
             </p>
             <Link to={"/login"}>
               <button className="btn btn-primary">Get Started</button>
