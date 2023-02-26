@@ -34,6 +34,9 @@ import UpcomingGradings from "./pages/dashboard/student/UpcomingGradings";
 import UpcomingEvents from "./pages/dashboard/student/UpcomingEvents";
 import Absences from "./pages/dashboard/student/Absences";
 import ManageAbsences from "./pages/dashboard/employee/ManageAbsences";
+import EmployeeGrades from "./pages/dashboard/student/EmployeeGrades";
+import MyPerformance from "./pages/dashboard/employee/MyPerformance";
+import EmployeePerformance from "./pages/dashboard/admin/EmployeePerformance";
 
 function App() {
   return (
@@ -67,10 +70,18 @@ function App() {
             path="/dashboard/absences"
             element={<ProtectedRouteRole outlet={<DashboardRoute element={<Absences />} />} authorizedRoles={["student"]} />}
           />
+          <Route
+            path="/dashboard/grade-employees"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeeGrades />} />} authorizedRoles={["student"]} />}
+          />
 
           <Route
             path="/dashboard/my-timetable"
             element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeeTimetablePage />} />} authorizedRoles={["employee"]} />}
+          />
+          <Route
+            path="/dashboard/my-performance"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<MyPerformance />} />} authorizedRoles={["employee"]} />}
           />
           <Route
             path="/dashboard/manage-grades"
@@ -141,6 +152,11 @@ function App() {
           <Route
             path="/dashboard/manage-users/create"
             element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsersCreate />} />} authorizedRoles={["admin"]} />}
+          />
+
+          <Route
+            path="/dashboard/employee-performance"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeePerformance />} />} authorizedRoles={["admin"]} />}
           />
 
           <Route path="*" element={<NotFoundPage />} />
