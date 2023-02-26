@@ -1,12 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { EventsApi } from "../../../api/events/events-api";
-import { LessonsApi } from "../../../api/lessons/lessons-api";
+import {
+  AbsenceInterface,
+  AbsencesApi,
+} from "../../../api/absences/absences-api";
 import { UsersApi } from "../../../api/users/users-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import Loader from "../../../components/Loader";
 
-export default function UpcomingEvents() {
+export default function Absences() {
   const [error, setError] = useState("");
 
   const { status, data: authUser } = useQuery({
@@ -14,10 +16,10 @@ export default function UpcomingEvents() {
     queryFn: UsersApi.getAuthenticatedUser,
   });
 
-  const { data: upcoming } = useQuery({
-    queryKey: ["upcomingEvents"],
-    queryFn: () => EventsApi.getUpcoming(authUser?.data.Student?.class?.name),
-    enabled: authUser?.data.Student?.class?.name !== undefined,
+  const { data: absences } = useQuery({
+    queryKey: ["absences"],
+    queryFn: () => AbsencesApi.getByStudent(authUser?.data.Student?.id),
+    enabled: authUser?.data.Student?.id !== undefined,
   });
 
   if (status === "loading") return <Loader active={true} />;
@@ -43,39 +45,35 @@ export default function UpcomingEvents() {
     <>
       <div className="flex flex-col justify-center items-center">
         <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Upcoming Events</h1>
+          <h1 className="text-xl font-bold mb-5">Absences</h1>
+          <span className="mr-5">{`Excused: ${absences?.data.excused ?? "--"}`}</span>
+          <span>{`Unexcused: ${absences?.data.unexcused ?? "--"}`}</span>
           <div className="overflow-x-auto">
             <table className="table table-zebra w-full">
               <thead>
                 <tr>
                   <td></td>
-                  <th>Type</th>
+                  <th>State</th>
+                  <th>Subject</th>
                   <th>Date</th>
-                  <th>Time</th>
-                  <th>Description</th>
                 </tr>
               </thead>
               <tbody>
-                {upcoming?.data.length === 0 ? (
+                {absences?.data.lessons?.length === 0 ? (
                   <tr className="text-center">
-                    <td colSpan={5}>There are no upcoming events</td>
+                    <td colSpan={4}>There are no absences</td>
                   </tr>
                 ) : (
-                  upcoming?.data.map((event: EventInterface, index: number) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{event.type}</td>
-                      <td>{toDateString(event.date)}</td>
-                      <td>
-                        {event.type === "ACT"
-                          ? `${event.startTime}-${event.endTime}`
-                          : "/"}
-                      </td>
-                      <td className="whitespace-normal break-words">
-                        {event.description}
-                      </td>
-                    </tr>
-                  ))
+                  absences?.data.lessons?.map(
+                    (absence: AbsenceInterface, index: number) => (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{absence.state}</td>
+                        <td>{absence.lesson.subjectAbbreviation}</td>
+                        <td>{toDateString(absence.lesson.date)}</td>
+                      </tr>
+                    )
+                  )
                 )}
               </tbody>
             </table>
@@ -84,12 +82,4 @@ export default function UpcomingEvents() {
       </div>
     </>
   );
-}
-
-interface EventInterface {
-  type: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  description: string;
 }

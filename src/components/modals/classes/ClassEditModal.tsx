@@ -44,9 +44,11 @@ export default function ClassEditModal({
     status: classesStatus,
     data: currentClass,
     refetch,
+    remove: removeClasses
   } = useQuery({
     queryKey: ["class-edit"],
     queryFn: () => ClassesApi.getUnique(modalClassName),
+    enabled: active,
   });
 
   const { status: subjectListStatus, data: subjectLists } = useQuery({
@@ -58,23 +60,27 @@ export default function ClassEditModal({
     status: nonClassTeachersStatus,
     data: nonClassTeachers,
     refetch: refetchClassTeachers,
+    remove: removeClassTeachers
   } = useQuery({
     queryKey: ["nonClassTeachers"],
     queryFn: EmployeesApi.getNonClassTeachers,
+    enabled: active,
   });
 
   const {
     status: nonSubstituteClassTeachersStatus,
     data: nonSubstituteClassTeachers,
     refetch: refetchSubstituteClassTeachers,
+    remove: removeSubstituteClassTeachers
   } = useQuery({
     queryKey: ["nonSubstituteClassTeachers"],
     queryFn: EmployeesApi.getNonSubstituteClassTeachers,
+    enabled: active,
   });
 
   useEffect(() => {
     refetch();
-  }, [active, refetch]);
+  }, [active, refetch, modalClassName]);
 
   if (!active) return <></>;
 
@@ -232,6 +238,9 @@ export default function ClassEditModal({
         active={active}
         title={"Edit - " + modalClassName}
         onActiveChange={(isActive) => {
+          removeClassTeachers();
+          removeClasses();
+          removeSubstituteClassTeachers();
           onActiveChange?.(isActive);
         }}
       >

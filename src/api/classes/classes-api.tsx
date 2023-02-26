@@ -26,6 +26,9 @@ export const ClassesApi = {
   },
   getByEmployee: async (employeeId: string) => {
     return await axios.get(url + "/by-employee/" + employeeId);
+  },
+  getByClassTeacher: async (employeeId: string) => {
+    return await axios.get(url + "/by-class-teacher/" + employeeId);
   }
 };
 

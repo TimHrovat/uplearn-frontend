@@ -25,6 +25,9 @@ export const EventsApi = {
       `${url}/events-by-employee-and-date-range/${employeeId}/${startDate}/${endDate}`
     );
   },
+  getUpcoming: async (className: string) => {
+    return await axios.get(url + "/upcoming/" + className);
+  },
   delete: async (id: string) => {
     return await axios.delete(url + "/" + id);
   },

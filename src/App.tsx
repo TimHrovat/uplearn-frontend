@@ -28,9 +28,12 @@ import ManageSubjectLists from "./pages/dashboard/admin/ManageSubjectLists";
 import EmployeeTimetablePage from "./components/timetable/EmployeeTimetablePage";
 import ManageGrades from "./pages/dashboard/employee/ManageGrades";
 import GradesPage from "./pages/dashboard/student/GradesPage";
-import UpcomingEvents from "./pages/dashboard/student/UpcomingEvents";
 import ResetPasswordPromptPage from "./pages/ResetPasswordPromptPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import UpcomingGradings from "./pages/dashboard/student/UpcomingGradings";
+import UpcomingEvents from "./pages/dashboard/student/UpcomingEvents";
+import Absences from "./pages/dashboard/student/Absences";
+import ManageAbsences from "./pages/dashboard/employee/ManageAbsences";
 
 function App() {
   return (
@@ -48,31 +51,97 @@ function App() {
           <Route path="/dashboard" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Dashboard />} />} />} />
           <Route path="/dashboard/settings" element={<ProtectedRouteAuthenticated outlet={<DashboardRoute element={<Settings />} />} />} />
 
-          <Route path="/dashboard/my-grades" element={<ProtectedRouteRole outlet={<DashboardRoute element={<GradesPage />} />} authorizedRoles={["student"]} />} />
-          <Route path="/dashboard/upcoming-events" element={<ProtectedRouteRole outlet={<DashboardRoute element={<UpcomingEvents />} />} authorizedRoles={["student"]} />} />
+          <Route
+            path="/dashboard/my-grades"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<GradesPage />} />} authorizedRoles={["student"]} />}
+          />
+          <Route
+            path="/dashboard/upcoming-gradings"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<UpcomingGradings />} />} authorizedRoles={["student"]} />}
+          />
+          <Route
+            path="/dashboard/upcoming-events"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<UpcomingEvents />} />} authorizedRoles={["student"]} />}
+          />
+          <Route
+            path="/dashboard/absences"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<Absences />} />} authorizedRoles={["student"]} />}
+          />
 
-          <Route path="/dashboard/my-timetable" element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeeTimetablePage />} />} authorizedRoles={["employee"]} />} />
-          <Route path="/dashboard/manage-grades" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageGrades />} />} authorizedRoles={["employee", "admin"]} />} />
+          <Route
+            path="/dashboard/my-timetable"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeeTimetablePage />} />} authorizedRoles={["employee"]} />}
+          />
+          <Route
+            path="/dashboard/manage-grades"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageGrades />} />} authorizedRoles={["employee", "admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-absences"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageAbsences />} />} authorizedRoles={["employee", "admin"]} />}
+          />
 
-          <Route path="/dashboard/manage-classrooms" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassrooms />} />} authorizedRoles={["admin"]} />} />
-          <Route path="/dashboard/manage-classrooms/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassroomsCreate />} />} authorizedRoles={["admin"]} />} />
+          <Route
+            path="/dashboard/manage-classrooms"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassrooms />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-classrooms/create"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassroomsCreate />} />} authorizedRoles={["admin"]} />}
+          />
 
-          <Route path="/dashboard/manage-classes" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClasses />} />} authorizedRoles={["admin"]} />} />
-          <Route path="/dashboard/manage-classes/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassesCreate />} />} authorizedRoles={["admin"]} />} />
+          <Route
+            path="/dashboard/manage-classes"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClasses />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-classes/create"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageClassesCreate />} />} authorizedRoles={["admin"]} />}
+          />
 
-          <Route path="/dashboard/manage-school-hours" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSchoolHours />} />} authorizedRoles={["admin"]} />} />
-          <Route path="/dashboard/manage-school-hours/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSchoolHoursCreate />} />} authorizedRoles={["admin"]} />} />
+          <Route
+            path="/dashboard/manage-school-hours"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSchoolHours />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-school-hours/create"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSchoolHoursCreate />} />} authorizedRoles={["admin"]} />}
+          />
 
-          <Route path="/dashboard/manage-students" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageStudents />} />} authorizedRoles={["admin"]} />} />
-          <Route path="/dashboard/manage-employees" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageEmployees />} />} authorizedRoles={["admin"]} />} />
+          <Route
+            path="/dashboard/manage-students"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageStudents />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-employees"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageEmployees />} />} authorizedRoles={["admin"]} />}
+          />
 
-          <Route path="/dashboard/manage-subjects" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjects />} />} authorizedRoles={["admin"]} />} />
-          <Route path="/dashboard/manage-subjects/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectsCreate />} />} authorizedRoles={["admin"]} />} />
-          <Route path="/dashboard/manage-subjects/lists" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectLists />} />} authorizedRoles={["admin"]} />} />
-          <Route path="/dashboard/manage-subjects/create-list" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectsCreateList />} />} authorizedRoles={["admin"]} />} />
+          <Route
+            path="/dashboard/manage-subjects"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjects />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-subjects/create"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectsCreate />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-subjects/lists"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectLists />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-subjects/create-list"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSubjectsCreateList />} />} authorizedRoles={["admin"]} />}
+          />
 
-          <Route path="/dashboard/manage-users" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsers />} />} authorizedRoles={["admin"]} />} />
-          <Route path="/dashboard/manage-users/create" element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsersCreate />} />} authorizedRoles={["admin"]} />} />
+          <Route
+            path="/dashboard/manage-users"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsers />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-users/create"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsersCreate />} />} authorizedRoles={["admin"]} />}
+          />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

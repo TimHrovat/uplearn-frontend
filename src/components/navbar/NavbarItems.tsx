@@ -11,6 +11,7 @@ export default function NavbarItems() {
         <Link to={"/dashboard/manage-subjects"}>Subjects</Link>
         <Link to={"/dashboard/manage-users"}>Users</Link>
         <Link to={"/dashboard/manage-grades"}>Gradebook</Link>
+        <Link to={"/dashboard/manage-absences"}>Absences</Link>
         <Link to={"/dashboard/manage-classrooms"}>Classrooms</Link>
         <Link to={"/dashboard/manage-school-hours"}>School Hours</Link>
       </>
@@ -20,6 +21,8 @@ export default function NavbarItems() {
       <>
         <Link to={"/dashboard"}>Timetable</Link>
         <Link to={"/dashboard/my-grades"}>Grades</Link>
+        <Link to={"/dashboard/absences"}>Absences</Link>
+        <Link to={"/dashboard/upcoming-gradings"}>Upcoming Gradings</Link>
         <Link to={"/dashboard/upcoming-events"}>Upcoming Events</Link>
       </>
     );
@@ -29,9 +32,10 @@ export default function NavbarItems() {
         <Link to={"/dashboard/my-timetable"}>My Timetable</Link>
         <Link to={"/dashboard"}>All Timetables</Link>
         <Link to={"/dashboard/manage-grades"}>Gradebook</Link>
+        <Link to={"/dashboard/manage-absences"}>Absences</Link>
       </>
     );
   }
 
-  return <Navigate to={"/login"}/>;
+  return <Navigate to={"/login"} />;
 }

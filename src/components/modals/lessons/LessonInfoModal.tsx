@@ -106,29 +106,30 @@ export default function LessonInfoModal({
         onActiveChange={(isActive) => onActiveChange?.(isActive)}
       >
         <div className="overflow-x-auto">
-          <table className="table w-full table-zebra">
+          <table className="table w-full !table-zebra">
+            <thead className="hidden"></thead>
             <tbody>
               <tr>
-                <th className="w-1/3">Subject Abbreviation: </th>
-                <td className="w-2/3">
+                <th className="w-1/3 !bg-base-100">Subject Abbreviation: </th>
+                <td className="w-2/3 !bg-base-100">
                   {lesson?.data.subjectAbbreviation === null
                     ? "Substitute"
                     : lesson?.data.subjectAbbreviation}
                 </td>
               </tr>
               <tr>
-                <th className="w-1/3">Full Subject Name: </th>
-                <td className="w-2/3">
+                <th className="w-1/3 !bg-base-200">Full Subject Name: </th>
+                <td className="w-2/3 !bg-base-200">
                   {lesson?.data.employee_Subject?.subject.name ?? "Substitute"}
                 </td>
               </tr>
               <tr>
-                <th className="w-1/3">Type: </th>
-                <td className="w-2/3">{lesson?.data.type.toLowerCase()}</td>
+                <th className="w-1/3 !bg-base-100">Type: </th>
+                <td className="w-2/3 !bg-base-100">{lesson?.data.type.toLowerCase()}</td>
               </tr>
               <tr>
-                <th className="w-1/3">Teacher: </th>
-                <td className="w-2/3">
+                <th className="w-1/3 !bg-base-200">Teacher: </th>
+                <td className="w-2/3 !bg-base-200">
                   {lesson?.data.employee_Subject?.employee.user.name ===
                   undefined
                     ? `${lesson?.data.substituteEmployee.user.name} ${lesson?.data.substituteEmployee.user.surname}`
@@ -136,24 +137,24 @@ export default function LessonInfoModal({
                 </td>
               </tr>
               <tr>
-                <th className="w-1/3">Classroom: </th>
-                <td className="w-2/3">{lesson?.data.classroomName}</td>
+                <th className="w-1/3 !bg-base-100">Classroom: </th>
+                <td className="w-2/3 !bg-base-100">{lesson?.data.classroomName}</td>
               </tr>
               <tr>
-                <th className="w-1/3">Description: </th>
-                <td className="w-2/3 whitespace-normal break-words">
+                <th className="w-1/3 !bg-base-200">Description: </th>
+                <td className="w-2/3 !bg-base-200 whitespace-normal break-words">
                   {lesson?.data.description}
                 </td>
               </tr>
               {AuthApi.isStudent() ||
               (AuthApi.isEmployee() &&
                 authUser?.data.Employee?.id !== lesson?.data.employeeId) ? (
-                <></>
+                <tr className="hidden"></tr>
               ) : (
                 <>
                   <tr>
-                    <th className="w-1/3">Present: </th>
-                    <td className="w-2/3">
+                    <th className="w-1/3 !bg-base-100">Present: </th>
+                    <td className="w-2/3 !bg-base-100">
                       <div className="flex flex-row flex-wrap gap-4">
                         {lesson?.data.class?.Student.map(
                           (student: StudentInterface, index: number) =>
@@ -173,8 +174,8 @@ export default function LessonInfoModal({
                     </td>
                   </tr>
                   <tr>
-                    <th className="w-1/3">Absent: </th>
-                    <td className="w-2/3">
+                    <th className="w-1/3 !bg-base-200">Absent: </th>
+                    <td className="w-2/3 !bg-base-200">
                       <div className="flex flex-row flex-wrap gap-4">
                         {lesson?.data.class?.Student.map(
                           (student: StudentInterface, index: number) =>
@@ -182,7 +183,9 @@ export default function LessonInfoModal({
                               <div
                                 key={index}
                                 className="px-4 py-2 bg-neutral rounded-lg hover:bg-accent cursor-pointer hover:text-neutral"
-                                onClick={() => deleteAbsence(student.Absence[0].id)}
+                                onClick={() =>
+                                  deleteAbsence(student.Absence[0].id)
+                                }
                               >
                                 {`${student.user.name} ${student.user.surname}`}
                               </div>

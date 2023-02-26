@@ -73,14 +73,18 @@ export default function ManageClasses() {
           setAssignTeacherToSubjectModalActive(active)
         }
       />
-      <ClassEditModal
-        active={classEditModalActive}
-        modalClassName={modalClassName}
-        onActiveChange={(active) => {
-          setClassEditModalActive(active);
-          refetch();
-        }}
-      />
+      {classEditModalActive ? (
+        <ClassEditModal
+          active={classEditModalActive}
+          modalClassName={modalClassName}
+          onActiveChange={(active) => {
+            setClassEditModalActive(active);
+            refetch();
+          }}
+        />
+      ) : (
+        <></>
+      )}
       <ClassTimetableModal
         active={classTimetableModalActive}
         modalClassName={modalClassName}
@@ -172,8 +176,8 @@ export default function ManageClasses() {
                       <button
                         className="btn btn-warning btn-outline"
                         onClick={() => {
-                          setClassEditModalActive(true);
                           setModalClassName(c.name);
+                          setClassEditModalActive(true);
                         }}
                       >
                         <FontAwesomeIcon icon={faPenToSquare} size="lg" />
@@ -183,8 +187,8 @@ export default function ManageClasses() {
                       <button
                         className="btn btn-error"
                         onClick={() => {
-                          setConfirmDeletePopupActive(true);
                           setModalClassName(c.name);
+                          setConfirmDeletePopupActive(true);
                         }}
                       >
                         <FontAwesomeIcon icon={faTrashCan} size="lg" />
