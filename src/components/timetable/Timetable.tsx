@@ -161,7 +161,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
       <>
         <div className="flex flex-col">
           {result.map((event: EventInterface, index: number) => (
-            <TimetableEvent key={index} event={event} onClose={refetchEvents}/>
+            <TimetableEvent key={index} event={event} onClose={refetchEvents} />
           ))}
         </div>
       </>
@@ -170,6 +170,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
 
   return (
     <>
+      <Loader active={lessonsStatus === "loading"} />
       <AddEventModal
         active={addEventModalActive}
         onActiveChange={(active) => {
