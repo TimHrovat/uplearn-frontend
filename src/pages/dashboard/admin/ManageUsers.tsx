@@ -65,9 +65,14 @@ export default function ManageUsers() {
     );
 
   const deleteUser = async (id: string) => {
-    await UsersApi.delete(id).catch((e) => {
-      setError(e.response.data.message ?? e.message);
-    });
+    setLoading(true);
+    await UsersApi.delete(id)
+      .catch((e) => {
+        setError(e.response.data.message ?? e.message);
+      })
+      .then((res) => {
+        if (res) setSuccess("Credentials sent successfully");
+      });
   };
 
   const resendCredentials = async (id: string) => {
@@ -96,6 +101,7 @@ export default function ManageUsers() {
 
   return (
     <>
+      <Loader active={loading} />;
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
       <SuccessAlert
         msg={success}
