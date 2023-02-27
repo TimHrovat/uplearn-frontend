@@ -92,14 +92,14 @@ export default function AddLessonModal({
   );
 
   subjectOptions = [];
-  currentClass?.data.subjectList.Subject_SubjectList.forEach(
+  currentClass?.data.subjectList?.Subject_SubjectList?.forEach(
     (subj: SubjectInterface) => {
-      currentClass?.data.Employee_Subject_Class.forEach(
+      currentClass?.data.Employee_Subject_Class?.forEach(
         (assignedSubject: SubjectWithAssignedTeacher) => {
           if (
             subj.subject.abbreviation === assignedSubject.subjectAbbreviation
           ) {
-            const user = assignedSubject.employee_Subject.employee.user;
+            const user = assignedSubject.employee_Subject?.employee?.user;
 
             const data = {
               value: {

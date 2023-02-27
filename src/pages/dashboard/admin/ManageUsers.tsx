@@ -70,8 +70,8 @@ export default function ManageUsers() {
       .catch((e) => {
         setError(e.response.data.message ?? e.message);
       })
-      .then((res) => {
-        if (res) setSuccess("Credentials sent successfully");
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -101,7 +101,7 @@ export default function ManageUsers() {
 
   return (
     <>
-      <Loader active={loading} />;
+      <Loader active={loading} />
       <ErrorAlert msg={error} onVisibilityChange={(msg) => setError(msg)} />
       <SuccessAlert
         msg={success}
