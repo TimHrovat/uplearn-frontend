@@ -22,7 +22,7 @@ export default function LoginPage() {
       password: password,
     })
       .catch((e) => {
-        setError(e.response.data.message ?? e.message);
+        setError(e.response?.data?.message ?? e.message);
       })
       .then(() => {
         if (AuthApi.isAuthenticatedStrict()) {

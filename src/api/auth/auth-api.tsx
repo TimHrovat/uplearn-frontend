@@ -4,56 +4,68 @@ const url = "/auth";
 
 export const AuthApi = {
   login: async function (userData: { username: string; password: string }) {
-    return await axios.post(url + "/login", userData);
+    const rsp = await axios.post(url + "/login", userData);
+
+    if (rsp) localStorage.setItem("token", rsp.data.token);
+
+    return rsp;
   },
   logout: async function () {
-    return await axios.get(url + "/logout");
+    const rsp = await axios.get(url + "/logout");
+
+    if (rsp) localStorage.setItem("token", rsp.data.token);
+
+    return rsp;
   },
   replaceFirstPassword: async function (newPassword: string) {
-    return await axios.patch(url + "/replace-first-password", {
+    const rsp = await axios.patch(url + "/replace-first-password", {
       password: newPassword,
     });
+
+    if (rsp) localStorage.setItem("token", rsp.data.token);
+
+    return rsp;
   },
   getJwtPayload: getJwtPayload,
   isAuthenticated: function () {
     const token = getJwtPayload("token");
 
-    if (token !== undefined && !token.firstPasswordReplaced) return true;
+    if (token !== null && !token.firstPasswordReplaced) return true;
 
     return false;
   },
   isAuthenticatedStrict: function () {
     const token = getJwtPayload("token");
 
-    if (token !== undefined && token.firstPasswordReplaced) return true;
+    if (token !== null && token.firstPasswordReplaced) return true;
 
     return false;
   },
   isAdmin: function () {
     const token = getJwtPayload("token");
 
-    if (token !== undefined && token.role === "admin") return true;
+    if (token !== null && token.role === "admin") return true;
 
     return false;
   },
   isStudent: function () {
     const token = getJwtPayload("token");
 
-    if (token !== undefined && token.role === "student") return true;
+    if (token !== null && token.role === "student") return true;
 
     return false;
   },
   isEmployee: function () {
     const token = getJwtPayload("token");
 
-    if (token !== undefined && token.role === "employee") return true;
+    if (token !== null && token.role === "employee") return true;
 
     return false;
   },
   getRole: function () {
     const token = getJwtPayload("token");
 
-    if (token !== undefined && token.role) return token.role;
+    if (token !== null && token.role) return token.role;
 
     return null;
   },
@@ -79,23 +91,29 @@ export const AuthApi = {
 };
 
 function getJwtPayload(name: string) {
-  const value = `; ${document.cookie}`;
-  try {
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      const popped = parts.pop();
+  // const value = `; ${document.cookie}`;
+  // try {
+  //   const parts = value.split(`; ${name}=`);
+  //   if (parts.length === 2) {
+  //     const popped = parts.pop();
 
-      if (!popped) return null;
+  //     if (!popped) return null;
 
-      const jwtToken = popped.split(";").shift()?.substring(6);
+  //     const jwtToken = popped.split(";").shift()?.substring(6);
 
-      if (!jwtToken) return null;
+  //     if (!jwtToken) return null;
 
-      return parseJwt(jwtToken);
-    }
-  } catch (e) {
-    return null;
-  }
+  //     return parseJwt(jwtToken);
+  //   }
+  // } catch (e) {
+  //   return null;
+  // }
+
+  const token = localStorage.getItem("token");
+
+  if (token === "" || token === null || token === "undefined") return null;
+
+  return parseJwt(token);
 }
 
 function parseJwt(token: string) {

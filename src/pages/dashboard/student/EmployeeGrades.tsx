@@ -57,8 +57,6 @@ export default function EmployeeGrades() {
   function Stars({ employeeId }: StarsProps) {
     if (grades?.data === undefined || grades?.data === null) return <></>;
 
-    console.log("Hello: ", grades?.data);
-
     const found = grades?.data.find(
       (grade: EmployeeGradeInterface) => grade.employeeId === employeeId
     );

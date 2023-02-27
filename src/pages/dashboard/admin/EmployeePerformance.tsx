@@ -77,9 +77,6 @@ export default function EmployeePerformance() {
     );
   }
 
-  console.log(grades?.data);
-  console.log(selectedEmployee);
-
   if (grades?.data === undefined || grades?.data.grades?.length === 0)
     return (
       <>
