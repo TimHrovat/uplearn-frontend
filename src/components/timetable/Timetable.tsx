@@ -60,7 +60,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
     data: events,
     refetch: refetchEvents,
   } = useQuery(
-    ["events", className, startDate, endDate],
+    ["events", className, startDate, endDate, addEventModalActive],
     () =>
       EventsApi.getEventsByClassAndDateRange(
         className ?? "",
@@ -174,7 +174,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
         active={addEventModalActive}
         onActiveChange={(active) => {
           setAddEventModalActive(active);
-          refetchEvents();
+          // refetchEvents();
         }}
       />
       {!classNameP && !AuthApi.isStudent() ? (
