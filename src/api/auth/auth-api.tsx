@@ -8,12 +8,16 @@ export const AuthApi = {
 
     if (rsp) localStorage.setItem("token", rsp.data.token);
 
+    axios.defaults.headers.common["Authorization"] = rsp.data.token;
+
     return rsp;
   },
   logout: async function () {
     const rsp = await axios.get(url + "/logout");
 
     if (rsp) localStorage.setItem("token", rsp.data.token);
+
+    axios.defaults.headers.common["Authorization"] = null;
 
     return rsp;
   },
@@ -23,6 +27,8 @@ export const AuthApi = {
     });
 
     if (rsp) localStorage.setItem("token", rsp.data.token);
+
+    axios.defaults.headers.common["Authorization"] = rsp.data.token;
 
     return rsp;
   },
