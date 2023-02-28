@@ -1,11 +1,14 @@
 import {
   faBook,
   faCalendar,
+  faCalendarDays,
   faChalkboardTeacher,
   faChartSimple,
   faClock,
   faDoorOpen,
+  faMasksTheater,
   faScroll,
+  faStar,
   faUsers,
   faUsersRectangle,
   faUserXmark,
@@ -102,15 +105,35 @@ export default function NavbarItems() {
           </span>
           <span className="base-5/6">Upcoming Gradings</span>
         </Link>
-        <Link to={"/dashboard/upcoming-events"}>Upcoming Events</Link>
-        <Link to={"/dashboard/grade-employees"}>Grade Employees</Link>
+        <Link to={"/dashboard/upcoming-events"}>
+          <span className="base-1/6 text-left mr-3 w-5">
+            <FontAwesomeIcon icon={faMasksTheater} size="lg" />
+          </span>
+          <span className="base-5/6">Upcoming Events</span>
+        </Link>
+        <Link to={"/dashboard/grade-employees"}>
+          <span className="base-1/6 text-left mr-3 w-5">
+            <FontAwesomeIcon icon={faStar} size="lg" />
+          </span>
+          <span className="base-5/6">Grade Employees</span>
+        </Link>
       </>
     );
   } else if (AuthApi.isEmployee()) {
     return (
       <>
-        <Link to={"/dashboard/my-timetable"}>My Timetable</Link>
-        <Link to={"/dashboard"}>All Timetables</Link>
+        <Link to={"/dashboard/my-timetable"}>
+          <span className="base-1/6 text-left mr-3 w-5">
+            <FontAwesomeIcon icon={faCalendar} size="lg" />
+          </span>
+          <span className="base-5/6">My Timetable</span>
+        </Link>
+        <Link to={"/dashboard"}>
+          <span className="base-1/6 text-left mr-3 w-5">
+            <FontAwesomeIcon icon={faCalendarDays} size="lg" />
+          </span>
+          <span className="base-5/6">All Timetables</span>
+        </Link>
         <Link to={"/dashboard/manage-grades"}>
           <span className="base-1/6 text-left mr-3 w-5">
             <FontAwesomeIcon icon={faBook} size="lg" />
