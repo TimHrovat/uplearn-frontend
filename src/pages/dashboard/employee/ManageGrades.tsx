@@ -10,11 +10,12 @@ import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import { StudentsApi } from "../../../api/students/students-api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAdd, faEye, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faEye } from "@fortawesome/free-solid-svg-icons";
 import AddGradeModal from "../../../components/modals/grades/AddGradeModal";
 import ViewGradesModal from "../../../components/modals/grades/ViewGradesModal";
 import { style } from "../../../components/ReactSelectStyle";
 import { gradeColors } from "../../../api/grades/grades-api";
+import PageOutline from "../../../components/pages/PageOutline";
 
 const animatedComponents = makeAnimated();
 let classOptions: { value: string; label: string }[] = [];
@@ -51,11 +52,7 @@ export default function ManageGrades() {
     enabled: authUser?.data !== undefined,
   });
 
-  const {
-    status: studentsStatus,
-    data: students,
-    refetch: refetchStudents,
-  } = useQuery({
+  const { data: students, refetch: refetchStudents } = useQuery({
     queryKey: ["students"],
     queryFn: async () =>
       StudentsApi.getByClassAndSubject(selectedClass, selectedSubjectAbbr),
@@ -158,118 +155,115 @@ export default function ManageGrades() {
           refetchStudents();
         }}
       />
-      <div className="flex flex-col justify-center items-center">
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Gradebook</h1>
-          <div className="flex flex-row">
-            <div className="form-control mb-5 mr-5 min-w-[10rem]">
-              <label className="label">
-                <span className="label-text">Class:</span>
-              </label>
-              <Select
-                options={classOptions}
-                closeMenuOnSelect={true}
-                components={animatedComponents}
-                onChange={handleSelectedClass}
-                styles={style}
-              />
-            </div>
-            <div className="form-control mb-5 min-w-[10rem]">
-              <label className="label">
-                <span className="label-text">Subject:</span>
-              </label>
-              <Select
-                options={subjectOptions}
-                closeMenuOnSelect={true}
-                isDisabled={selectedClass === ""}
-                components={animatedComponents}
-                onChange={handleSelectedSubject}
-                {...(selectedSubjectAbbr === "" ? { value: null } : {})}
-                styles={style}
-              />
-            </div>
+      <PageOutline title="Gradebook">
+        <div className="flex flex-row">
+          <div className="form-control mb-5 mr-5 min-w-[10rem]">
+            <label className="label">
+              <span className="label-text">Class:</span>
+            </label>
+            <Select
+              options={classOptions}
+              closeMenuOnSelect={true}
+              components={animatedComponents}
+              onChange={handleSelectedClass}
+              styles={style}
+            />
           </div>
-          <div className="overflow-x-auto">
-            <table className="table table-zebra w-full">
-              <thead>
-                <tr>
-                  <td></td>
-                  <th>Name</th>
-                  <th>Surname</th>
-                  <th>Username</th>
-                  <th>Grades</th>
-                  <th>Avg</th>
-                  <th>View</th>
-                  <th>Add</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedSubjectAbbr === "" ? (
-                  <tr>
-                    <td colSpan={8} className="text-center">
-                      Select a class and a subject to view grades
-                    </td>
-                  </tr>
-                ) : (
-                  students?.data.map(
-                    (student: StudentInterface, index: number) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{student.user.name}</td>
-                        <td>{student.user.surname}</td>
-                        <td>{student.user.username}</td>
-                        <td>
-                          <div className="flex flex-row">
-                            {student.Grade?.map(
-                              (grade: GradeInterface, index: number) => (
-                                <span
-                                  key={index}
-                                  className={`mr-2 ${gradeColors[grade.type]}`}
-                                >
-                                  {grade.value === 0 ? "NPS" : grade.value}
-                                </span>
-                              )
-                            )}
-                          </div>
-                        </td>
-                        <td>{calcAvgGrade(student.Grade)}</td>
-                        <td>
-                          <button
-                            className="btn btn-outline btn-info"
-                            onClick={() => {
-                              setCurrentStudent({
-                                id: student.id,
-                                fullName: `${student.user.name} ${student.user.surname}`,
-                              });
-                              setViewGradeModalActive(true);
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faEye} size="lg" />
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-outline btn-info"
-                            onClick={() => {
-                              setCurrentStudent({
-                                id: student.id,
-                                fullName: `${student.user.name} ${student.user.surname}`,
-                              });
-                              setAddGradeModalActive(true);
-                            }}
-                          >
-                            <FontAwesomeIcon icon={faAdd} size="lg" />
-                          </button>
-                        </td>
-                      </tr>
-                    )
-                  )
-                )}
-              </tbody>
-            </table>
+          <div className="form-control mb-5 min-w-[10rem]">
+            <label className="label">
+              <span className="label-text">Subject:</span>
+            </label>
+            <Select
+              options={subjectOptions}
+              closeMenuOnSelect={true}
+              isDisabled={selectedClass === ""}
+              components={animatedComponents}
+              onChange={handleSelectedSubject}
+              {...(selectedSubjectAbbr === "" ? { value: null } : {})}
+              styles={style}
+            />
           </div>
         </div>
-      </div>
+        <div className="overflow-x-auto">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <td></td>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Username</th>
+                <th>Grades</th>
+                <th>Avg</th>
+                <th>View</th>
+                <th>Add</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedSubjectAbbr === "" ? (
+                <tr>
+                  <td colSpan={8} className="text-center">
+                    Select a class and a subject to view grades
+                  </td>
+                </tr>
+              ) : (
+                students?.data.map(
+                  (student: StudentInterface, index: number) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{student.user.name}</td>
+                      <td>{student.user.surname}</td>
+                      <td>{student.user.username}</td>
+                      <td>
+                        <div className="flex flex-row">
+                          {student.Grade?.map(
+                            (grade: GradeInterface, index: number) => (
+                              <span
+                                key={index}
+                                className={`mr-2 ${gradeColors[grade.type]}`}
+                              >
+                                {grade.value === 0 ? "NPS" : grade.value}
+                              </span>
+                            )
+                          )}
+                        </div>
+                      </td>
+                      <td>{calcAvgGrade(student.Grade)}</td>
+                      <td>
+                        <button
+                          className="btn btn-outline btn-info"
+                          onClick={() => {
+                            setCurrentStudent({
+                              id: student.id,
+                              fullName: `${student.user.name} ${student.user.surname}`,
+                            });
+                            setViewGradeModalActive(true);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faEye} size="lg" />
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-outline btn-info"
+                          onClick={() => {
+                            setCurrentStudent({
+                              id: student.id,
+                              fullName: `${student.user.name} ${student.user.surname}`,
+                            });
+                            setAddGradeModalActive(true);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faAdd} size="lg" />
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+      </PageOutline>
     </>
   );
 }

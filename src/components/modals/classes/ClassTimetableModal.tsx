@@ -15,7 +15,6 @@ export default function ClassTimetableModal({
   modalClassName,
 }: ClassTimetableModalProps) {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
   if (!active) return <></>;
 

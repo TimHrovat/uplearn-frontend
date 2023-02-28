@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
-import { gradeColors, GradesApi } from "../api/grades/grades-api";
+import React from "react";
+import { gradeColors } from "../api/grades/grades-api";
 import { StudentsApi } from "../api/students/students-api";
 import { GradeInterface } from "../pages/dashboard/employee/ManageGrades";
 import ErrorAlert from "./alerts/ErrorAlert";
@@ -11,21 +11,13 @@ interface GradesProps {
 }
 
 export default function Grades({ studentId }: GradesProps) {
-  const [error, setError] = useState("");
-
   const { status, data: subjects } = useQuery({
     queryKey: ["studentGrades"],
     queryFn: () => StudentsApi.getSubjectsWithGrades(studentId),
   });
 
   if (status === "loading") return <Loader active={true} />;
-  if (status === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
+  if (status === "error") return <ErrorAlert msg={"Page couldn't load"} />;
 
   if (subjects?.data.length === 0)
     return (

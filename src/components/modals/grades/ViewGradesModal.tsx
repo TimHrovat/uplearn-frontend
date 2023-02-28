@@ -27,7 +27,6 @@ export default function ViewGradesModal({
 }: ViewGradesModalProps) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
   const [confirmDeletePopupActive, setConfirmDeletePopupActive] =
     useState(false);
   const [gradeEditModalActive, setGradeEditModalActive] = useState(false);
@@ -37,11 +36,7 @@ export default function ViewGradesModal({
     currentValue: 0,
   });
 
-  const {
-    status,
-    data: grades,
-    refetch,
-  } = useQuery({
+  const { data: grades, refetch } = useQuery({
     queryKey: ["studentSubjectGrades"],
     queryFn: () => GradesApi.getByStudentAndSubject(studentId, subject),
     enabled: active,
@@ -64,9 +59,6 @@ export default function ViewGradesModal({
       })
       .catch((e) => {
         setError(e.response.data.message ?? e.message);
-      })
-      .finally(() => {
-        setLoading(false);
       });
 
     refetch();

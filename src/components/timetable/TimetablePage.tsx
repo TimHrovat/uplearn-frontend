@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { AuthApi } from "../../api/auth/auth-api";
 import { UsersApi } from "../../api/users/users-api";
+import PageOutline from "../pages/PageOutline";
 import Timetable from "./Timetable";
 
 export default function TimetablePage() {
@@ -15,7 +16,8 @@ export default function TimetablePage() {
   if (AuthApi.isStudent()) {
     if (!authUser?.data.Student || !authUser?.data.Student.class)
       timetable = <NoTimetable />;
-    else timetable = <Timetable classNameP={authUser?.data.Student.class.name} />;
+    else
+      timetable = <Timetable classNameP={authUser?.data.Student.class.name} />;
   }
 
   function NoTimetable() {
@@ -32,10 +34,9 @@ export default function TimetablePage() {
 
   return (
     <>
-      <div className="bg-base-200 p-4 rounded-xl w-full max-w-screen-xl mb-5">
-        <h1 className="text-xl font-bold mb-5">Timetable</h1>
+      <PageOutline title="Timetable" fullWidth>
         {timetable}
-      </div>
+      </PageOutline>
     </>
   );
 }

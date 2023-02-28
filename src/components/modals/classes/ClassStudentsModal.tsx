@@ -28,7 +28,6 @@ export default function ClassStudentsModal({
 }: StudentsModalProps) {
   const [error, setError] = useState("");
   const [selectedStudents, setSelectedStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const {
     status: classesStatus,
@@ -54,17 +53,9 @@ export default function ClassStudentsModal({
 
   if (!active) return <></>;
 
-  if (classesStatus === "loading") return <Loader active={true} />;
-  if (classesStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  if (studentsStatus === "loading") return <Loader active={true} />;
-  if (studentsStatus === "error")
+  if (classesStatus === "loading" || studentsStatus === "loading")
+    return <Loader active={true} />;
+  if (classesStatus === "error" || studentsStatus === "error")
     return (
       <ErrorAlert
         msg={"Page couldn't load"}
@@ -73,14 +64,12 @@ export default function ClassStudentsModal({
     );
 
   studentOptions = [];
-  students?.data.forEach(
-    (student: StudentInterface) => {
-      studentOptions.push({
-        value: student.id,
-        label: `${student.user.name} ${student.user.surname}`,
-      });
-    }
-  );
+  students?.data.forEach((student: StudentInterface) => {
+    studentOptions.push({
+      value: student.id,
+      label: `${student.user.name} ${student.user.surname}`,
+    });
+  });
 
   const handleSelectedStudentsChange = (selected: any) => {
     setSelectedStudents(selected);
@@ -130,17 +119,11 @@ export default function ClassStudentsModal({
   };
 
   const addStudents = async () => {
-    setLoading(true);
-
     const addedStudents = await ClassesApi.update(modalClassName, {
       students: selectedStudents,
-    })
-      .catch((e) => {
-        setError(e.response.data.cause);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    }).catch((e) => {
+      setError(e.response.data.cause);
+    });
 
     if (!addedStudents) {
       if (error === "") setError("Something went wrong please try again later");

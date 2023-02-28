@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
-
 import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
 import { EmployeesApi } from "../../../api/employees/employees-api";
@@ -10,6 +8,7 @@ import makeAnimated from "react-select/animated";
 import { SubjectsApi } from "../../../api/subjects/subjects-api";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import { style } from "../../../components/ReactSelectStyle";
+import PageOutline from "../../../components/pages/PageOutline";
 
 let options: { value: string; label: string }[] = [];
 const animatedComponents = makeAnimated();
@@ -99,79 +98,75 @@ export default function ManageSubjectsCreate() {
         msg={success}
         onVisibilityChange={(msg) => setSuccess(msg)}
       />
-      <div className="flex flex-col justify-center items-center">
-        <SubpageBtnList
-          buttons={[
-            { title: "View subjects", link: "/dashboard/manage-subjects" },
-            {
-              title: "Create subject",
-              link: "/dashboard/manage-subjects/create",
-            },
-            {
-              title: "View subject lists",
-              link: "/dashboard/manage-subjects/lists",
-            },
-            {
-              title: "Create subject list",
-              link: "/dashboard/manage-subjects/create-list",
-            },
-          ]}
-        />
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Create Subject</h1>
-
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Abbreviation:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full"
-              ref={abbreviation}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Name:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full"
-              ref={name}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Description:</span>
-            </label>
-            <textarea
-              className="textarea textarea-bordered h-24 w-full"
-              ref={description}
-            ></textarea>
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Teachers:</span>
-            </label>
-            <Select
-              options={options}
-              isMulti
-              closeMenuOnSelect={false}
-              components={animatedComponents}
-              onChange={handleSelectedEmployeeChange}
-              styles={style}
-            />
-          </div>
-          <button
-            className={
-              loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
-            }
-            onClick={createSubject}
-          >
-            Create subject
-          </button>
+      <PageOutline
+        title="Create Subject"
+        navigationElements={[
+          { title: "View subjects", link: "/dashboard/manage-subjects" },
+          {
+            title: "Create subject",
+            link: "/dashboard/manage-subjects/create",
+          },
+          {
+            title: "View subject lists",
+            link: "/dashboard/manage-subjects/lists",
+          },
+          {
+            title: "Create subject list",
+            link: "/dashboard/manage-subjects/create-list",
+          },
+        ]}
+      >
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Abbreviation:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full"
+            ref={abbreviation}
+          />
         </div>
-      </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Name:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full"
+            ref={name}
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Description:</span>
+          </label>
+          <textarea
+            className="textarea textarea-bordered h-24 w-full"
+            ref={description}
+          ></textarea>
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Teachers:</span>
+          </label>
+          <Select
+            options={options}
+            isMulti
+            closeMenuOnSelect={false}
+            components={animatedComponents}
+            onChange={handleSelectedEmployeeChange}
+            styles={style}
+          />
+        </div>
+        <button
+          className={
+            loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
+          }
+          onClick={createSubject}
+        >
+          Create subject
+        </button>
+      </PageOutline>
     </>
   );
 }

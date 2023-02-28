@@ -1,8 +1,5 @@
 import { StylesConfig } from "react-select";
 
-const cssRoot = document.querySelector(":root");
-const cssInputBordered = document.querySelector(".input-bordered");
-
 export const style: StylesConfig = {
   control: (styles, { isFocused }) => ({
     ...styles,

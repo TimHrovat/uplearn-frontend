@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
-import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import { ClassroomApi } from "../../../api/classroom/classroom-api";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import { style } from "../../../components/ReactSelectStyle";
+import PageOutline from "../../../components/pages/PageOutline";
 
 const animatedComponents = makeAnimated();
 
@@ -74,50 +74,47 @@ export default function ManageClassroomsCreate() {
         msg={success}
         onVisibilityChange={(msg) => setSuccess(msg)}
       />
-      <div className="flex flex-col justify-center items-center">
-        <SubpageBtnList
-          buttons={[
-            { title: "View classrooms", link: "/dashboard/manage-classrooms" },
-            {
-              title: "Create classroom",
-              link: "/dashboard/manage-classrooms/create",
-            },
-          ]}
-        />
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Create Classroom</h1>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Name:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full"
-              ref={name}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Subjects:</span>
-            </label>
-            <Select
-              options={options}
-              closeMenuOnSelect={true}
-              components={animatedComponents}
-              onChange={handleSelectedTypeChange}
-              styles={style}
-            />
-          </div>
-          <button
-            className={
-              loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
-            }
-            onClick={createClassroom}
-          >
-            Create Classroom
-          </button>
+      <PageOutline
+        title="Create Classroom"
+        navigationElements={[
+          { title: "View classrooms", link: "/dashboard/manage-classrooms" },
+          {
+            title: "Create classroom",
+            link: "/dashboard/manage-classrooms/create",
+          },
+        ]}
+      >
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Name:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full"
+            ref={name}
+          />
         </div>
-      </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Subjects:</span>
+          </label>
+          <Select
+            options={options}
+            closeMenuOnSelect={true}
+            components={animatedComponents}
+            onChange={handleSelectedTypeChange}
+            styles={style}
+          />
+        </div>
+        <button
+          className={
+            loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
+          }
+          onClick={createClassroom}
+        >
+          Create Classroom
+        </button>
+      </PageOutline>
     </>
   );
 }

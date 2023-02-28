@@ -8,7 +8,7 @@ import SuccessAlert from "../../../components/alerts/SuccessAlert";
 import Loader from "../../../components/Loader";
 import ConfirmDeletePopup from "../../../components/modals/popups/ConfirmDeletePopup";
 import SchoolHourEditModal from "../../../components/modals/SchoolHourEditModal";
-import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
+import PageOutline from "../../../components/pages/PageOutline";
 
 export default function ManageSchoolHours() {
   const [error, setError] = useState("");
@@ -67,69 +67,66 @@ export default function ManageSchoolHours() {
         msg={success}
         onVisibilityChange={(msg) => setSuccess(msg)}
       />
-      <div className="flex flex-col justify-center items-center">
-        <SubpageBtnList
-          buttons={[
-            {
-              title: "View school hours",
-              link: "/dashboard/manage-school-hours",
-            },
-            {
-              title: "Create school hour",
-              link: "/dashboard/manage-school-hours/create",
-            },
-          ]}
-        />
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">View School Hours</h1>
-          <div className="overflow-x-auto">
-            <table className="table table-zebra w-full">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Start Time</th>
-                  <th>End Time</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {schoolHours?.data.map(
-                  (c: SchoolHourInterface, index: number) => (
-                    <tr key={c.id}>
-                      <td>{index + 1}</td>
-                      <td>{toFormattedDate(c.startTime)}</td>
-                      <td>{toFormattedDate(c.endTime)}</td>
-                      <td>
-                        <button
-                          className="btn btn-warning btn-outline"
-                          onClick={() => {
-                            setSchoolHourEditModalActive(true);
-                            setModalSchoolHourId(c.id);
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faPenToSquare} size="lg" />
-                        </button>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-error"
-                          onClick={() => {
-                            setConfirmDeletePopupActive(true);
-                            setModalSchoolHourId(c.id);
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faTrashCan} size="lg" />
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
-          </div>
+      <PageOutline
+        title="View School Hours"
+        navigationElements={[
+          {
+            title: "View school hours",
+            link: "/dashboard/manage-school-hours",
+          },
+          {
+            title: "Create school hour",
+            link: "/dashboard/manage-school-hours/create",
+          },
+        ]}
+      >
+        <div className="overflow-x-auto">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {schoolHours?.data.map(
+                (c: SchoolHourInterface, index: number) => (
+                  <tr key={c.id}>
+                    <td>{index + 1}</td>
+                    <td>{toFormattedDate(c.startTime)}</td>
+                    <td>{toFormattedDate(c.endTime)}</td>
+                    <td>
+                      <button
+                        className="btn btn-warning btn-outline"
+                        onClick={() => {
+                          setSchoolHourEditModalActive(true);
+                          setModalSchoolHourId(c.id);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faPenToSquare} size="lg" />
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-error"
+                        onClick={() => {
+                          setConfirmDeletePopupActive(true);
+                          setModalSchoolHourId(c.id);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTrashCan} size="lg" />
+                      </button>
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
+      </PageOutline>
     </>
   );
 }

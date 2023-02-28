@@ -1,14 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React from "react";
 import { EventsApi } from "../../../api/events/events-api";
-import { LessonsApi } from "../../../api/lessons/lessons-api";
 import { UsersApi } from "../../../api/users/users-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import Loader from "../../../components/Loader";
+import PageOutline from "../../../components/pages/PageOutline";
 
 export default function UpcomingEvents() {
-  const [error, setError] = useState("");
-
   const { status, data: authUser } = useQuery({
     queryKey: ["authenticatedUser"],
     queryFn: UsersApi.getAuthenticatedUser,
@@ -21,13 +19,7 @@ export default function UpcomingEvents() {
   });
 
   if (status === "loading") return <Loader active={true} />;
-  if (status === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
+  if (status === "error") return <ErrorAlert msg={"Page couldn't load"} />;
 
   const toDateString = (isodate: string) => {
     const date = new Date(isodate);
@@ -41,47 +33,44 @@ export default function UpcomingEvents() {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Upcoming Events</h1>
-          <div className="overflow-x-auto">
-            <table className="table table-zebra w-full">
-              <thead>
-                <tr>
-                  <td></td>
-                  <th>Type</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Description</th>
+      <PageOutline title="Upcoming Events">
+        <div className="overflow-x-auto">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <td></td>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {upcoming?.data.length === 0 ? (
+                <tr className="text-center">
+                  <td colSpan={5}>There are no upcoming events</td>
                 </tr>
-              </thead>
-              <tbody>
-                {upcoming?.data.length === 0 ? (
-                  <tr className="text-center">
-                    <td colSpan={5}>There are no upcoming events</td>
+              ) : (
+                upcoming?.data.map((event: EventInterface, index: number) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{event.type}</td>
+                    <td>{toDateString(event.date)}</td>
+                    <td>
+                      {event.type === "ACT"
+                        ? `${event.startTime}-${event.endTime}`
+                        : "/"}
+                    </td>
+                    <td className="whitespace-normal break-words">
+                      {event.description}
+                    </td>
                   </tr>
-                ) : (
-                  upcoming?.data.map((event: EventInterface, index: number) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{event.type}</td>
-                      <td>{toDateString(event.date)}</td>
-                      <td>
-                        {event.type === "ACT"
-                          ? `${event.startTime}-${event.endTime}`
-                          : "/"}
-                      </td>
-                      <td className="whitespace-normal break-words">
-                        {event.description}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
+      </PageOutline>
     </>
   );
 }

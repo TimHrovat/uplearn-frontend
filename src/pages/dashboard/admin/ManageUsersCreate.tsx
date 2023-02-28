@@ -5,10 +5,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import { AuthApi } from "../../../api/auth/auth-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
-import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 import Select from "react-select";
 import { style } from "../../../components/ReactSelectStyle";
 import makeAnimated from "react-select/animated";
+import PageOutline from "../../../components/pages/PageOutline";
 
 const animatedComponents = makeAnimated();
 
@@ -109,92 +109,89 @@ export default function ManageUsersCreate() {
         msg={success}
         onVisibilityChange={(msg) => setSuccess(msg)}
       />
-      <div className="flex flex-col justify-center items-center">
-        <SubpageBtnList
-          buttons={[
-            { title: "View users", link: "/dashboard/manage-users" },
-            { title: "Create user", link: "/dashboard/manage-users/create" },
-          ]}
-        />
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Create user</h1>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Name:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full"
-              ref={name}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Surname:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full "
-              ref={surname}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Email:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full "
-              value={email}
-              onChange={(e) => setEmail(e.currentTarget.value)}
-              onBlur={handleEmailBlur}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Gsm*:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full "
-              ref={gsm}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Birthdate:</span>
-            </label>
-            <DatePicker
-              selected={birthdate}
-              onChange={handleBirthdateChange}
-              dateFormat="dd. MM. yyyy"
-              maxDate={new Date()}
-              className="input input-bordered w-full"
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Role:</span>
-            </label>
-            <Select
-              options={avalibleRoles}
-              closeMenuOnSelect={true}
-              components={animatedComponents}
-              onChange={handleRoleChange}
-              defaultValue={{ value: "student", label: "Student" }}
-              styles={style}
-            />
-          </div>
-          <button
-            className={
-              loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
-            }
-            onClick={createUser}
-          >
-            Create user
-          </button>
+      <PageOutline
+        title="Create User"
+        navigationElements={[
+          { title: "View users", link: "/dashboard/manage-users" },
+          { title: "Create user", link: "/dashboard/manage-users/create" },
+        ]}
+      >
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Name:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full"
+            ref={name}
+          />
         </div>
-      </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Surname:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full "
+            ref={surname}
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Email:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full "
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+            onBlur={handleEmailBlur}
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Gsm*:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full "
+            ref={gsm}
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Birthdate:</span>
+          </label>
+          <DatePicker
+            selected={birthdate}
+            onChange={handleBirthdateChange}
+            dateFormat="dd. MM. yyyy"
+            maxDate={new Date()}
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Role:</span>
+          </label>
+          <Select
+            options={avalibleRoles}
+            closeMenuOnSelect={true}
+            components={animatedComponents}
+            onChange={handleRoleChange}
+            defaultValue={{ value: "student", label: "Student" }}
+            styles={style}
+          />
+        </div>
+        <button
+          className={
+            loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
+          }
+          onClick={createUser}
+        >
+          Create user
+        </button>
+      </PageOutline>
     </>
   );
 }

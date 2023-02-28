@@ -5,7 +5,7 @@ import {
 } from "../../../api/school-hours/school-hours-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
-import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
+import PageOutline from "../../../components/pages/PageOutline";
 
 export default function ManageSchoolHoursCreate() {
   const [error, setError] = useState("");
@@ -55,42 +55,39 @@ export default function ManageSchoolHoursCreate() {
         msg={success}
         onVisibilityChange={(msg) => setSuccess(msg)}
       />
-      <div className="flex flex-col justify-center items-center">
-        <SubpageBtnList
-          buttons={[
-            {
-              title: "View school hours",
-              link: "/dashboard/manage-school-hours",
-            },
-            {
-              title: "Create school hour",
-              link: "/dashboard/manage-school-hours/create",
-            },
-          ]}
-        />
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Create Class Hour</h1>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Start time:</span>
-            </label>
-            <input
-              type="time"
-              className="input input-bordered w-full"
-              ref={time}
-            />
-          </div>
-
-          <button
-            className={
-              loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
-            }
-            onClick={createSchoolHour}
-          >
-            Create Class Hour
-          </button>
+      <PageOutline
+        title="Create Class Hour"
+        navigationElements={[
+          {
+            title: "View school hours",
+            link: "/dashboard/manage-school-hours",
+          },
+          {
+            title: "Create school hour",
+            link: "/dashboard/manage-school-hours/create",
+          },
+        ]}
+      >
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Start time:</span>
+          </label>
+          <input
+            type="time"
+            className="input input-bordered w-full"
+            ref={time}
+          />
         </div>
-      </div>
+
+        <button
+          className={
+            loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
+          }
+          onClick={createSchoolHour}
+        >
+          Create Class Hour
+        </button>
+      </PageOutline>
     </>
   );
 }

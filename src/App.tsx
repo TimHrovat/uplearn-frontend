@@ -12,8 +12,6 @@ import Settings from "./pages/dashboard/Settings";
 import ProtectedRouteRole from "./components/protected_routes/ProtectedRouteRole";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ManageClasses from "./pages/dashboard/admin/ManageClasses";
-import ManageStudents from "./pages/dashboard/admin/ManageStudents";
-import ManageEmployees from "./pages/dashboard/admin/ManageEmployees";
 import ManageUsers from "./pages/dashboard/admin/ManageUsers";
 import ManageUsersCreate from "./pages/dashboard/admin/ManageUsersCreate";
 import ManageClassesCreate from "./pages/dashboard/admin/ManageClassesCreate";
@@ -66,10 +64,7 @@ function App() {
             path="/dashboard/upcoming-events"
             element={<ProtectedRouteRole outlet={<DashboardRoute element={<UpcomingEvents />} />} authorizedRoles={["student"]} />}
           />
-          <Route
-            path="/dashboard/absences"
-            element={<ProtectedRouteRole outlet={<DashboardRoute element={<Absences />} />} authorizedRoles={["student"]} />}
-          />
+          <Route path="/dashboard/absences" element={<ProtectedRouteRole outlet={<DashboardRoute element={<Absences />} />} authorizedRoles={["student"]} />} />
           <Route
             path="/dashboard/grade-employees"
             element={<ProtectedRouteRole outlet={<DashboardRoute element={<EmployeeGrades />} />} authorizedRoles={["student"]} />}
@@ -117,15 +112,6 @@ function App() {
           <Route
             path="/dashboard/manage-school-hours/create"
             element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageSchoolHoursCreate />} />} authorizedRoles={["admin"]} />}
-          />
-
-          <Route
-            path="/dashboard/manage-students"
-            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageStudents />} />} authorizedRoles={["admin"]} />}
-          />
-          <Route
-            path="/dashboard/manage-employees"
-            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageEmployees />} />} authorizedRoles={["admin"]} />}
           />
 
           <Route

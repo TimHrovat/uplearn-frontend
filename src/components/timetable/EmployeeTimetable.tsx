@@ -20,8 +20,6 @@ import TimetableEvent from "./TimetableEvent";
 import TimetableWeekPicker from "./TimetableWeekPicker";
 
 export default function EmployeeTimetable() {
-  const [error, setError] = useState("");
-
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [lessonInfoModalActive, setLessonInfoModalActive] = useState(false);
@@ -97,12 +95,7 @@ export default function EmployeeTimetable() {
     eventsStatus === "error" ||
     ongoingLessonStatus === "error"
   )
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
+    return <ErrorAlert msg={"Page couldn't load"} />;
 
   const setNewWeek = (stDate: Date, enDate: Date) => {
     setStartDate(stDate);

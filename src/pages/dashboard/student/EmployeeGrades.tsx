@@ -9,28 +9,23 @@ import {
   UpdateEmployeeGradeInterface,
 } from "../../../api/employee-grades/employee-grades-api";
 import { EmployeesApi } from "../../../api/employees/employees-api";
-import { GradesApi } from "../../../api/grades/grades-api";
 import { UsersApi } from "../../../api/users/users-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import Loader from "../../../components/Loader";
 import AddCommentModal from "../../../components/modals/employee-grades/AddCommentModal";
 import { EmployeeInterface } from "../../../components/modals/SubjectEditModal";
+import PageOutline from "../../../components/pages/PageOutline";
 
 export default function EmployeeGrades() {
-  const [error, setError] = useState("");
   const [addCommentModalActive, setAddCommentModalActive] = useState(false);
   const [selectedGrade, setSelectedGrade] = useState<EmployeeGradeInterface>();
 
-  const { status, data: authUser } = useQuery({
+  const { data: authUser } = useQuery({
     queryKey: ["authenticatedUser"],
     queryFn: UsersApi.getAuthenticatedUser,
   });
 
-  const {
-    status: employeesStatus,
-    data: employees,
-    refetch: refetchEmployees,
-  } = useQuery({
+  const { status: employeesStatus, data: employees } = useQuery({
     queryKey: ["employees"],
     queryFn: EmployeesApi.getAll,
   });
@@ -43,12 +38,7 @@ export default function EmployeeGrades() {
 
   if (employeesStatus === "loading") return <Loader active={true} />;
   if (employeesStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
+    return <ErrorAlert msg={"Page couldn't load"} />;
 
   interface StarsProps {
     employeeId: string;
@@ -163,39 +153,36 @@ export default function EmployeeGrades() {
         }}
         employeeGrade={selectedGrade}
       />
-      <div className="flex flex-col justify-center items-center">
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Grade Employees</h1>
-          <div className="overflow-x-auto">
-            <table className="table table-zebra w-full">
-              <thead>
-                <tr>
-                  <td></td>
-                  <th>Employee</th>
-                  <th>Grade</th>
-                  <th>Comment</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employees?.data.map(
-                  (employee: EmployeeInterface, index: number) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{`${employee.user.name} ${employee.user.surname}`}</td>
-                      <td>
-                        <Stars employeeId={employee.id} />
-                      </td>
-                      <td>
-                        <Comment employeeId={employee.id} />
-                      </td>
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
-          </div>
+      <PageOutline title="Grade Employees">
+        <div className="overflow-x-auto">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <td></td>
+                <th>Employee</th>
+                <th>Grade</th>
+                <th>Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {employees?.data.map(
+                (employee: EmployeeInterface, index: number) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{`${employee.user.name} ${employee.user.surname}`}</td>
+                    <td>
+                      <Stars employeeId={employee.id} />
+                    </td>
+                    <td>
+                      <Comment employeeId={employee.id} />
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
+      </PageOutline>
     </>
   );
 }

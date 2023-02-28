@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ClassesApi, UpdateClass } from "../../../api/classes/classes-api";
 import ErrorAlert from "../../alerts/ErrorAlert";
 import Loader from "../../Loader";

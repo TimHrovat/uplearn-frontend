@@ -1,13 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React from "react";
 import { LessonsApi } from "../../../api/lessons/lessons-api";
 import { UsersApi } from "../../../api/users/users-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import Loader from "../../../components/Loader";
+import PageOutline from "../../../components/pages/PageOutline";
 
 export default function UpcomingGradings() {
-  const [error, setError] = useState("");
-
   const { status, data: authUser } = useQuery({
     queryKey: ["authenticatedUser"],
     queryFn: UsersApi.getAuthenticatedUser,
@@ -21,13 +20,7 @@ export default function UpcomingGradings() {
   });
 
   if (status === "loading") return <Loader active={true} />;
-  if (status === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
+  if (status === "error") return <ErrorAlert msg={"Page couldn't load"} />;
 
   const toDateString = (isodate: string) => {
     const date = new Date(isodate);
@@ -41,39 +34,36 @@ export default function UpcomingGradings() {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Upcoming Gradings</h1>
-          <div className="overflow-x-auto">
-            <table className="table table-zebra w-full">
-              <thead>
-                <tr>
-                  <td></td>
-                  <th>Subject</th>
-                  <th>Type</th>
-                  <th>Date</th>
+      <PageOutline title="Upcoming Gradings">
+        <div className="overflow-x-auto">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <td></td>
+                <th>Subject</th>
+                <th>Type</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {upcoming?.data.length === 0 ? (
+                <tr className="text-center">
+                  <td colSpan={4}>There are no upcoming gradings</td>
                 </tr>
-              </thead>
-              <tbody>
-                {upcoming?.data.length === 0 ? (
-                  <tr className="text-center">
-                    <td colSpan={4}>There are no upcoming gradings</td>
+              ) : (
+                upcoming?.data.map((event: EventInterface, index: number) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{event.subjectAbbreviation}</td>
+                    <td>{event.type}</td>
+                    <td>{toDateString(event.date)}</td>
                   </tr>
-                ) : (
-                  upcoming?.data.map((event: EventInterface, index: number) => (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{event.subjectAbbreviation}</td>
-                      <td>{event.type}</td>
-                      <td>{toDateString(event.date)}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-      </div>
+      </PageOutline>
     </>
   );
 }

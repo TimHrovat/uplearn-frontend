@@ -13,14 +13,13 @@ import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import { style } from "../../../components/ReactSelectStyle";
 import { StudentInterface } from "../../../components/modals/classes/ClassStudentsModal";
+import PageOutline from "../../../components/pages/PageOutline";
 
 const animatedComponents = makeAnimated();
 let classOptions: { value: string; label: string }[] = [];
 let studentOptions: { value: string; label: string }[] = [];
 
 export default function ManageAbsences() {
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedStudent, setSelectedStudent] = useState("");
 
@@ -60,12 +59,7 @@ export default function ManageAbsences() {
   if (classesStatus === "loading" || authUserStatus === "loading")
     return <Loader active={true} />;
   if (classesStatus === "error" || authUserStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
+    return <ErrorAlert msg={"Page couldn't load"} />;
 
   classOptions = [];
   classes?.data.forEach((classOption: { name: string }) => {
@@ -142,91 +136,88 @@ export default function ManageAbsences() {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Absences</h1>
-          <div className="flex flex-row">
-            <div className="form-control mb-5 mr-5 min-w-[10rem]">
-              <label className="label">
-                <span className="label-text">Class:</span>
-              </label>
-              <Select
-                options={classOptions}
-                closeMenuOnSelect={true}
-                components={animatedComponents}
-                onChange={handleSelectedClass}
-                styles={style}
-              />
-            </div>
-            <div className="form-control mb-5 min-w-[15rem]">
-              <label className="label">
-                <span className="label-text">Student:</span>
-              </label>
-              <Select
-                options={studentOptions}
-                closeMenuOnSelect={true}
-                isDisabled={selectedClass === ""}
-                components={animatedComponents}
-                onChange={handleSelectedStudent}
-                {...(selectedStudent === "" ? { value: null } : {})}
-                styles={style}
-              />
-            </div>
+      <PageOutline title="Absences">
+        <div className="flex flex-row">
+          <div className="form-control mb-5 mr-5 min-w-[10rem]">
+            <label className="label">
+              <span className="label-text">Class:</span>
+            </label>
+            <Select
+              options={classOptions}
+              closeMenuOnSelect={true}
+              components={animatedComponents}
+              onChange={handleSelectedClass}
+              styles={style}
+            />
           </div>
-          <span className="mr-5">{`Excused: ${
-            absences?.data.excused ?? "--"
-          }`}</span>
-          <span>{`Unexcused: ${absences?.data.unexcused ?? "--"}`}</span>
-          <div className="overflow-x-auto">
-            <table className="table table-zebra w-full">
-              <thead>
-                <tr>
-                  <td></td>
-                  <th>State</th>
-                  <th>Subject</th>
-                  <th>Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {absences?.data.lessons?.length === 0 ? (
-                  <tr className="text-center">
-                    <td colSpan={5}>There are no absences</td>
-                  </tr>
-                ) : (
-                  absences?.data.lessons?.map(
-                    (absence: AbsenceInterface, index: number) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{absence.state}</td>
-                        <td>{absence.lesson.subjectAbbreviation}</td>
-                        <td>{toDateString(absence.lesson.date)}</td>
-                        <td>
-                          {absence.state === "EXCUSED" ? (
-                            <button
-                              className="btn btn-error btn-outline"
-                              onClick={() => setUnexcused(absence.id)}
-                            >
-                              Set Unexcused
-                            </button>
-                          ) : (
-                            <button
-                              className="btn btn-accent btn-outline"
-                              onClick={() => setExcused(absence.id)}
-                            >
-                              Set Excused
-                            </button>
-                          )}
-                        </td>
-                      </tr>
-                    )
-                  )
-                )}
-              </tbody>
-            </table>
+          <div className="form-control mb-5 min-w-[15rem]">
+            <label className="label">
+              <span className="label-text">Student:</span>
+            </label>
+            <Select
+              options={studentOptions}
+              closeMenuOnSelect={true}
+              isDisabled={selectedClass === ""}
+              components={animatedComponents}
+              onChange={handleSelectedStudent}
+              {...(selectedStudent === "" ? { value: null } : {})}
+              styles={style}
+            />
           </div>
         </div>
-      </div>
+        <span className="mr-5">{`Excused: ${
+          absences?.data.excused ?? "--"
+        }`}</span>
+        <span>{`Unexcused: ${absences?.data.unexcused ?? "--"}`}</span>
+        <div className="overflow-x-auto">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <td></td>
+                <th>State</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {absences?.data.lessons?.length === 0 ? (
+                <tr className="text-center">
+                  <td colSpan={5}>There are no absences</td>
+                </tr>
+              ) : (
+                absences?.data.lessons?.map(
+                  (absence: AbsenceInterface, index: number) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{absence.state}</td>
+                      <td>{absence.lesson.subjectAbbreviation}</td>
+                      <td>{toDateString(absence.lesson.date)}</td>
+                      <td>
+                        {absence.state === "EXCUSED" ? (
+                          <button
+                            className="btn btn-error btn-outline"
+                            onClick={() => setUnexcused(absence.id)}
+                          >
+                            Set Unexcused
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-accent btn-outline"
+                            onClick={() => setExcused(absence.id)}
+                          >
+                            Set Excused
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+      </PageOutline>
     </>
   );
 }

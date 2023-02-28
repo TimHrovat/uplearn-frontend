@@ -3,7 +3,6 @@ import React, { useRef, useState } from "react";
 import { SubjectListsApi } from "../../../api/subjects/subject-listst-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import Loader from "../../../components/Loader";
-import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
@@ -11,6 +10,7 @@ import { StudentsApi } from "../../../api/students/students-api";
 import { EmployeesApi } from "../../../api/employees/employees-api";
 import { ClassesApi, CreateClass } from "../../../api/classes/classes-api";
 import { style } from "../../../components/ReactSelectStyle";
+import PageOutline from "../../../components/pages/PageOutline";
 
 let subjectListOptions: { value: string; label: string }[] = [];
 let studentOptions: { value: string; label: string }[] = [];
@@ -66,36 +66,19 @@ export default function ManageClassesCreate() {
     queryFn: EmployeesApi.getNonSubstituteClassTeachers,
   });
 
-  if (subjectListStatus === "loading") return <Loader active={true} />;
-  if (subjectListStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  if (studentsStatus === "loading") return <Loader active={true} />;
-  if (studentsStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  if (nonClassTeachersStatus === "loading") return <Loader active={true} />;
-  if (nonClassTeachersStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  if (nonSubstituteClassTeachersStatus === "loading")
+  if (
+    subjectListStatus === "loading" ||
+    studentsStatus === "loading" ||
+    nonClassTeachersStatus === "loading" ||
+    nonSubstituteClassTeachersStatus === "loading"
+  )
     return <Loader active={true} />;
-  if (nonSubstituteClassTeachersStatus === "error")
+  if (
+    subjectListStatus === "error" ||
+    studentsStatus === "error" ||
+    nonClassTeachersStatus === "error" ||
+    nonSubstituteClassTeachersStatus === "error"
+  )
     return (
       <ErrorAlert
         msg={"Page couldn't load"}
@@ -261,95 +244,92 @@ export default function ManageClassesCreate() {
         msg={success}
         onVisibilityChange={(msg) => setSuccess(msg)}
       />
-      <div className="flex flex-col justify-center items-center">
-        <SubpageBtnList
-          buttons={[
-            { title: "View classes", link: "/dashboard/manage-classes" },
-            { title: "Create class", link: "/dashboard/manage-classes/create" },
-          ]}
-        />
-        <div className="bg-base-200 p-4 rounded-xl desktop:w-7/12 w-full max-w-screen-xl mb-5">
-          <h1 className="text-xl font-bold mb-5">Create Class</h1>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Name:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full"
-              ref={name}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Year:</span>
-            </label>
-            <input
-              type="text"
-              className="input input-bordered w-full"
-              value={year}
-              onChange={handleYearChange}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Subject Lists:</span>
-            </label>
-            <Select
-              options={subjectListOptions}
-              closeMenuOnSelect={true}
-              components={animatedComponents}
-              onChange={handleSelectedSubjectListChange}
-              styles={style}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Students:</span>
-            </label>
-            <Select
-              options={studentOptions}
-              closeMenuOnSelect={false}
-              isMulti
-              components={animatedComponents}
-              onChange={handleSelectedStudentsChange}
-              styles={style}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Class Teacher:</span>
-            </label>
-            <Select
-              options={nonClassTeacherOptions}
-              closeMenuOnSelect={true}
-              components={animatedComponents}
-              onChange={handleSelectedNonClassTeacherChange}
-              styles={style}
-            />
-          </div>
-          <div className="form-control w-full mb-5">
-            <label className="label">
-              <span className="label-text">Substitute Class Teacher:</span>
-            </label>
-            <Select
-              options={nonSubstituteClassTeacherOptions}
-              closeMenuOnSelect={true}
-              components={animatedComponents}
-              onChange={handleSelectedNonSubstituteClassTeacherChange}
-              styles={style}
-            />
-          </div>
-          <button
-            className={
-              loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
-            }
-            onClick={createClass}
-          >
-            Create Class
-          </button>
+      <PageOutline
+        title="Create Class"
+        navigationElements={[
+          { title: "View classes", link: "/dashboard/manage-classes" },
+          { title: "Create class", link: "/dashboard/manage-classes/create" },
+        ]}
+      >
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Name:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full"
+            ref={name}
+          />
         </div>
-      </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Year:</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered w-full"
+            value={year}
+            onChange={handleYearChange}
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Subject Lists:</span>
+          </label>
+          <Select
+            options={subjectListOptions}
+            closeMenuOnSelect={true}
+            components={animatedComponents}
+            onChange={handleSelectedSubjectListChange}
+            styles={style}
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Students:</span>
+          </label>
+          <Select
+            options={studentOptions}
+            closeMenuOnSelect={false}
+            isMulti
+            components={animatedComponents}
+            onChange={handleSelectedStudentsChange}
+            styles={style}
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Class Teacher:</span>
+          </label>
+          <Select
+            options={nonClassTeacherOptions}
+            closeMenuOnSelect={true}
+            components={animatedComponents}
+            onChange={handleSelectedNonClassTeacherChange}
+            styles={style}
+          />
+        </div>
+        <div className="form-control w-full mb-5">
+          <label className="label">
+            <span className="label-text">Substitute Class Teacher:</span>
+          </label>
+          <Select
+            options={nonSubstituteClassTeacherOptions}
+            closeMenuOnSelect={true}
+            components={animatedComponents}
+            onChange={handleSelectedNonSubstituteClassTeacherChange}
+            styles={style}
+          />
+        </div>
+        <button
+          className={
+            loading ? "btn btn-primary loading mt-5" : "btn btn-primary mt-5"
+          }
+          onClick={createClass}
+        >
+          Create Class
+        </button>
+      </PageOutline>
     </>
   );
 }

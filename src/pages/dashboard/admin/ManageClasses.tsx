@@ -17,7 +17,7 @@ import ClassEditModal from "../../../components/modals/classes/ClassEditModal";
 import ClassStudentsModal from "../../../components/modals/classes/ClassStudentsModal";
 import ClassTimetableModal from "../../../components/modals/classes/ClassTimetableModal";
 import ConfirmDeletePopup from "../../../components/modals/popups/ConfirmDeletePopup";
-import SubpageBtnList from "../../../components/navbar/SubpageBtnList";
+import PageOutline from "../../../components/pages/PageOutline";
 
 export default function ManageClasses() {
   const [error, setError] = useState("");
@@ -104,103 +104,101 @@ export default function ManageClasses() {
         msg={success}
         onVisibilityChange={(msg) => setSuccess(msg)}
       />
-      <div className="flex flex-col justify-center items-center">
-        <SubpageBtnList
-          buttons={[
-            { title: "View classes", link: "/dashboard/manage-classes" },
-            { title: "Create class", link: "/dashboard/manage-classes/create" },
-          ]}
-        />
-        <div className="bg-base-200 p-4 rounded-xl desktop:min-w-fit w-full mb-5">
-          <h1 className="text-xl font-bold mb-5">View Classes</h1>
-          <div className="overflow-x-auto">
-            <table className="table table-zebra w-full">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Name</th>
-                  <th>Year</th>
-                  <th>class teacher</th>
-                  <th>substitute class teacher</th>
-                  <th>subject list name</th>
-                  <th>assign teachers</th>
-                  <th>students</th>
-                  <th>timetable</th>
-                  <th>edit</th>
-                  <th>Delete</th>
+      <PageOutline
+        title="View Classes"
+        fullWidth
+        navigationElements={[
+          { title: "View classes", link: "/dashboard/manage-classes" },
+          { title: "Create class", link: "/dashboard/manage-classes/create" },
+        ]}
+      >
+        <div className="overflow-x-auto">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Year</th>
+                <th>class teacher</th>
+                <th>substitute class teacher</th>
+                <th>subject list name</th>
+                <th>assign teachers</th>
+                <th>students</th>
+                <th>timetable</th>
+                <th>edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {classes?.data.map((c: ClassInterface, index: number) => (
+                <tr key={c.name}>
+                  <td>{index + 1}</td>
+                  <td>{c.name}</td>
+                  <td>{c.year}</td>
+                  <th>{`${c.classTeacher.user.name} ${c.classTeacher.user.surname}`}</th>
+                  <th>{`${c.substituteClassTeacher.user.name} ${c.substituteClassTeacher.user.surname}`}</th>
+                  <th>{c.subjectList.name}</th>
+                  <td>
+                    <button
+                      className="btn btn-outline btn-info"
+                      onClick={() => {
+                        setAssignTeacherToSubjectModalActive(true);
+                        setModalClassName(c.name);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faPersonChalkboard} size="lg" />
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-outline btn-info"
+                      onClick={() => {
+                        setStudentModalActive(true);
+                        setModalClassName(c.name);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faPeopleGroup} size="lg" />
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-outline btn-info"
+                      onClick={() => {
+                        setModalClassName(c.name);
+                        setClassTimetableModalActive(true);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faCalendar} size="lg" />
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-warning btn-outline"
+                      onClick={() => {
+                        setModalClassName(c.name);
+                        setClassEditModalActive(true);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} size="lg" />
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-error"
+                      onClick={() => {
+                        setModalClassName(c.name);
+                        setConfirmDeletePopupActive(true);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faTrashCan} size="lg" />
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {classes?.data.map((c: ClassInterface, index: number) => (
-                  <tr key={c.name}>
-                    <td>{index + 1}</td>
-                    <td>{c.name}</td>
-                    <td>{c.year}</td>
-                    <th>{`${c.classTeacher.user.name} ${c.classTeacher.user.surname}`}</th>
-                    <th>{`${c.substituteClassTeacher.user.name} ${c.substituteClassTeacher.user.surname}`}</th>
-                    <th>{c.subjectList.name}</th>
-                    <td>
-                      <button
-                        className="btn btn-outline btn-info"
-                        onClick={() => {
-                          setAssignTeacherToSubjectModalActive(true);
-                          setModalClassName(c.name);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faPersonChalkboard} size="lg" />
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-outline btn-info"
-                        onClick={() => {
-                          setStudentModalActive(true);
-                          setModalClassName(c.name);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faPeopleGroup} size="lg" />
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-outline btn-info"
-                        onClick={() => {
-                          setModalClassName(c.name);
-                          setClassTimetableModalActive(true);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faCalendar} size="lg" />
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-warning btn-outline"
-                        onClick={() => {
-                          setModalClassName(c.name);
-                          setClassEditModalActive(true);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faPenToSquare} size="lg" />
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-error"
-                        onClick={() => {
-                          setModalClassName(c.name);
-                          setConfirmDeletePopupActive(true);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faTrashCan} size="lg" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </div>
+      </PageOutline>
     </>
   );
 }

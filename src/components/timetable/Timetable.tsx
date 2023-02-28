@@ -1,3 +1,5 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -22,8 +24,6 @@ export type TimetableProps = {
 };
 
 export default function Timetable({ classNameP }: TimetableProps) {
-  const [error, setError] = useState("");
-
   const [className, setClassName] = useState<string>(classNameP ?? "");
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
@@ -77,21 +77,12 @@ export default function Timetable({ classNameP }: TimetableProps) {
   );
 
   if (schoolHoursStatus === "loading") return <Loader active={true} />;
-  if (schoolHoursStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
-
-  if (lessonsStatus === "error" || eventsStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
+  if (
+    schoolHoursStatus === "error" ||
+    lessonsStatus === "error" ||
+    eventsStatus === "error"
+  )
+    return <ErrorAlert msg={"Page couldn't load"} />;
 
   const setNewWeek = (stDate: Date, enDate: Date) => {
     setStartDate(stDate);
@@ -185,19 +176,20 @@ export default function Timetable({ classNameP }: TimetableProps) {
             onSelection={(cName) => setClassName(cName)}
           />
         ) : (
-          <div className="flex items-center">
-            <div className="flex-1">
+          <div className="flex desktop:flex-row flex-col desktop:items-center">
+            <div className="desktop:flex-1">
               <TimetableClassSelection
                 active={true}
                 onSelection={(cName) => setClassName(cName)}
               />
             </div>
-            <div className="flex-1">
+            <div className="desktop:flex-1 items-end mb-5">
               <button
-                className="btn btn-primary float-right"
+                className="btn btn-primary desktop:float-right"
                 onClick={() => setAddEventModalActive(true)}
               >
-                Add Event
+                <FontAwesomeIcon icon={faPlus} size="lg" />
+                <span className="ml-3">Add Event</span>
               </button>
             </div>
           </div>

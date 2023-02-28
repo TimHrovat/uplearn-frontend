@@ -4,7 +4,7 @@ import { ClassesApi } from "../../api/classes/classes-api";
 import ErrorAlert from "../alerts/ErrorAlert";
 import Loader from "../Loader";
 import makeAnimated from "react-select/animated";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import { style } from "../ReactSelectStyle";
 
 export type TimetableClassSelectionProps = {
@@ -19,7 +19,6 @@ export default function TimetableClassSelection({
   active,
   onSelection,
 }: TimetableClassSelectionProps) {
-  const [error, setError] = useState("");
   const [selectedClassName, setSelectedClassName] = useState("");
 
   const { status: classesStatus, data: classes } = useQuery({
@@ -38,12 +37,7 @@ export default function TimetableClassSelection({
 
   if (classesStatus === "loading") return <Loader active={true} />;
   if (classesStatus === "error")
-    return (
-      <ErrorAlert
-        msg={"Page couldn't load"}
-        onVisibilityChange={(msg) => setError(msg)}
-      />
-    );
+    return <ErrorAlert msg={"Page couldn't load"} />;
 
   options = [];
   classes?.data.forEach((c: { name: string }) => {
