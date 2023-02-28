@@ -5,6 +5,7 @@ import {
   faChartSimple,
   faClock,
   faDoorOpen,
+  faScroll,
   faUsers,
   faUsersRectangle,
   faUserXmark,
@@ -95,7 +96,12 @@ export default function NavbarItems() {
           </span>
           <span className="base-5/6">Absences</span>
         </Link>
-        <Link to={"/dashboard/upcoming-gradings"}>Upcoming Gradings</Link>
+        <Link to={"/dashboard/upcoming-gradings"}>
+          <span className="base-1/6 text-left mr-3 w-5">
+            <FontAwesomeIcon icon={faScroll} size="lg" />
+          </span>
+          <span className="base-5/6">Upcoming Gradings</span>
+        </Link>
         <Link to={"/dashboard/upcoming-events"}>Upcoming Events</Link>
         <Link to={"/dashboard/grade-employees"}>Grade Employees</Link>
       </>
