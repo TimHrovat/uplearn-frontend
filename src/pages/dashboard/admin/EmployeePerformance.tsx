@@ -127,7 +127,7 @@ export default function EmployeePerformance() {
 
           <span className="flex flex-row gap-4">
             <Stars value={Math.round(Number(grades?.data.avg))} />{" "}
-            {grades?.data.avg.toFixed(2) + " out of 5"}
+            {(grades?.data.avg?.toFixed(2) ?? "?") + " out of 5"}
           </span>
           <div className="overflow-x-auto">
             <table className="table table-zebra w-full">
