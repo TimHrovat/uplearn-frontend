@@ -4,33 +4,32 @@ const url = "/auth";
 
 export const AuthApi = {
   login: async function (userData: { username: string; password: string }) {
-    const rsp = await axios.post(url + "/login", userData);
-
-    if (rsp) localStorage.setItem("token", rsp.data.token);
-
-    axios.defaults.headers.common["Authorization"] = rsp.data.token;
-
-    return rsp;
+    return await axios.post(url + "/login", userData).then((rsp) => {
+      if (rsp) {
+        localStorage.setItem("token", rsp.data.token);
+        axios.defaults.headers.common["Authorization"] = rsp.data.token;
+      }
+    });
   },
   logout: async function () {
-    const rsp = await axios.get(url + "/logout");
-
-    if (rsp) localStorage.setItem("token", rsp.data.token);
-
-    axios.defaults.headers.common["Authorization"] = null;
-
-    return rsp;
+    return await axios.get(url + "/logout").then((rsp) => {
+      if (rsp) {
+        localStorage.setItem("token", rsp.data.token);
+        axios.defaults.headers.common["Authorization"] = null;
+      }
+    });
   },
   replaceFirstPassword: async function (newPassword: string) {
-    const rsp = await axios.patch(url + "/replace-first-password", {
-      password: newPassword,
-    });
-
-    if (rsp) localStorage.setItem("token", rsp.data.token);
-
-    axios.defaults.headers.common["Authorization"] = rsp.data.token;
-
-    return rsp;
+    return await axios
+      .patch(url + "/replace-first-password", {
+        password: newPassword,
+      })
+      .then((rsp) => {
+        if (rsp) {
+          localStorage.setItem("token", rsp.data.token);
+          axios.defaults.headers.common["Authorization"] = rsp.data.token;
+        }
+      });
   },
   getJwtPayload: getJwtPayload,
   isAuthenticated: function () {
