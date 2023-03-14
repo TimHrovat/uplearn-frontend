@@ -72,6 +72,7 @@ export default function ManageUsers() {
       })
       .finally(() => {
         setLoading(false);
+        refetchUsers();
       });
   };
 
@@ -112,7 +113,6 @@ export default function ManageUsers() {
         onActiveChange={(active) => setConfirmDeletePopupActive(active)}
         deleteFunction={() => {
           deleteUser(modalUser.id);
-          refetchUsers();
         }}
         prompt={`Are you sure you want to delete user ${modalUser.username}?`}
       />
@@ -128,7 +128,6 @@ export default function ManageUsers() {
         onActiveChange={(active) => {
           setUserEditModalActive(active);
           refetchUsers();
-          window.location.reload();
         }}
       />
       <PageOutline
