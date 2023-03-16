@@ -73,7 +73,7 @@ export default function ManageUsersCreate() {
       name: name.current === null ? "" : name.current.value.trim(),
       surname: surname.current === null ? "" : surname.current.value.trim(),
       email: email.trim(),
-      gsm:  gsm.trim(),
+      gsm: gsm.trim(),
       dateOfBirth: birthdate.toISOString(),
       role: role,
     };
@@ -133,6 +133,7 @@ export default function ManageUsersCreate() {
         navigationElements={[
           { title: "View users", link: "/dashboard/manage-users" },
           { title: "Create user", link: "/dashboard/manage-users/create" },
+          { title: "Excel Import", link: "/dashboard/manage-users/excel-import" },
         ]}
       >
         <div className="form-control w-full mb-5">

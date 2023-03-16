@@ -35,6 +35,7 @@ import ManageAbsences from "./pages/dashboard/employee/ManageAbsences";
 import EmployeeGrades from "./pages/dashboard/student/EmployeeGrades";
 import MyPerformance from "./pages/dashboard/employee/MyPerformance";
 import EmployeePerformance from "./pages/dashboard/admin/EmployeePerformance";
+import ExcelUserImport from "./pages/dashboard/admin/ExcelUserImport";
 
 function App() {
   return (
@@ -138,6 +139,10 @@ function App() {
           <Route
             path="/dashboard/manage-users/create"
             element={<ProtectedRouteRole outlet={<DashboardRoute element={<ManageUsersCreate />} />} authorizedRoles={["admin"]} />}
+          />
+          <Route
+            path="/dashboard/manage-users/excel-import"
+            element={<ProtectedRouteRole outlet={<DashboardRoute element={<ExcelUserImport />} />} authorizedRoles={["admin"]} />}
           />
 
           <Route

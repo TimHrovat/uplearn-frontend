@@ -136,6 +136,7 @@ export default function ManageUsers() {
         navigationElements={[
           { title: "View users", link: "/dashboard/manage-users" },
           { title: "Create user", link: "/dashboard/manage-users/create" },
+          { title: "Excel Import", link: "/dashboard/manage-users/excel-import" },
         ]}
       >
         <div className="form-control desktop:w-1/3 w-full mb-5">
