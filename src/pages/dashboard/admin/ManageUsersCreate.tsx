@@ -22,9 +22,9 @@ export default function ManageUsersCreate() {
   const [birthdate, setBirthdate] = useState(new Date());
   const name = useRef<HTMLInputElement>(null);
   const surname = useRef<HTMLInputElement>(null);
-  const gsm = useRef<HTMLInputElement>(null);
   const [role, setRole] = useState("student");
   const [email, setEmail] = useState("");
+  const [gsm, setGsm] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -64,11 +64,16 @@ export default function ManageUsersCreate() {
       return;
     }
 
+    if (!isValidGsm(gsm)) {
+      setError("Gsm is invalid");
+      return;
+    }
+
     const UserData = {
       name: name.current === null ? "" : name.current.value.trim(),
       surname: surname.current === null ? "" : surname.current.value.trim(),
       email: email.trim(),
-      gsm: gsm.current === null ? "" : gsm.current.value.trim(),
+      gsm:  gsm.trim(),
       dateOfBirth: birthdate.toISOString(),
       role: role,
     };
@@ -94,9 +99,23 @@ export default function ManageUsersCreate() {
     return /^\S+@\S+\.\S+/.test(email);
   }
 
+  function isValidGsm(gsm: string) {
+    return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(
+      gsm
+    );
+  }
+
   const handleEmailBlur = () => {
     if (!isValidEmail(email) && email !== "") {
       setError("Email is invalid");
+    } else {
+      setError("");
+    }
+  };
+
+  const handleGsmBlur = () => {
+    if (!isValidGsm(gsm) && gsm !== "") {
+      setError("Gsm is invalid (correct format: +38640505268)");
     } else {
       setError("");
     }
@@ -155,7 +174,9 @@ export default function ManageUsersCreate() {
           <input
             type="text"
             className="input input-bordered w-full "
-            ref={gsm}
+            value={gsm}
+            onChange={(e) => setGsm(e.currentTarget.value)}
+            onBlur={handleGsmBlur}
           />
         </div>
         <div className="form-control w-full mb-5">

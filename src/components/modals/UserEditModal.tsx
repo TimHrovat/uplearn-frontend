@@ -30,9 +30,23 @@ export default function UserEditModal({
     return /^\S+@\S+\.\S+/.test(email);
   }
 
+  function isValidGsm(gsm: string) {
+    return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(
+      gsm
+    );
+  }
+
   const handleEmailBlur = () => {
     if (!isValidEmail(email) && email !== "") {
       setError("Email is invalid");
+    } else {
+      setError("");
+    }
+  };
+
+  const handleGsmBlur = () => {
+    if (!isValidGsm(gsm) && gsm !== "") {
+      setError("Gsm is invalid (correct format: +38640505268)");
     } else {
       setError("");
     }
@@ -88,6 +102,11 @@ export default function UserEditModal({
 
     if (!isValidEmail(email)) {
       setError("Email is invalid");
+      return;
+    }
+
+    if (!isValidGsm(gsm)) {
+      setError("Gsm is invalid");
       return;
     }
 
@@ -163,6 +182,7 @@ export default function UserEditModal({
             className="input input-bordered w-full "
             value={gsm}
             onChange={(e) => setGsm(e.currentTarget.value)}
+            onBlur={handleGsmBlur}
           />
         </div>
         <button

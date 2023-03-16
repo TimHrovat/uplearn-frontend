@@ -9,19 +9,6 @@ export default function SuccessAlert({
   msg,
   onVisibilityChange,
 }: SuccessAlertProps) {
-  function timeout(delay: number) {
-    return new Promise((res) => setTimeout(res, delay));
-  }
-
-  const wait = async (delay: number) => {
-    await timeout(delay);
-    onVisibilityChange?.("");
-  };
-
-  if (msg !== "") {
-    wait(8000);
-  }
-
   if (msg === "") return <></>;
 
   return (
