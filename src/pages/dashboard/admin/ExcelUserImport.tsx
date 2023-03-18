@@ -15,6 +15,11 @@ export default function ExcelUserImport() {
   };
 
   const importUsers = () => {
+    if (!file) {
+      setError("Please select a file to import");
+      return;
+    }
+
     setLoading(true);
     ExcelApi.importUsers(file)
       .catch((e) => {
