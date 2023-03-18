@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { ExcelApi } from "../../../api/excel/excel-api";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
@@ -21,7 +21,7 @@ export default function ExcelUserImport() {
         setError(e.response.data.message ?? e.message);
       })
       .then((res) => {
-        if (res) setSuccess("Credentials sent successfully");
+        if (res) setSuccess("Users added successfully");
       })
       .finally(() => {
         setLoading(false);
@@ -40,7 +40,10 @@ export default function ExcelUserImport() {
         navigationElements={[
           { title: "View users", link: "/dashboard/manage-users" },
           { title: "Create user", link: "/dashboard/manage-users/create" },
-          { title: "Excel Import", link: "/dashboard/manage-users/excel-import" },
+          {
+            title: "Excel Import",
+            link: "/dashboard/manage-users/excel-import",
+          },
         ]}
       >
         <input

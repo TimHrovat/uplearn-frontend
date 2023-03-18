@@ -31,6 +31,7 @@ export default function UserEditModal({
   }
 
   function isValidGsm(gsm: string) {
+    // eslint-disable-next-line
     return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(
       gsm
     );
