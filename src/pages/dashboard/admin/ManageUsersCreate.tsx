@@ -100,6 +100,9 @@ export default function ManageUsersCreate() {
   }
 
   function isValidGsm(gsm: string) {
+    if (gsm === "") return true;
+
+    // eslint-disable-next-line
     return /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(
       gsm
     );
@@ -133,7 +136,10 @@ export default function ManageUsersCreate() {
         navigationElements={[
           { title: "View users", link: "/dashboard/manage-users" },
           { title: "Create user", link: "/dashboard/manage-users/create" },
-          { title: "Excel Import", link: "/dashboard/manage-users/excel-import" },
+          {
+            title: "Excel Import",
+            link: "/dashboard/manage-users/excel-import",
+          },
         ]}
       >
         <div className="form-control w-full mb-5">
