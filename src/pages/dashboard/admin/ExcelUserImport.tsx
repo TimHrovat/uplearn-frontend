@@ -64,7 +64,7 @@ export default function ExcelUserImport() {
           }
           onClick={importUsers}
         >
-          Import Csv
+          Import Excel
         </button>
         <a
           className="ml-5 link"
