@@ -9,6 +9,7 @@ import Modal from "../Modal";
 import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import Loader from "../../Loader";
+import { style } from "../../ReactSelectStyle";
 
 export type ClassAssignTeacherToSubjectModalProps = {
   active: boolean;
@@ -120,12 +121,7 @@ export default function ClassAssignTeacherToSubjectModal({
                       onChange={(selected) =>
                         handleSelectedTeacher(selected, s.subject.abbreviation)
                       }
-                      styles={{
-                        option: (styles) => ({
-                          ...styles,
-                          color: "black",
-                        }),
-                      }}
+                      styles={style}
                     />
                   </div>
                 </div>
