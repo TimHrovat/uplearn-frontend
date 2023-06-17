@@ -43,7 +43,7 @@ export default function LessonInfoModal({
     enabled: active,
   });
 
-  if (status === "loading" || authUserStatus === "loading")
+  if (status === "loading" && authUserStatus === "loading")
     return <Loader active={true} />;
   if (status === "error" || authUserStatus === "error")
     return (

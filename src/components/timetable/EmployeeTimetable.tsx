@@ -83,9 +83,9 @@ export default function EmployeeTimetable() {
   });
 
   if (
-    schoolHoursStatus === "loading" ||
+    (schoolHoursStatus === "loading" ||
     authUserStatus === "loading" ||
-    ongoingLessonStatus === "loading"
+    ongoingLessonStatus === "loading")
   )
     return <Loader active={true} />;
   if (

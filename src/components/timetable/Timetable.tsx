@@ -161,7 +161,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
 
   return (
     <>
-      <Loader active={lessonsStatus === "loading"} />
+      <Loader active={lessonsStatus === "loading" && className !== ""} />
       <AddEventModal
         active={addEventModalActive}
         onActiveChange={(active) => {

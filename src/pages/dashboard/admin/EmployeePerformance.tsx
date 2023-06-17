@@ -96,7 +96,7 @@ export default function EmployeePerformance() {
 
   return (
     <>
-      <PageOutline title="My Performance">
+      <PageOutline title="Employee Performance">
         <div className="form-control mb-5 mr-5 max-w-[15rem]">
           <label className="label">
             <span className="label-text">Class:</span>
