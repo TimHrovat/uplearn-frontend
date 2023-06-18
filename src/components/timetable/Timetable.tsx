@@ -90,17 +90,12 @@ export default function Timetable({ classNameP }: TimetableProps) {
   };
 
   const getTimetableLessonProps = (schoolHourId: string, dayOfWeek: number) => {
-    let props: Omit<TimetableLessonProps, "schoolHourId" | "date" | "onClose"> =
-      {
-        subject: "",
-        teacher: "",
-        classroom: "",
-        lessonId: "",
-        type: "",
-        className,
-      };
+    let props: Omit<
+      TimetableLessonProps,
+      "schoolHourId" | "date" | "onClose"
+    >[] = [];
 
-    let result = lessons?.data.find(
+    let result = lessons?.data.filter(
       (item: { schoolHourId: string; date: string }) =>
         item.schoolHourId === schoolHourId &&
         item.date.split("T")[0] ===
@@ -112,20 +107,36 @@ export default function Timetable({ classNameP }: TimetableProps) {
     );
 
     if (result) {
-      if (result.type === "SUBSTITUTE") {
-        const teacher = result.substituteEmployee.user;
+      result.forEach((res: any, i: number) => {
+        const timetableLessonProp: Omit<
+          TimetableLessonProps,
+          "schoolHourId" | "date" | "onClose"
+        > = {
+          teacher: "",
+          className,
+          lessonId: "",
+          type: "",
+          classroom: "",
+          subject: "",
+        };
 
-        props.teacher = teacher.name + " " + teacher.surname;
-      } else {
-        const teacher = result.employee_Subject.employee.user;
+        if (res.type === "SUBSTITUTE") {
+          const teacher = res.substituteEmployee.user;
 
-        props.teacher = teacher.name + " " + teacher.surname;
-      }
+          timetableLessonProp.teacher = teacher.name + " " + teacher.surname;
+        } else {
+          const teacher = res.employee_Subject.employee.user;
 
-      props.subject = result.subjectAbbreviation;
-      props.classroom = result.classroomName;
-      props.type = result.type;
-      props.lessonId = result.id;
+          timetableLessonProp.teacher = teacher.name + " " + teacher.surname;
+        }
+
+        timetableLessonProp.subject = res.subjectAbbreviation;
+        timetableLessonProp.classroom = res.classroomName;
+        timetableLessonProp.type = res.type;
+        timetableLessonProp.lessonId = res.id;
+
+        props.push(timetableLessonProp);
+      });
     }
 
     return props;
@@ -157,6 +168,50 @@ export default function Timetable({ classNameP }: TimetableProps) {
         </div>
       </>
     );
+  }
+
+  function getSchoolHourLessons(schoolHourId: string) {
+    const lessons: JSX.Element[] = [];
+
+    for (let i = 0; i < 5; i++) {
+      const timetableProps = getTimetableLessonProps(schoolHourId, i);
+
+      if (timetableProps.length === 0) {
+        lessons.push(
+          <td className="p-0 border-r-[1px] border-zinc-700" key={i}>
+            <TimetableLesson
+              className={className}
+              lessonId=""
+              type=""
+              classroom=""
+              subject=""
+              teacher=""
+              schoolHourId={schoolHourId}
+              date={moment(startDate).add(i, "d").toDate().toISOString()}
+              onClose={() => refetchLessons()}
+            />
+          </td>
+        );
+
+        continue;
+      }
+
+      lessons.push(
+        <td className="p-0 border-r-[1px] border-zinc-700" key={i}>
+          {timetableProps.map((props, index) => (
+            <TimetableLesson
+              {...props}
+              key={index}
+              schoolHourId={schoolHourId}
+              date={moment(startDate).add(i, "d").toDate().toISOString()}
+              onClose={() => refetchLessons()}
+            />
+          ))}
+        </td>
+      );
+    }
+
+    return lessons;
   }
 
   return (
@@ -276,61 +331,7 @@ export default function Timetable({ classNameP }: TimetableProps) {
                       </span>
                     </div>
                   </td>
-                  <td className="p-0 border-r-[1px] border-zinc-700">
-                    <TimetableLesson
-                      {...getTimetableLessonProps(schoolHour.id, 0)}
-                      schoolHourId={schoolHour.id}
-                      date={moment(startDate)
-                        .add(0, "d")
-                        .toDate()
-                        .toISOString()}
-                      onClose={() => refetchLessons()}
-                    />
-                  </td>
-                  <td className="p-0 border-r-[1px] border-zinc-700">
-                    <TimetableLesson
-                      {...getTimetableLessonProps(schoolHour.id, 1)}
-                      schoolHourId={schoolHour.id}
-                      date={moment(startDate)
-                        .add(1, "d")
-                        .toDate()
-                        .toISOString()}
-                      onClose={() => refetchLessons()}
-                    />
-                  </td>
-                  <td className="p-0 border-r-[1px] border-zinc-700">
-                    <TimetableLesson
-                      {...getTimetableLessonProps(schoolHour.id, 2)}
-                      schoolHourId={schoolHour.id}
-                      date={moment(startDate)
-                        .add(2, "d")
-                        .toDate()
-                        .toISOString()}
-                      onClose={() => refetchLessons()}
-                    />
-                  </td>
-                  <td className="p-0 border-r-[1px] border-zinc-700">
-                    <TimetableLesson
-                      {...getTimetableLessonProps(schoolHour.id, 3)}
-                      schoolHourId={schoolHour.id}
-                      date={moment(startDate)
-                        .add(3, "d")
-                        .toDate()
-                        .toISOString()}
-                      onClose={() => refetchLessons()}
-                    />
-                  </td>
-                  <td className="p-0 border-r-[1px] border-zinc-700">
-                    <TimetableLesson
-                      {...getTimetableLessonProps(schoolHour.id, 4)}
-                      schoolHourId={schoolHour.id}
-                      date={moment(startDate)
-                        .add(4, "d")
-                        .toDate()
-                        .toISOString()}
-                      onClose={() => refetchLessons()}
-                    />
-                  </td>
+                  {getSchoolHourLessons(schoolHour.id)}
                 </tr>
               )
             )}
